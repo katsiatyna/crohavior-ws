@@ -135,7 +135,7 @@ public class HBaseUtils {
      */
     public static List<String> getRecordRangeValues (String tableName, String startRowKey, String stopRowKey) throws IOException{
         try{
-            Connection connection = ConnectionFactory.createConnection(conf);
+            //Connection connection = ConnectionFactory.createConnection(conf);
             HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
             Scan s = new Scan();
 
