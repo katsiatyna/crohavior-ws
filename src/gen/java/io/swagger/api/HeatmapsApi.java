@@ -29,7 +29,7 @@ public class HeatmapsApi  {
     @Produces({ "application/hal+json" })
     public Response getHeatmapsByParameters( @PathParam("projectId") Long projectId, @QueryParam("startTime") Long startTime,
                                              @QueryParam("endTime") Long endTime, @QueryParam("interval") Integer interval,
-                                             @QueryParam("pageNmb") Integer pageNmb,
+                                             @QueryParam("pageNmb") Long pageNmb,
                                              @Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.getHeatmapsByParameters(projectId,startTime, endTime, interval, pageNmb, securityContext);

@@ -26,10 +26,10 @@ import javax.ws.rs.core.SecurityContext;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapsApiServiceImpl extends HeatmapsApiService {
 
-    public static final String TABLE_NAME = "heatmap";
+    public static final String TABLE_NAME = "heatmap_correct";
       @Override
       public Response getHeatmapsByParameters(Long projectId,Long startTime,Long endTime, Integer interval,
-                                              Integer pageNmb,
+                                              Long pageNmb,
                                               SecurityContext securityContext)
       throws NotFoundException {
           List<String> values = new ArrayList<>();
@@ -42,25 +42,34 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
           resMap.put("intervalSec", 5);
           try {
               if(pageNmb == null){
-                  pageNmb = 1;
+                  pageNmb = 1l;
               }
+
               resMap.put("page", pageNmb);
               Long diff = endTime - startTime;
               Long diffMin = TimeUnit.MILLISECONDS.toMinutes(diff);
               System.out.println("Minutes: " + diffMin);
               Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff))%60 == 0) ? diffMin : diffMin + 1;
               System.out.println("Pages: " + pages);
+              Long newStartTime, newEndTime;
+              newStartTime = startTime + (pageNmb - 1)*1000*60;
+              if(pageNmb != pages){
+                  newEndTime = newStartTime + 60*1000;
+              }else{
+                  newEndTime = endTime;
+              }
+
               DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-              String startDateStr =  interval + "s" + sdf.format(new Date(startTime));
-              String endDateStr =  interval + "s" + sdf.format(new Date(endTime));
+              String startDateStr =  interval + "s" + sdf.format(new Date(newStartTime));
+              String endDateStr =  interval + "s" + sdf.format(new Date(newEndTime));
               System.out.println("Start: " + startDateStr + ", End: " + endDateStr);
               values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr );
               System.out.println(values.size());
               resMap.put("nbEl",values.size());
-              for(String val: values){
-                  //objValues.add(mapper.readValue(val, Object.class));
+              for(String val:values){
+                  objValues.add(mapper.readValue(val, Object.class));
               }
-              resMap.put("elements", values);
+              resMap.put("elements", objValues);
               return Response.ok().entity(mapper.writeValueAsString(resMap)).build();
           } catch (IOException e) {
               e.printStackTrace();

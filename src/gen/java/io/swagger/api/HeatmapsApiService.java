@@ -17,7 +17,7 @@ import javax.ws.rs.core.SecurityContext;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public abstract class HeatmapsApiService {
       public abstract Response getHeatmapsByParameters(Long projectId,Long startTime,Long endTime, Integer interval,
-                                                       Integer pageNmb,
+                                                       Long pageNmb,
                                                        SecurityContext securityContext)
       throws NotFoundException;
 }
