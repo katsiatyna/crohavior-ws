@@ -26,7 +26,7 @@ import javax.ws.rs.core.SecurityContext;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapsApiServiceImpl extends HeatmapsApiService {
 
-    public static final String TABLE_NAME = "heatmap_correct";
+    public static final String TABLE_NAME = "heatmap";
       @Override
       public Response getHeatmapsByParameters(Long projectId,Long startTime,Long endTime, Integer interval,
                                               Long pageNmb,
@@ -37,8 +37,8 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
           ObjectMapper mapper = new ObjectMapper();
           mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
           Map<String, Object> resMap = new HashMap<>();
-          resMap.put("startTs", startTime);
-          resMap.put("endTs", endTime);
+          resMap.put("startTime", startTime);
+          resMap.put("endTime", endTime);
           resMap.put("intervalSec", 5);
           try {
               if(pageNmb == null){
