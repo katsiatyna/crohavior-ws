@@ -8,18 +8,18 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class MapGridCollection   {
-  
+
   private Integer nbEl = null;
   private Long startTime = null;
   private Long endTime = null;
   private Integer intervalSec = null;
-  private List<Link> links = new ArrayList<Link>();
-  private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
+  //private List<Link> links = new ArrayList<Link>();
+  //private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
   private Long page = 1l;
 
   /**
    **/
-  
+
   @JsonProperty("nbEl")
   public Integer getNbEl() {
     return nbEl;
@@ -30,7 +30,7 @@ public class MapGridCollection   {
 
   /**
    **/
-  
+
   @JsonProperty("startTime")
   public Long getStartTime() {
     return startTime;
@@ -41,7 +41,7 @@ public class MapGridCollection   {
 
   /**
    **/
-  
+
   @JsonProperty("endTime")
   public Long getEndTime() {
     return endTime;
@@ -52,7 +52,7 @@ public class MapGridCollection   {
 
   /**
    **/
-  
+
   @JsonProperty("intervalSec")
   public Integer getIntervalSec() {
     return intervalSec;
@@ -63,8 +63,8 @@ public class MapGridCollection   {
 
   /**
    **/
-  
-  @JsonProperty("_links")
+
+  /*@JsonProperty("_links")
   public List<Link> getLinks() {
     return links;
   }
@@ -72,9 +72,9 @@ public class MapGridCollection   {
     this.links = links;
   }
 
-  /**
-   **/
-  
+  *//**
+   **//*
+
   @JsonProperty("_embedded")
   public List<EmbeddedResource> getEmbedded() {
     return embedded;
@@ -82,17 +82,17 @@ public class MapGridCollection   {
   public void setEmbedded(List<EmbeddedResource> embedded) {
     this.embedded = embedded;
   }
+*/
+  @JsonProperty("page")
+  public Long getPage() {
+    return page;
+  }
 
-    @JsonProperty("page")
-    public Long getPage() {
-        return page;
-    }
+  public void setPage(Long page) {
+    this.page = page;
+  }
 
-    public void setPage(Long page) {
-        this.page = page;
-    }
-
-    @Override
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -102,30 +102,30 @@ public class MapGridCollection   {
     }
     MapGridCollection mapGridCollection = (MapGridCollection) o;
     return Objects.equals(nbEl, mapGridCollection.nbEl) &&
-        Objects.equals(startTime, mapGridCollection.startTime) &&
-        Objects.equals(endTime, mapGridCollection.endTime) &&
-        Objects.equals(intervalSec, mapGridCollection.intervalSec) &&
-        Objects.equals(links, mapGridCollection.links) &&
-            Objects.equals(page, mapGridCollection.page) &&
-        Objects.equals(embedded, mapGridCollection.embedded);
+            Objects.equals(startTime, mapGridCollection.startTime) &&
+            Objects.equals(endTime, mapGridCollection.endTime) &&
+            Objects.equals(intervalSec, mapGridCollection.intervalSec) &&
+            Objects.equals(page, mapGridCollection.page);// &&
+    //Objects.equals(links, mapGridCollection.links) &&
+    //Objects.equals(embedded, mapGridCollection.embedded);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nbEl, startTime, endTime, intervalSec, links, embedded);
+    return Objects.hash(nbEl, startTime, endTime, intervalSec); //, links, embedded);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class MapGridCollection {\n");
-    
+
     sb.append("    nbEl: ").append(toIndentedString(nbEl)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    intervalSec: ").append(toIndentedString(intervalSec)).append("\n");
-    sb.append("    links: ").append(toIndentedString(links)).append("\n");
-    sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
+    //sb.append("    links: ").append(toIndentedString(links)).append("\n");
+    //sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -141,4 +141,3 @@ public class MapGridCollection   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

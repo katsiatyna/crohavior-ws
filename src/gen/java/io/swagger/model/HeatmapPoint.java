@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapPoint extends MapPoint  {
-  
+
   private Long c = null;
 
   /**
    **/
-  
+
   @JsonProperty("c")
   public Long getC() {
     return c;
@@ -59,4 +59,3 @@ public class HeatmapPoint extends MapPoint  {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

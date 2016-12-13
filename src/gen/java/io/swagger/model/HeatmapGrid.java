@@ -8,14 +8,14 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapGrid extends MapGrid  {
-  
+
   private Long minCount = null;
   private Long maxCount = null;
   private List<HeatmapPoint> data = new ArrayList<HeatmapPoint>();
 
   /**
    **/
-  
+
   @JsonProperty("minCount")
   public Long getMinCount() {
     return minCount;
@@ -26,7 +26,7 @@ public class HeatmapGrid extends MapGrid  {
 
   /**
    **/
-  
+
   @JsonProperty("maxCount")
   public Long getMaxCount() {
     return maxCount;
@@ -37,7 +37,7 @@ public class HeatmapGrid extends MapGrid  {
 
   /**
    **/
-  
+
   @JsonProperty("data")
   public List<HeatmapPoint> getData() {
     return data;
@@ -57,8 +57,8 @@ public class HeatmapGrid extends MapGrid  {
     }
     HeatmapGrid heatmapGrid = (HeatmapGrid) o;
     return Objects.equals(minCount, heatmapGrid.minCount) &&
-        Objects.equals(maxCount, heatmapGrid.maxCount) &&
-        Objects.equals(data, heatmapGrid.data);
+            Objects.equals(maxCount, heatmapGrid.maxCount) &&
+            Objects.equals(data, heatmapGrid.data);
   }
 
   @Override
@@ -89,4 +89,3 @@ public class HeatmapGrid extends MapGrid  {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

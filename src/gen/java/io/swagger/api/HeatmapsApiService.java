@@ -13,11 +13,12 @@ import java.io.InputStream;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.UriInfo;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public abstract class HeatmapsApiService {
-      public abstract Response getHeatmapsByParameters(Long projectId,Long startTime,Long endTime, Integer interval,
+      public abstract Response getHeatmapsByParameters(Long projectId, Long startTime, Long endTime, Integer interval,
                                                        Long pageNmb,
-                                                       SecurityContext securityContext)
-      throws NotFoundException;
+                                                       SecurityContext securityContext, UriInfo uri)
+              throws NotFoundException;
 }
