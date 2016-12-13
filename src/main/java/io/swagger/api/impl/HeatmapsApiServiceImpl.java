@@ -86,7 +86,14 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             heatmapGridCollection.setElements(elements);
             RepresentationFactory factory = new StandardRepresentationFactory();
             //"/heatmaps/123?interval=5&startTime=1224726940000&endTime=1224726960000&pageNmb=2"
-            Representation heatmapCollectionRepr = factory.newRepresentation().withBean(heatmapGridCollection);
+            Representation heatmapCollectionRepr = factory.newRepresentation(uri.getBaseUriBuilder().
+                    path(HeatmapsApi.class).
+                    path(HeatmapsApi.class, "getHeatmapsByParameters").
+                    queryParam("startTime", startTime).
+                    queryParam("endTime", endTime).
+                    queryParam("interval", interval).
+                    queryParam("pageNmb", pageNmb).
+                    build(projectId)).withBean(heatmapGridCollection);
             if(pageNmb < pages) {
                 heatmapCollectionRepr = heatmapCollectionRepr.withLink("next", uri.getBaseUriBuilder().
                         path(HeatmapsApi.class).
