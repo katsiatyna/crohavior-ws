@@ -1,10 +1,15 @@
 package io.swagger.api.impl;
 
+import com.google.common.collect.FluentIterable;
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import edu.upc.bip.batch.HBaseUtils;
 import io.swagger.api.*;
-import io.swagger.model.*;
 
 
+import io.swagger.model.HeatmapGrid;
 import io.swagger.model.HeatmapGridCollection;
 
 import java.io.IOException;
@@ -13,11 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import io.swagger.api.NotFoundException;
-import org.apache.commons.collections.ArrayStack;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.core.Response;
@@ -32,20 +35,21 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                                               Long pageNmb,
                                               SecurityContext securityContext)
       throws NotFoundException {
+          System.out.println(FluentIterable.class.getProtectionDomain().getCodeSource().getLocation().toString());
+          HeatmapGridCollection heatmapGridCollection = new HeatmapGridCollection();
+          List<HeatmapGrid> elements = new ArrayList<>();
           List<String> values = new ArrayList<>();
-          List<Object> objValues = new ArrayList<>();
           ObjectMapper mapper = new ObjectMapper();
           mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-          Map<String, Object> resMap = new HashMap<>();
-          resMap.put("startTime", startTime);
-          resMap.put("endTime", endTime);
-          resMap.put("intervalSec", 5);
+          heatmapGridCollection.setStartTime(startTime);
+          heatmapGridCollection.setEndTime(endTime);
+          heatmapGridCollection.setIntervalSec(interval);
           try {
               if(pageNmb == null){
                   pageNmb = 1l;
               }
 
-              resMap.put("page", pageNmb);
+              heatmapGridCollection.setPage(pageNmb);
               Long diff = endTime - startTime;
               Long diffMin = TimeUnit.MILLISECONDS.toMinutes(diff);
               System.out.println("Minutes: " + diffMin);
@@ -65,12 +69,17 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
               System.out.println("Start: " + startDateStr + ", End: " + endDateStr);
               values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr );
               System.out.println(values.size());
-              resMap.put("nbEl",values.size());
+              heatmapGridCollection.setNbEl(values.size());
               for(String val:values){
-                  objValues.add(mapper.readValue(val, Object.class));
+                  HeatmapGrid obj = mapper.readValue(val, HeatmapGrid.class);
+                  elements.add(obj);
               }
-              resMap.put("elements", objValues);
-              return Response.ok().entity(mapper.writeValueAsString(resMap)).build();
+
+              heatmapGridCollection.setElements(elements);
+              RepresentationFactory factory = new StandardRepresentationFactory();
+              Representation heatmapCollectionRepr = factory.newRepresentation().withBean(heatmapGridCollection)
+                      .withLink("next", "http://localhost:8080/api/heatmaps/123?interval=5&startTime=1224726940000&endTime=1224726960000&pageNmb=2");
+              return Response.ok().entity(heatmapCollectionRepr.toString(RepresentationFactory.HAL_JSON)).build();
           } catch (IOException e) {
               e.printStackTrace();
           }

@@ -3,9 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.HeatmapPoint;
-import io.swagger.model.MapGrid;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
@@ -13,7 +11,7 @@ public class HeatmapGrid extends MapGrid  {
   
   private Long minCount = null;
   private Long maxCount = null;
-  private List<HeatmapPoint> points = new ArrayList<HeatmapPoint>();
+  private List<HeatmapPoint> data = new ArrayList<HeatmapPoint>();
 
   /**
    **/
@@ -40,12 +38,12 @@ public class HeatmapGrid extends MapGrid  {
   /**
    **/
   
-  @JsonProperty("points")
-  public List<HeatmapPoint> getPoints() {
-    return points;
+  @JsonProperty("data")
+  public List<HeatmapPoint> getData() {
+    return data;
   }
-  public void setPoints(List<HeatmapPoint> points) {
-    this.points = points;
+  public void setData(List<HeatmapPoint> data) {
+    this.data = data;
   }
 
 
@@ -60,12 +58,12 @@ public class HeatmapGrid extends MapGrid  {
     HeatmapGrid heatmapGrid = (HeatmapGrid) o;
     return Objects.equals(minCount, heatmapGrid.minCount) &&
         Objects.equals(maxCount, heatmapGrid.maxCount) &&
-        Objects.equals(points, heatmapGrid.points);
+        Objects.equals(data, heatmapGrid.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(minCount, maxCount, points);
+    return Objects.hash(minCount, maxCount, data);
   }
 
   @Override
@@ -75,7 +73,7 @@ public class HeatmapGrid extends MapGrid  {
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    minCount: ").append(toIndentedString(minCount)).append("\n");
     sb.append("    maxCount: ").append(toIndentedString(maxCount)).append("\n");
-    sb.append("    points: ").append(toIndentedString(points)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

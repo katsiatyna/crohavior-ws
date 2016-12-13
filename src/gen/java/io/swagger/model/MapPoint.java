@@ -1,36 +1,35 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class MapPoint   {
   
-  private Double latitude = null;
-  private Double longitude = null;
+  private Double a = null;
+  private Double o = null;
 
   /**
    **/
   
-  @JsonProperty("latitude")
-  public Double getLatitude() {
-    return latitude;
+  @JsonProperty("a")
+  public Double getA() {
+    return a;
   }
-  public void setLatitude(Double latitude) {
-    this.latitude = latitude;
+  public void setA(Double a) {
+    this.a = a;
   }
 
   /**
    **/
   
-  @JsonProperty("longitude")
-  public Double getLongitude() {
-    return longitude;
+  @JsonProperty("o")
+  public Double getO() {
+    return o;
   }
-  public void setLongitude(Double longitude) {
-    this.longitude = longitude;
+  public void setO(Double o) {
+    this.o = o;
   }
 
 
@@ -43,13 +42,13 @@ public class MapPoint   {
       return false;
     }
     MapPoint mapPoint = (MapPoint) o;
-    return Objects.equals(latitude, mapPoint.latitude) &&
-        Objects.equals(longitude, mapPoint.longitude);
+    return Objects.equals(a, mapPoint.a) &&
+        Objects.equals(this.o, mapPoint.o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(latitude, longitude);
+    return Objects.hash(a, o);
   }
 
   @Override
@@ -57,8 +56,8 @@ public class MapPoint   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MapPoint {\n");
     
-    sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
-    sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
+    sb.append("    a: ").append(toIndentedString(a)).append("\n");
+    sb.append("    o: ").append(toIndentedString(o)).append("\n");
     sb.append("}");
     return sb.toString();
   }

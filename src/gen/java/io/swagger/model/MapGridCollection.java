@@ -3,63 +3,62 @@ package io.swagger.model;
 import java.util.Objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.EmbeddedResource;
-import io.swagger.model.Link;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class MapGridCollection   {
   
-  private Long nbElements = null;
-  private Integer startTimestamp = null;
-  private Integer endTimestamp = null;
-  private Integer intervalMs = null;
+  private Integer nbEl = null;
+  private Long startTime = null;
+  private Long endTime = null;
+  private Integer intervalSec = null;
   private List<Link> links = new ArrayList<Link>();
   private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
+  private Long page = 1l;
 
   /**
    **/
   
-  @JsonProperty("nbElements")
-  public Long getNbElements() {
-    return nbElements;
+  @JsonProperty("nbEl")
+  public Integer getNbEl() {
+    return nbEl;
   }
-  public void setNbElements(Long nbElements) {
-    this.nbElements = nbElements;
-  }
-
-  /**
-   **/
-  
-  @JsonProperty("startTimestamp")
-  public Integer getStartTimestamp() {
-    return startTimestamp;
-  }
-  public void setStartTimestamp(Integer startTimestamp) {
-    this.startTimestamp = startTimestamp;
+  public void setNbEl(Integer nbEl) {
+    this.nbEl = nbEl;
   }
 
   /**
    **/
   
-  @JsonProperty("endTimestamp")
-  public Integer getEndTimestamp() {
-    return endTimestamp;
+  @JsonProperty("startTime")
+  public Long getStartTime() {
+    return startTime;
   }
-  public void setEndTimestamp(Integer endTimestamp) {
-    this.endTimestamp = endTimestamp;
+  public void setStartTime(Long startTime) {
+    this.startTime = startTime;
   }
 
   /**
    **/
   
-  @JsonProperty("intervalMs")
-  public Integer getIntervalMs() {
-    return intervalMs;
+  @JsonProperty("endTime")
+  public Long getEndTime() {
+    return endTime;
   }
-  public void setIntervalMs(Integer intervalMs) {
-    this.intervalMs = intervalMs;
+  public void setEndTime(Long endTime) {
+    this.endTime = endTime;
+  }
+
+  /**
+   **/
+  
+  @JsonProperty("intervalSec")
+  public Integer getIntervalSec() {
+    return intervalSec;
+  }
+  public void setIntervalSec(Integer intervalSec) {
+    this.intervalSec = intervalSec;
   }
 
   /**
@@ -84,8 +83,16 @@ public class MapGridCollection   {
     this.embedded = embedded;
   }
 
+    @JsonProperty("page")
+    public Long getPage() {
+        return page;
+    }
 
-  @Override
+    public void setPage(Long page) {
+        this.page = page;
+    }
+
+    @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -94,17 +101,18 @@ public class MapGridCollection   {
       return false;
     }
     MapGridCollection mapGridCollection = (MapGridCollection) o;
-    return Objects.equals(nbElements, mapGridCollection.nbElements) &&
-        Objects.equals(startTimestamp, mapGridCollection.startTimestamp) &&
-        Objects.equals(endTimestamp, mapGridCollection.endTimestamp) &&
-        Objects.equals(intervalMs, mapGridCollection.intervalMs) &&
+    return Objects.equals(nbEl, mapGridCollection.nbEl) &&
+        Objects.equals(startTime, mapGridCollection.startTime) &&
+        Objects.equals(endTime, mapGridCollection.endTime) &&
+        Objects.equals(intervalSec, mapGridCollection.intervalSec) &&
         Objects.equals(links, mapGridCollection.links) &&
+            Objects.equals(page, mapGridCollection.page) &&
         Objects.equals(embedded, mapGridCollection.embedded);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nbElements, startTimestamp, endTimestamp, intervalMs, links, embedded);
+    return Objects.hash(nbEl, startTime, endTime, intervalSec, links, embedded);
   }
 
   @Override
@@ -112,10 +120,10 @@ public class MapGridCollection   {
     StringBuilder sb = new StringBuilder();
     sb.append("class MapGridCollection {\n");
     
-    sb.append("    nbElements: ").append(toIndentedString(nbElements)).append("\n");
-    sb.append("    startTimestamp: ").append(toIndentedString(startTimestamp)).append("\n");
-    sb.append("    endTimestamp: ").append(toIndentedString(endTimestamp)).append("\n");
-    sb.append("    intervalMs: ").append(toIndentedString(intervalMs)).append("\n");
+    sb.append("    nbEl: ").append(toIndentedString(nbEl)).append("\n");
+    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    intervalSec: ").append(toIndentedString(intervalSec)).append("\n");
     sb.append("    links: ").append(toIndentedString(links)).append("\n");
     sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
     sb.append("}");

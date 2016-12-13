@@ -1,25 +1,23 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.MapPoint;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapPoint extends MapPoint  {
   
-  private Long count = null;
+  private Long c = null;
 
   /**
    **/
   
-  @JsonProperty("count")
-  public Long getCount() {
-    return count;
+  @JsonProperty("c")
+  public Long getC() {
+    return c;
   }
-  public void setCount(Long count) {
-    this.count = count;
+  public void setC(Long c) {
+    this.c = c;
   }
 
 
@@ -32,12 +30,12 @@ public class HeatmapPoint extends MapPoint  {
       return false;
     }
     HeatmapPoint heatmapPoint = (HeatmapPoint) o;
-    return Objects.equals(count, heatmapPoint.count);
+    return Objects.equals(c, heatmapPoint.c);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(count);
+    return Objects.hash(c);
   }
 
   @Override
@@ -45,7 +43,7 @@ public class HeatmapPoint extends MapPoint  {
     StringBuilder sb = new StringBuilder();
     sb.append("class HeatmapPoint {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    count: ").append(toIndentedString(count)).append("\n");
+    sb.append("    c: ").append(toIndentedString(c)).append("\n");
     sb.append("}");
     return sb.toString();
   }
