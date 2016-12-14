@@ -4,7 +4,9 @@ package io.swagger.api.dal;
  * Created by osboxes on 14/12/16.
  */
 
+import io.swagger.model.Project;
 import io.swagger.model.User;
+import io.swagger.models.auth.In;
 import org.h2.jdbcx.JdbcConnectionPool;
 
 import java.sql.*;
@@ -22,6 +24,7 @@ public class ProjectDao {
     private static final String[] INSERT_QUERY = {"INSERT INTO CROHAVIOR_PROJECTS  VALUES(1, 'AKMA_HOUSING', 39.9, 116.2, 39.99, 116.5, 1)",
                                                     "INSERT INTO CROHAVIOR_PROJECTS  VALUES(2, 'CROHAVIOR', 39.125, 116.675, 39.375, 116.995, 2)"};
     private static final String CREATE_QUERY = "CREATE TABLE CROHAVIOR_PROJECTS (ID  INT PRIMARY KEY, projectName VARCHAR(255), minLatitude DOUBLE,minLongitude DOUBLE, maxLatitude DOUBLE, maxLongitude DOUBLE, userId INT NOT NULL)";
+    private static final String FOREING_KEY = "ALTER TABLE CROHAVIOR_PROJECTS ADD FOREIGN KEY ( userId ) REFERENCES CROHAVIOR_USERS( id ) ;";
 
 
 
@@ -49,6 +52,7 @@ public class ProjectDao {
             stmt = connection.createStatement();
             stmt.execute(DROP_QUERY);
             stmt.execute(CREATE_QUERY);
+            stmt.execute(FOREING_KEY);
             for(String query: INSERT_QUERY){
                 stmt.execute(query);
             }
@@ -64,31 +68,28 @@ public class ProjectDao {
 
     }
 
-    public static User getUserByName(String username) throws SQLException {
+    public static Project getProjectById(Integer projectId) throws SQLException {
         Connection connection = ConnectionUtil.getDBConnection();
         PreparedStatement selectPreparedStatement = null;
-        Statement stmt = null;
-        String SelectQuery = "select * from CROHAVIOR_PROJECTS where username=?";
-        User user = null;
+        String SelectQuery = "select * from CROHAVIOR_PROJECTS where id=?";
+        Project project = null;
         try {
             connection.setAutoCommit(false);
 
             selectPreparedStatement = connection.prepareStatement(SelectQuery);
-            selectPreparedStatement.setString(1, username);
+            selectPreparedStatement.setInt(1, projectId);
             ResultSet rs = selectPreparedStatement.executeQuery();
             System.out.println("H2 Database select through PreparedStatement");
             if (rs.next()) {
-                user = new User();
-                System.out.println("Id "+rs.getInt("id")+" Name "+rs.getString("username"));
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setFirstName(rs.getString("firstName"));
-                user.setLastName(rs.getString("lastName"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
-                user.setPassword("******");
-                user.setApiKey("******");
-                user.setUserRole(User.UserRoleEnum.valueOf(rs.getString("user_role")));
+                project = new Project();
+                System.out.println("Id "+rs.getInt("id")+" Name "+rs.getString("projectname"));
+                project.setId(rs.getInt("id"));
+                project.setProjectName(rs.getString("projectName"));
+                project.setMinLatitude(rs.getDouble("minLatitude"));
+                project.setMinLongitude(rs.getDouble("minLongitude"));
+                project.setMaxLatitude(rs.getDouble("maxLatitude"));
+                project.setMaxLongitude(rs.getDouble("maxLongitude"));
+                project.setUserId(rs.getInt("userId"));
             }
             //System.out.println(user.toString());
             selectPreparedStatement.close();
@@ -101,19 +102,19 @@ public class ProjectDao {
         } finally {
             connection.close();
         }
-        return user;
+        return project;
     }
 
-    public static boolean deleteUserByName(String username) throws SQLException {
+    public static boolean deleteProjectById(Integer projectId) throws SQLException {
         Connection connection = ConnectionUtil.getDBConnection();
         PreparedStatement deletePreparedStatement = null;
-        String deleteQuery = "delete from CROHAVIOR_PROJECTS where username=?";
+        String deleteQuery = "delete from CROHAVIOR_PROJECTS where Id=?";
         boolean result = false;
         try {
             connection.setAutoCommit(false);
 
             deletePreparedStatement = connection.prepareStatement(deleteQuery);
-            deletePreparedStatement.setString(1, username);
+            deletePreparedStatement.setInt(1, projectId);
             int res = deletePreparedStatement.executeUpdate();
             System.out.println("H2 Database DELETE through PreparedStatement");
             if (res > 0) {
@@ -132,23 +133,21 @@ public class ProjectDao {
         return result;
     }
 
-    public static boolean updateUserByName(User user, String username) throws SQLException {
+    public static boolean updateProjectById(Project project, Integer projectId) throws SQLException {
         Connection connection = ConnectionUtil.getDBConnection();
         PreparedStatement updatePreparedStatement = null;
-        String updateQuery = "update CROHAVIOR_PROJECTS set firstName=?, lastName=?, email=?, password=?, phone=?, user_role=?, api_key=? where username=?";
+        String updateQuery = "update CROHAVIOR_PROJECTS set projectName=?, minLatitude=?, minLongitude=?, maxLatitude=?, maxLongitude=? where id=?";
         boolean updated = false;
         try {
             connection.setAutoCommit(false);
 
             updatePreparedStatement = connection.prepareStatement(updateQuery);
-            updatePreparedStatement.setString(1, user.getFirstName());
-            updatePreparedStatement.setString(2, user.getLastName());
-            updatePreparedStatement.setString(3, user.getEmail());
-            updatePreparedStatement.setString(4, user.getPassword());
-            updatePreparedStatement.setString(5, user.getPhone());
-            updatePreparedStatement.setString(6, user.getUserRole().toString());
-            updatePreparedStatement.setString(7, user.getApiKey());
-            updatePreparedStatement.setString(8, username);
+            updatePreparedStatement.setString(1, project.getProjectName());
+            updatePreparedStatement.setDouble(2, project.getMinLatitude());
+            updatePreparedStatement.setDouble(3, project.getMinLongitude());
+            updatePreparedStatement.setDouble(4, project.getMaxLatitude());
+            updatePreparedStatement.setDouble(5, project.getMaxLongitude());
+            updatePreparedStatement.setInt(6, projectId);
             int res = updatePreparedStatement.executeUpdate();
             System.out.println("H2 Database UPDATE through PreparedStatement");
             if (res > 0) {

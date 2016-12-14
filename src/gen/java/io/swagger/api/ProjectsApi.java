@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/projects")
 
@@ -35,7 +36,7 @@ public class ProjectsApi  {
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response deleteProject( @PathParam("projectId") Long projectId,@Context SecurityContext securityContext)
+    public Response deleteProject( @PathParam("projectId") Integer projectId,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.deleteProject(projectId,securityContext);
     }
@@ -43,15 +44,16 @@ public class ProjectsApi  {
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response getProjectById( @PathParam("projectId") Long projectId,@Context SecurityContext securityContext)
+    public Response getProjectById( @PathParam("projectId") Integer projectId,@Context SecurityContext securityContext,
+                                    @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getProjectById(projectId,securityContext);
+        return delegate.getProjectById(projectId,securityContext, uri);
     }
     @PUT
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response updateProject( @PathParam("projectId") Long projectId, Project body,@Context SecurityContext securityContext)
+    public Response updateProject( @PathParam("projectId") Integer projectId, Project body,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.updateProject(projectId,body,securityContext);
     }

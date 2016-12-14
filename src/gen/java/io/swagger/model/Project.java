@@ -1,15 +1,13 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import java.util.ArrayList;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class Project   {
   
-  private Long id = null;
+  private Integer id = null;
   private String projectName = null;
   private Double minLatitude = null;
   private Double minLongitude = null;
@@ -21,10 +19,10 @@ public class Project   {
    **/
   
   @JsonProperty("id")
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
