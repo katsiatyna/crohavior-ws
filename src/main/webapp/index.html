@@ -477,11 +477,12 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
   $("[name='my-checkbox']").bootstrapSwitch();
+  $("[name='my-checkbox']").on('switchChange.bootstrapSwitch', function (event, state) {setIsRealTime(state);});
 </script>
 <script src="plugins/iCheck/icheck.js"></script>
 <script>
     $(document).ready(function(){
-      $('input').iCheck({
+      $("[name='iCheck']").iCheck({
         radioClass: 'iradio_square-blue',
         increaseArea: '20%'
       });

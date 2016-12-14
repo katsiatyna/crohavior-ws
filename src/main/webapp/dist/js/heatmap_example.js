@@ -1,7 +1,9 @@
 var projectId = 789; // {Number} id of the project of logged in user
 var frame = 5;
 var cur_ts = 0;
-var isRealTime = false;
+var isRealTime = true;
+
+
 
 
 //set up elasticsearch client
@@ -87,7 +89,7 @@ var myLatlng = new google.maps.LatLng(39.905, 116.375);
         }
   });
   heatmap.setData(speedData);
-  document.getElementById("ts").innerHTML=cur_ts;
+  document.getElementById("ts").innerHTML='REAL-TIME: ' + cur_ts;
   }
 
 
@@ -95,8 +97,10 @@ var myLatlng = new google.maps.LatLng(39.905, 116.375);
 
 function speedLoop () {           //  create a loop function
      setTimeout(function () {    //  call a 3s setTimeout when the loop is called
-        updateSpeedView();
-        speedLoop();             //  ..  again which will trigger another
+        if(isRealTime){
+          updateSpeedView();
+            speedLoop();
+      }//  ..  again which will trigger another
      }, 3000)
   }
 
@@ -104,87 +108,96 @@ function speedLoop () {           //  create a loop function
 
 
 var api = new heatmapsApi();
-if(isRealTime){
-    speedLoop();
-} else{
 
-    var startTime = 1224726800000; // {Number} Start date/time
+doAnalysis = function(){
+    if(isRealTime){
+        speedLoop();
+    } else{
 
-    var interval = frame;
+        var startTime = 1224726800000; // {Number} Start date/time
 
-    var endTime = 1224726960000; // {Number} End date/time
+        var interval = frame;
 
-    var res = {};
-    var elements = null, elementsNext = null;
+        var endTime = 1224726960000; // {Number} End date/time
 
-    var callback = function(error, data, response) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('API called successfully. Returned data: ' + data);
-        res = data;
-        elements = res['elements'];
-        //set the data for the first time
-        var i = 0, iGlobal = 0;                     //  set your counter to 1
-        var nextRetrieved = false;
-        var nextLink = res['_links']['next'][0]['href'];
-        var currentPage = res['page'];
-        function batchLoop () {           //  create a loop function
-           setTimeout(function () {
-              if(elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
-                    heatmap.setData(elements[i]);
-                    document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000);
-              } else {
-                    document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000) + ': no data';
-              }
-              console.log(i);
-              i++;
-              iGlobal++;
-              if(i >= (elements.length / 2) && (nextRetrieved === false) && nextLink){ //half of the array is gone
-                //read next page
-                console.log('Retrieving next page...');
-                var callbackUri = function(error, dataUri, response){
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        console.log('API NEXT called successfully. Returned data: ' + dataUri);
-                        elementsNext = dataUri['elements'];
-                        if(dataUri['_links']['next'] == undefined || dataUri['_links']['next'] == null){
-                            nextLink = undefined;
+        var res = {};
+        var elements = null, elementsNext = null;
+
+        var callback = function(error, data, response) {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log('API called successfully. Returned data: ' + data);
+            res = data;
+            elements = res['elements'];
+            //set the data for the first time
+            var i = 0, iGlobal = 0;                     //  set your counter to 1
+            var nextRetrieved = false;
+            var nextLink = res['_links']['next'][0]['href'];
+            var currentPage = res['page'];
+            function batchLoop () {           //  create a loop function
+               setTimeout(function () {
+                  if(elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
+                        heatmap.setData(elements[i]);
+                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000);
+                  } else {
+                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000) + ': no data';
+                  }
+                  console.log(i);
+                  i++;
+                  iGlobal++;
+                  if(i >= (elements.length / 2) && (nextRetrieved === false) && nextLink && !isRealTime){ //half of the array is gone
+                    //read next page
+                    console.log('Retrieving next page...');
+                    var callbackUri = function(error, dataUri, response){
+                        if (error) {
+                            console.error(error);
                         } else {
-                            nextLink = dataUri['_links']['next'][0]['href'];
+                            console.log('API NEXT called successfully. Returned data: ' + dataUri);
+                            elementsNext = dataUri['elements'];
+                            if(dataUri['_links']['next'] == undefined || dataUri['_links']['next'] == null){
+                                nextLink = undefined;
+                            } else {
+                                nextLink = dataUri['_links']['next'][0]['href'];
+                            }
+                            currentPage = dataUri['page'];
                         }
-                        currentPage = dataUri['page'];
                     }
-                }
-                api.getHeatmapsByParametersPage(currentPage + 1, projectId, interval, startTime, endTime, callbackUri);
-                nextRetrieved = true;
-              }
-              if (i < elements.length) {            //  if the counter < 10, call the loop function
-                 batchLoop();             //  ..  again which will trigger another
-              }else {
-                if(elementsNext == null){
-                    console.log('Done!');
-                    document.getElementById("ts").innerHTML='DONE!';
-                } else {
-                    //set elements to new array
-                    elements = elementsNext;
-                    //reset elementsNext
-                    elementsNext = null;
-                    //reset the counter
-                    i = 0;
-                    //reset nextRetrieved
-                    nextRetrieved = false;
-                    batchLoop();
-                }
-              }
-           }, (frame - 4)*1000)
-        }
+                    api.getHeatmapsByParametersPage(currentPage + 1, projectId, interval, startTime, endTime, callbackUri);
+                    nextRetrieved = true;
+                  }
+                  if (i < elements.length && !isRealTime) {            //  if the counter < 10, call the loop function
+                     batchLoop();             //  ..  again which will trigger another
+                  }else {
+                    if(elementsNext == null && !isRealTime){
+                        console.log('Done!');
+                        document.getElementById("ts").innerHTML='DONE!';
+                    } else if(!isRealTime) {
+                        //set elements to new array
+                        elements = elementsNext;
+                        //reset elementsNext
+                        elementsNext = null;
+                        //reset the counter
+                        i = 0;
+                        //reset nextRetrieved
+                        nextRetrieved = false;
+                        batchLoop();
+                    }
+                  }
+               }, (frame - 4)*1000)
+            }
+            if(!isRealTime){
+                batchLoop();
+            }
+          }
+        };
+        api.getHeatmapsByParameters(projectId, interval, startTime, endTime, callback);
+    }
 
-        batchLoop();
-      }
-    };
-    api.getHeatmapsByParameters(projectId, interval, startTime, endTime, callback);
-
-
+}
+doAnalysis();
+setIsRealTime = function(state){
+    isRealTime = state;
+    console.log(isRealTime.toString());
+    doAnalysis();
 }
