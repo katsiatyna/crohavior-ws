@@ -24,9 +24,9 @@ public class User   {
    * User Role - User or Admin
    */
   public enum UserRoleEnum {
-    USER("user"),
+    USER("USER"),
 
-        ADMIN("admin");
+        ADMIN("ADMIN");
     private String value;
 
     UserRoleEnum(String value) {

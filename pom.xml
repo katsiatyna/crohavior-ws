@@ -209,6 +209,11 @@
                 </exclusion>
             </exclusions>-->
         </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson-provider</artifactId>
+            <version>2.3.5.Final</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
         <dependency>
             <groupId>org.apache.hbase</groupId>
@@ -256,6 +261,13 @@
             <artifactId>h2</artifactId>
             <version>1.4.193</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-json -->
+        <!--<dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>1.19.3</version>
+        </dependency>-->
+
     </dependencies>
     <properties>
         <joda-version>1.2</joda-version>

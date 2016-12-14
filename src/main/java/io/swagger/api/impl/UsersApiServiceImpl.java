@@ -7,7 +7,7 @@ import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.NotFoundException;
 import io.swagger.api.UsersApi;
 import io.swagger.api.UsersApiService;
-import io.swagger.api.dal.UserDal;
+import io.swagger.api.dal.UserDao;
 import io.swagger.model.User;
 
 import javax.ws.rs.core.Response;
@@ -30,7 +30,7 @@ public class UsersApiServiceImpl extends UsersApiService {
       throws NotFoundException {
       // do some magic!
           try {
-              if(!UserDal.deleteUserByName(username)){
+              if(!UserDao.deleteUserByName(username)){
                   return Response.status(Response.Status.NOT_FOUND).build();
               }
           } catch (SQLException e) {
@@ -44,7 +44,7 @@ public class UsersApiServiceImpl extends UsersApiService {
       throws NotFoundException {
           User user = null;
           try {
-              user = UserDal.getUserByName(username);
+              user = UserDao.getUserByName(username);
               if(user == null){
                   return Response.status(Response.Status.NOT_FOUND).build();
               }
@@ -84,7 +84,33 @@ public class UsersApiServiceImpl extends UsersApiService {
       @Override
       public Response updateUser(String username,User body,SecurityContext securityContext)
       throws NotFoundException {
-      // do some magic!
-      return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+          try {
+              if(body == null){
+                  return Response.status(Response.Status.BAD_REQUEST).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User update object is not provided!")).
+                          build();
+              }
+              User user = UserDao.getUserByName(username);
+              if(body.getUsername() != null && !body.getUsername().equals(username) && user != null){
+                  return Response.status(Response.Status.BAD_REQUEST).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Cannot change username!")).
+                          build();
+              }
+
+
+              if(body.getId() != null && user != null && !user.getId().equals(body.getId())){
+                  return Response.status(Response.Status.BAD_REQUEST).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Cannot change ID!")).
+                          build();
+              }
+              if(!UserDao.updateUserByName(body, username)){
+                  return Response.status(Response.Status.NOT_FOUND).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User does not exist!")).
+                          build();
+              }
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+          return Response.ok().build();
   }
 }

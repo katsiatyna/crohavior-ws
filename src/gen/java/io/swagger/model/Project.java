@@ -3,9 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.EmbeddedResource;
-import io.swagger.model.Link;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
@@ -17,9 +15,7 @@ public class Project   {
   private Double minLongitude = null;
   private Double maxLatitude = null;
   private Double maxLongitude = null;
-  private Long userId = null;
-  private List<Link> links = new ArrayList<Link>();
-  private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
+  private Integer userId = null;
 
   /**
    **/
@@ -91,34 +87,16 @@ public class Project   {
    **/
   
   @JsonProperty("userId")
-  public Long getUserId() {
+  public Integer getUserId() {
     return userId;
   }
-  public void setUserId(Long userId) {
+  public void setUserId(Integer userId) {
     this.userId = userId;
   }
 
   /**
    **/
   
-  @JsonProperty("_links")
-  public List<Link> getLinks() {
-    return links;
-  }
-  public void setLinks(List<Link> links) {
-    this.links = links;
-  }
-
-  /**
-   **/
-  
-  @JsonProperty("_embedded")
-  public List<EmbeddedResource> getEmbedded() {
-    return embedded;
-  }
-  public void setEmbedded(List<EmbeddedResource> embedded) {
-    this.embedded = embedded;
-  }
 
 
   @Override
@@ -136,14 +114,12 @@ public class Project   {
         Objects.equals(minLongitude, project.minLongitude) &&
         Objects.equals(maxLatitude, project.maxLatitude) &&
         Objects.equals(maxLongitude, project.maxLongitude) &&
-        Objects.equals(userId, project.userId) &&
-        Objects.equals(links, project.links) &&
-        Objects.equals(embedded, project.embedded);
+        Objects.equals(userId, project.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, projectName, minLatitude, minLongitude, maxLatitude, maxLongitude, userId, links, embedded);
+    return Objects.hash(id, projectName, minLatitude, minLongitude, maxLatitude, maxLongitude, userId);
   }
 
   @Override
@@ -158,8 +134,6 @@ public class Project   {
     sb.append("    maxLatitude: ").append(toIndentedString(maxLatitude)).append("\n");
     sb.append("    maxLongitude: ").append(toIndentedString(maxLongitude)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    links: ").append(toIndentedString(links)).append("\n");
-    sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
     sb.append("}");
     return sb.toString();
   }

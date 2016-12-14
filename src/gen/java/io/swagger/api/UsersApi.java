@@ -67,7 +67,7 @@ public class UsersApi  {
     }
     @PUT
     @Path("/{username}")
-    
+    @Consumes({"application/json"})
     @Produces({ "application/hal+json" })
     public Response updateUser( @PathParam("username") String username, User body,@Context SecurityContext securityContext)
     throws NotFoundException {
