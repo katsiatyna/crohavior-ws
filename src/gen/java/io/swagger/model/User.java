@@ -3,23 +3,22 @@ package io.swagger.model;
 import java.util.Objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.model.EmbeddedResource;
-import io.swagger.model.Link;
-import io.swagger.model.Project;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class User   {
   
-  private Long id = null;
+  private Integer id = null;
   private String username = null;
   private String firstName = null;
   private String lastName = null;
   private String email = null;
   private String password = null;
   private String phone = null;
+  private String apiKey = null;
+
 
   /**
    * User Role - User or Admin
@@ -42,18 +41,15 @@ public class User   {
   }
 
   private UserRoleEnum userRole = null;
-  private List<Project> projects = new ArrayList<Project>();
-  private List<Link> links = new ArrayList<Link>();
-  private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
 
   /**
    **/
   
   @JsonProperty("id")
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -138,36 +134,15 @@ public class User   {
   /**
    **/
   
-  @JsonProperty("projects")
-  public List<Project> getProjects() {
-    return projects;
-  }
-  public void setProjects(List<Project> projects) {
-    this.projects = projects;
+
+  @JsonProperty("api_key")
+  public String getApiKey() {
+    return apiKey;
   }
 
-  /**
-   **/
-  
-  @JsonProperty("_links")
-  public List<Link> getLinks() {
-    return links;
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
   }
-  public void setLinks(List<Link> links) {
-    this.links = links;
-  }
-
-  /**
-   **/
-  
-  @JsonProperty("_embedded")
-  public List<EmbeddedResource> getEmbedded() {
-    return embedded;
-  }
-  public void setEmbedded(List<EmbeddedResource> embedded) {
-    this.embedded = embedded;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -185,15 +160,12 @@ public class User   {
         Objects.equals(email, user.email) &&
         Objects.equals(password, user.password) &&
         Objects.equals(phone, user.phone) &&
-        Objects.equals(userRole, user.userRole) &&
-        Objects.equals(projects, user.projects) &&
-        Objects.equals(links, user.links) &&
-        Objects.equals(embedded, user.embedded);
+        Objects.equals(userRole, user.userRole);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, firstName, lastName, email, password, phone, userRole, projects, links, embedded);
+    return Objects.hash(id, username, firstName, lastName, email, password, phone, userRole);
   }
 
   @Override
@@ -209,9 +181,6 @@ public class User   {
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    userRole: ").append(toIndentedString(userRole)).append("\n");
-    sb.append("    projects: ").append(toIndentedString(projects)).append("\n");
-    sb.append("    links: ").append(toIndentedString(links)).append("\n");
-    sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
     sb.append("}");
     return sb.toString();
   }

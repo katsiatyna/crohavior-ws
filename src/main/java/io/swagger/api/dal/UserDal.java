@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import io.swagger.model.User;
+import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.tools.DeleteDbFiles;
 
 
@@ -22,6 +23,13 @@ public class UserDal {
     private static final String DB_CONNECTION = "jdbc:h2:~/test";
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
+    private static final String DROP_QUERY = "DROP TABLE IF EXISTS CROHAVIOR_USERS";
+    private static final String[] INSERT_QUERY = {"INSERT INTO CROHAVIOR_USERS  VALUES(1, 'AKMA', 'Anas', 'Al Bassit', '623179a7fd3bcdc0428d53f09292641b', 'noway@example.com', '12345678', 'cbb11ed87dc8a95d81400c7f33c7c171', 'ADMIN')",
+                                                    "INSERT INTO CROHAVIOR_USERS  VALUES(2, 'CROHAVIOR', 'Ward', 'Taya', '91a47ceb597e7e6f65335dbb063c26c2', 'ward@example.com', '87654321', '91a47ceb597e7e6f65335dbb063c26c2', 'USER')"};
+    private static final String CREATE_QUERY = "CREATE TABLE CROHAVIOR_USERS (ID  INT PRIMARY KEY, username VARCHAR(255), firstName VARCHAR(255),lastName VARCHAR(255), password VARCHAR(255), email VARCHAR(255), phone VARCHAR(255), api_key VARCHAR(255), user_role VARCHAR(255))";
+
+    private static JdbcConnectionPool cp;
+
 
     public static void main(String[] args) throws Exception {
         try {
@@ -30,35 +38,65 @@ public class UserDal {
             insertWithStatement();
             DeleteDbFiles.execute("~", "test", true);
             insertWithPreparedStatement();*/
-           getUserByName("AKMA");
+           initTable();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+
+
+    public static void initTable() throws SQLException {
+        Connection connection = getDBConnection();
+        Statement stmt = null;
+        try {
+            connection.setAutoCommit(false);
+            stmt = connection.createStatement();
+            stmt.execute(DROP_QUERY);
+            stmt.execute(CREATE_QUERY);
+            for(String query: INSERT_QUERY){
+                stmt.execute(query);
+            }
+            connection.commit();
+            System.out.println("Table created successfully");
+        } catch (SQLException e) {
+            System.out.println("Exception Message " + e.getLocalizedMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
+
+    }
+
     public static User getUserByName(String username) throws SQLException {
         Connection connection = getDBConnection();
         PreparedStatement selectPreparedStatement = null;
         Statement stmt = null;
-        String createQuery = "CREATE TABLE CROHAVIOR_USERS (ID  INT PRIMARY KEY, username VARCHAR(255), firstName VARCHAR(255),lastName VARCHAR(255), password VARCHAR(255), email VARCHAR(255), phone VARCHAR(255), api_key VARCHAR(255));";
         String SelectQuery = "select * from CROHAVIOR_USERS where username=?";
-        String dropQuery = "DROP TABLE IF EXISTS CROHAVIOR_USERS";
-        String insertQuery = "INSERT INTO CROHAVIOR_USERS  VALUES(1, 'AKMA', 'Anas', 'Al Bassit', '623179a7fd3bcdc0428d53f09292641b', 'noway@example.com', '12345678', 'cbb11ed87dc8a95d81400c7f33c7c171')";
+        User user = null;
         try {
             connection.setAutoCommit(false);
-            stmt = connection.createStatement();
-            stmt.execute(dropQuery);
-            stmt.execute(createQuery);
-            stmt.execute(insertQuery);
 
             selectPreparedStatement = connection.prepareStatement(SelectQuery);
             selectPreparedStatement.setString(1, username);
             ResultSet rs = selectPreparedStatement.executeQuery();
             System.out.println("H2 Database select through PreparedStatement");
-            while (rs.next()) {
+            if (rs.next()) {
+                user = new User();
                 System.out.println("Id "+rs.getInt("id")+" Name "+rs.getString("username"));
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setPassword("******");
+                user.setApiKey("******");
+                user.setUserRole(User.UserRoleEnum.valueOf(rs.getString("user_role")));
             }
+            System.out.println(user.toString());
             selectPreparedStatement.close();
 
             connection.commit();
@@ -69,8 +107,37 @@ public class UserDal {
         } finally {
             connection.close();
         }
-        return null;
+        return user;
     }
+
+    public static boolean deleteUserByName(String username) throws SQLException {
+        Connection connection = getDBConnection();
+        PreparedStatement deletePreparedStatement = null;
+        String SelectQuery = "delete from CROHAVIOR_USERS where username=?";
+        try {
+            connection.setAutoCommit(false);
+
+            deletePreparedStatement = connection.prepareStatement(SelectQuery);
+            deletePreparedStatement.setString(1, username);
+            int res = deletePreparedStatement.executeUpdate();
+            System.out.println("H2 Database DELETE through PreparedStatement");
+            if (res > 0) {
+                System.out.println(res);
+            }
+            deletePreparedStatement.close();
+
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Exception Message " + e.getLocalizedMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
+        return true;
+    }
+
+
 
     // H2 SQL Prepared Statement Example
     private static void insertWithPreparedStatement() throws SQLException {
@@ -149,8 +216,10 @@ public class UserDal {
             System.out.println(e.getMessage());
         }
         try {
-            dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER,
-                    DB_PASSWORD);
+            if(cp == null){
+                cp = JdbcConnectionPool.create(DB_CONNECTION, DB_USER, DB_PASSWORD);
+            }
+            dbConnection = cp.getConnection();
             return dbConnection;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/users")
 
@@ -44,9 +45,9 @@ public class UsersApi  {
     @Path("/{username}")
     
     @Produces({ "application/hal+json" })
-    public Response getUserByName( @PathParam("username") String username,@Context SecurityContext securityContext)
+    public Response getUserByName( @PathParam("username") String username,@Context SecurityContext securityContext, @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getUserByName(username,securityContext);
+        return delegate.getUserByName(username,securityContext, uri);
     }
     @GET
     @Path("/login")
