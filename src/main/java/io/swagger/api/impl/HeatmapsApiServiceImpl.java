@@ -36,7 +36,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                                             Long pageNmb,
                                             SecurityContext securityContext, UriInfo uri)
             throws NotFoundException {
-        System.out.println(FluentIterable.class.getProtectionDomain().getCodeSource().getLocation().toString());
+
         HeatmapGridCollection heatmapGridCollection = new HeatmapGridCollection();
         List<HeatmapGrid> elements = new ArrayList<>();
         List<String> values = new ArrayList<>();

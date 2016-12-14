@@ -23,14 +23,15 @@ import javax.ws.rs.*;
 public class UsersApi  {
    private final UsersApiService delegate = UsersApiServiceFactory.getUsersApi();
 
-    @POST
+    /*@POST
     
     
     @Produces({ "application/hal+json" })
     public Response createUser( User body,@Context SecurityContext securityContext)
     throws NotFoundException {
         return delegate.createUser(body,securityContext);
-    }
+    }*/
+
     @DELETE
     @Path("/{username}")
     
