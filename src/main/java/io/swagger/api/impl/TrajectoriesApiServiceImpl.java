@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import io.swagger.api.NotFoundException;
 import org.codehaus.jackson.JsonParser;
@@ -41,6 +39,11 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
+            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, batchId, batchId);
+            System.out.println(values);
+            if(values == null || values.size() == 0){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Batch does not exist OR the parameter is wrong!")).build();
+            }
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             String[] idSplit = batchId.split("e");
             System.out.println("Split 1: " + idSplit);
@@ -50,8 +53,6 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
             Date endTime = sdf.parse(idSplit[1]);
             trajectoryGrid.setStartTimestamp(startTime.getTime());
             trajectoryGrid.setEndTimestamp(endTime.getTime());
-            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, batchId, batchId);
-            System.out.println(values);
             TrajectoryGrid obj = mapper.readValue(values.get(0), TrajectoryGrid.class);
             trajectoryGrid.setTrajectories(obj.getTrajectories());
             trajectoryGrid.setNbTrajectories(obj.getTrajectories().size());
@@ -66,15 +67,15 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps5s", uri.getBaseUriBuilder().
                     path(HeatmapsApi.class).
                     path(HeatmapsApi.class, "getHeatmapsByParameters").
-                    queryParam("startTime", startTime).
-                    queryParam("endTime", endTime).
+                    queryParam("startTime", startTime.getTime()).
+                    queryParam("endTime", endTime.getTime()).
                     queryParam("interval", 5).
                     build(projectId));
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps10s", uri.getBaseUriBuilder().
                     path(HeatmapsApi.class).
                     path(HeatmapsApi.class, "getHeatmapsByParameters").
-                    queryParam("startTime", startTime).
-                    queryParam("endTime", endTime).
+                    queryParam("startTime", startTime.getTime()).
+                    queryParam("endTime", endTime.getTime()).
                     queryParam("interval", 10).
                     build(projectId));
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps15s", uri.getBaseUriBuilder().
@@ -89,6 +90,36 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return Response.serverError().build();
+    }
+
+    @Override
+    public Response getTrajectoriesBatches(Integer projectId, SecurityContext securityContext, UriInfo uri) throws NotFoundException {
+        List<String> values = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        try {
+            values = HBaseUtils.getAllRowIDs(TABLE_NAME);
+            System.out.println(values);
+            Batches batches  = new Batches();
+            batches.setBatches(values);
+            RepresentationFactory factory = new StandardRepresentationFactory();
+            Representation trajectoryGridRepr = factory.newRepresentation(uri.getBaseUriBuilder().
+                    path(TrajectoriesApi.class).
+                    path(TrajectoriesApi.class, "getTrajectoriesBatches").
+                    build(projectId)).withBean(batches);
+            for(String val: values) {
+                trajectoryGridRepr = trajectoryGridRepr.withLink("trajectories", uri.getBaseUriBuilder().
+                        path(TrajectoriesApi.class).
+                        path(TrajectoriesApi.class, "getTrajectoriesByParameters").
+                        queryParam("batchId", val).
+                        build(projectId));
+            }
+
+            return Response.ok().entity(trajectoryGridRepr.toString(RepresentationFactory.HAL_JSON)).build();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return Response.serverError().build();
