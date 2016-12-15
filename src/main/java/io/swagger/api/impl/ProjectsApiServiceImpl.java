@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.swagger.api.*;
 import io.swagger.api.dal.ProjectDao;
+import io.swagger.api.dal.UserDao;
 import io.swagger.model.*;
 
 
@@ -67,31 +68,37 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
       public Response getProjectById(Integer projectId, SecurityContext securityContext, UriInfo uri)
       throws NotFoundException {
           Project project = null;
+          User user = null;
           try {
               project = ProjectDao.getProjectById(projectId);
               if(project == null){
                   return Response.status(Response.Status.NOT_FOUND).build();
               }
+              user = UserDao.getUserById(project.getUserId());
           } catch (SQLException e) {
               e.printStackTrace();
               return Response.serverError().build();
           }
-          Representation ProjectRepr = factory.newRepresentation(uri.getBaseUriBuilder().
+          Representation projectRepr = factory.newRepresentation(uri.getBaseUriBuilder().
                   path(ProjectsApi.class).
                   path(ProjectsApi.class, "getProjectById").
                   build(projectId)).withBean(project);
-          ProjectRepr = ProjectRepr.withLink("PUT", uri.getBaseUriBuilder().
+          projectRepr = projectRepr.withLink("PUT", uri.getBaseUriBuilder().
                   path(ProjectsApi.class).
                   path(ProjectsApi.class, "updateProject").
                   build(projectId).toString(), "update", "Update Project", "", "");
 
-          ProjectRepr = ProjectRepr.withLink("DELETE", uri.getBaseUriBuilder().
+          projectRepr = projectRepr.withLink("DELETE", uri.getBaseUriBuilder().
                   path(ProjectsApi.class).
                   path(ProjectsApi.class, "deleteProject").
 
                   build(projectId).toString(), "delete", "Delete Project", "", "");
+          projectRepr = projectRepr.withRepresentation("user", factory.newRepresentation(uri.getBaseUriBuilder().
+                  path(UsersApi.class).
+                  path(UsersApi.class, "getUserByName").
+                  build(user.getUsername())).withBean(user));
 
-          return Response.ok().entity(ProjectRepr.toString(RepresentationFactory.HAL_JSON)).build();
+          return Response.ok().entity(projectRepr.toString(RepresentationFactory.HAL_JSON)).build();
   }
       @Override
       public Response updateProject(Integer projectId,Project body,SecurityContext securityContext)

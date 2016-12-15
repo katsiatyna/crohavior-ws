@@ -140,25 +140,20 @@ public class ProjectDao {
         PreparedStatement updatePreparedStatement = null;
         String updateQuery = "update CROHAVIOR_PROJECTS set projectName=?, minLatitude=?, minLongitude=?, maxLatitude=?, maxLongitude=? where id=?";
         boolean updated = false;
+        Project oldProject = getProjectById(projectId);
+        if(oldProject == null){
+            return updated;
+        }
         try {
             connection.setAutoCommit(false);
 
             updatePreparedStatement = connection.prepareStatement(updateQuery);
-            if(project.getProjectName() != null) {
-                updatePreparedStatement.setString(1, project.getProjectName());
-            }
-            if(project.getMinLatitude() != null) {
-                updatePreparedStatement.setDouble(2, project.getMinLatitude());
-            }
-            if(project.getMinLongitude() != null) {
-                updatePreparedStatement.setDouble(3, project.getMinLongitude());
-            }
-            if(project.getMaxLatitude() != null) {
-                updatePreparedStatement.setDouble(4, project.getMaxLatitude());
-            }
-            if(project.getMaxLongitude() != null) {
-                updatePreparedStatement.setDouble(5, project.getMaxLongitude());
-            }
+
+            updatePreparedStatement.setString(1, (project.getProjectName() == null) ? oldProject.getProjectName() : project.getProjectName());
+            updatePreparedStatement.setDouble(2, (project.getMinLatitude() == null) ? oldProject.getMinLatitude() : project.getMinLatitude());
+            updatePreparedStatement.setDouble(3, (project.getMinLongitude() == null)? oldProject.getMinLongitude() : project.getMinLongitude());
+            updatePreparedStatement.setDouble(4, (project.getMaxLatitude() == null) ? oldProject.getMaxLatitude() : project.getMaxLatitude());
+            updatePreparedStatement.setDouble(5, (project.getMaxLongitude() == null) ? oldProject.getMaxLongitude() : project.getMaxLongitude());
             updatePreparedStatement.setInt(6, projectId);
             int res = updatePreparedStatement.executeUpdate();
             System.out.println("H2 Database UPDATE through PreparedStatement");

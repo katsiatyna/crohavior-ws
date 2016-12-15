@@ -151,19 +151,25 @@ public class UserDao {
     public static boolean updateUserByName(User user, String username) throws SQLException {
         Connection connection = ConnectionUtil.getDBConnection();
         PreparedStatement updatePreparedStatement = null;
-        String updateQuery = "update CROHAVIOR_USERS set firstName=?, lastName=?, email=?, password=?, phone=?, user_role=?, api_key=? where username=?";
         boolean updated = false;
+        User oldUser = getUserByName(username);
+        if(oldUser == null){
+            return updated;
+        }
+        String updateQuery = "update CROHAVIOR_USERS set firstName=?, lastName=?, email=?, password=?, phone=?, user_role=?, api_key=? where username=?";
+
         try {
             connection.setAutoCommit(false);
 
             updatePreparedStatement = connection.prepareStatement(updateQuery);
-            updatePreparedStatement.setString(1, user.getFirstName());
-            updatePreparedStatement.setString(2, user.getLastName());
-            updatePreparedStatement.setString(3, user.getEmail());
-            updatePreparedStatement.setString(4, user.getPassword());
-            updatePreparedStatement.setString(5, user.getPhone());
-            updatePreparedStatement.setString(6, user.getUserRole().toString());
-            updatePreparedStatement.setString(7, user.getApiKey());
+            updatePreparedStatement.setString(1, (user.getFirstName() == null) ? oldUser.getFirstName() : user.getFirstName());
+
+            updatePreparedStatement.setString(2, (user.getLastName() == null) ? oldUser.getLastName() : user.getLastName());
+            updatePreparedStatement.setString(3, (user.getEmail() == null) ? oldUser.getEmail() : user.getEmail());
+            updatePreparedStatement.setString(4, (user.getPassword() == null) ? oldUser.getPassword() : user.getPassword());
+            updatePreparedStatement.setString(5, (user.getPhone() == null) ? oldUser.getPhone() : user.getPhone());
+            updatePreparedStatement.setString(6, (user.getUserRole() == null) ? oldUser.getUserRole().toString() : user.getUserRole().toString());
+            updatePreparedStatement.setString(7, (user.getApiKey() == null) ? oldUser.getApiKey() : user.getApiKey());
             updatePreparedStatement.setString(8, username);
             int res = updatePreparedStatement.executeUpdate();
             System.out.println("H2 Database UPDATE through PreparedStatement");
@@ -185,4 +191,43 @@ public class UserDao {
     }
 
 
+    public static User getUserById(Integer userId) throws SQLException {
+        Connection connection = ConnectionUtil.getDBConnection();
+        PreparedStatement selectPreparedStatement = null;
+        Statement stmt = null;
+        String SelectQuery = "select * from CROHAVIOR_USERS where id=?";
+        User user = null;
+        try {
+            connection.setAutoCommit(false);
+
+            selectPreparedStatement = connection.prepareStatement(SelectQuery);
+            selectPreparedStatement.setInt(1, userId);
+            ResultSet rs = selectPreparedStatement.executeQuery();
+            System.out.println("H2 Database select through PreparedStatement");
+            if (rs.next()) {
+                user = new User();
+                System.out.println("Id "+rs.getInt("id")+" Name "+rs.getString("username"));
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setFirstName(rs.getString("firstName"));
+                user.setLastName(rs.getString("lastName"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setPassword("******");
+                user.setApiKey("******");
+                user.setUserRole(User.UserRoleEnum.valueOf(rs.getString("user_role")));
+            }
+            //System.out.println(user.toString());
+            selectPreparedStatement.close();
+
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Exception Message " + e.getLocalizedMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
+        return user;
+    }
 }

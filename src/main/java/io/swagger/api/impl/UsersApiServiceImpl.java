@@ -68,8 +68,12 @@ public class UsersApiServiceImpl extends UsersApiService {
                   path(UsersApi.class, "deleteUser").
 
                   build(username).toString(), "delete", "Delete User", "", "");
-
-          userRepr = userRepr.withBeanBasedRepresentation("projects", "http://localhost/", factory.newRepresentation().withBean(projects));
+          for(Project project: projects) {
+              userRepr = userRepr.withRepresentation("projects", factory.newRepresentation(uri.getBaseUriBuilder().
+                      path(ProjectsApi.class).
+                      path(ProjectsApi.class, "getProjectById").
+                      build(project.getId())).withBean(project));
+          }
 
           return Response.ok().entity(userRepr.toString(RepresentationFactory.HAL_JSON)).build();
   }
