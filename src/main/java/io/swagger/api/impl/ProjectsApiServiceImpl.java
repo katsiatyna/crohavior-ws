@@ -28,8 +28,27 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
       @Override
       public Response createProject(Project body,SecurityContext securityContext)
       throws NotFoundException {
-      // do some magic!
-      return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+          try{
+              if(body == null){
+                  return Response.status(Response.Status.BAD_REQUEST).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User update object is not provided!")).
+                          build();
+              }
+              if(body.getId() == null || body.getProjectName() == null || body.getMaxLatitude() == null
+                      || body.getMaxLongitude() == null || body.getMinLatitude() == null || body.getMinLongitude() == null
+                      || body.getUserId() == null){
+                  return Response.status(Response.Status.BAD_REQUEST).
+                          entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "ALL fields should be set!")).
+                          build();
+              }
+              String message = ProjectDao.createProject(body);
+              if(!message.equals("ok")){
+                  return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, message )).build();
+              }
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+          return Response.ok().build();
   }
       @Override
       public Response deleteProject(Integer projectId,SecurityContext securityContext)

@@ -113,9 +113,19 @@ public class UserDao {
     public static boolean deleteUserByName(String username) throws SQLException {
         Connection connection = ConnectionUtil.getDBConnection();
         PreparedStatement deletePreparedStatement = null;
+        Integer userId = null;
+        String deleteProjectsQuery = "delete from CROHAVIOR_PROJECTS where userId=?";
         String deleteQuery = "delete from CROHAVIOR_USERS where username=?";
         boolean result = false;
         try {
+            User user = getUserByName(username);
+            if(user != null){
+                userId = user.getId();
+                deletePreparedStatement = connection.prepareStatement(deleteProjectsQuery);
+                deletePreparedStatement.setInt(1, userId);
+                int resProjects = deletePreparedStatement.executeUpdate();
+
+            }
             connection.setAutoCommit(false);
 
             deletePreparedStatement = connection.prepareStatement(deleteQuery);

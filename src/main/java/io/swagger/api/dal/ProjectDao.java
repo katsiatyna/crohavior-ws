@@ -142,11 +142,21 @@ public class ProjectDao {
             connection.setAutoCommit(false);
 
             updatePreparedStatement = connection.prepareStatement(updateQuery);
-            updatePreparedStatement.setString(1, project.getProjectName());
-            updatePreparedStatement.setDouble(2, project.getMinLatitude());
-            updatePreparedStatement.setDouble(3, project.getMinLongitude());
-            updatePreparedStatement.setDouble(4, project.getMaxLatitude());
-            updatePreparedStatement.setDouble(5, project.getMaxLongitude());
+            if(project.getProjectName() != null) {
+                updatePreparedStatement.setString(1, project.getProjectName());
+            }
+            if(project.getMinLatitude() != null) {
+                updatePreparedStatement.setDouble(2, project.getMinLatitude());
+            }
+            if(project.getMinLongitude() != null) {
+                updatePreparedStatement.setDouble(3, project.getMinLongitude());
+            }
+            if(project.getMaxLatitude() != null) {
+                updatePreparedStatement.setDouble(4, project.getMaxLatitude());
+            }
+            if(project.getMaxLongitude() != null) {
+                updatePreparedStatement.setDouble(5, project.getMaxLongitude());
+            }
             updatePreparedStatement.setInt(6, projectId);
             int res = updatePreparedStatement.executeUpdate();
             System.out.println("H2 Database UPDATE through PreparedStatement");
@@ -165,6 +175,44 @@ public class ProjectDao {
             connection.close();
         }
         return updated;
+    }
+
+    public static String createProject(Project project) throws SQLException {
+        Connection connection = ConnectionUtil.getDBConnection();
+        PreparedStatement updatePreparedStatement = null;
+        String updateQuery = "insert into CROHAVIOR_PROJECTS VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String message = "ok";
+        try {
+            connection.setAutoCommit(false);
+
+            updatePreparedStatement = connection.prepareStatement(updateQuery);
+            updatePreparedStatement.setInt(1, project.getId());
+            updatePreparedStatement.setString(2, project.getProjectName());
+            updatePreparedStatement.setDouble(3, project.getMinLatitude());
+            updatePreparedStatement.setDouble(4, project.getMinLongitude());
+            updatePreparedStatement.setDouble(5, project.getMaxLatitude());
+            updatePreparedStatement.setDouble(6, project.getMaxLongitude());
+            updatePreparedStatement.setInt(7, project.getUserId());
+            int res = updatePreparedStatement.executeUpdate();
+            System.out.println("H2 Database UPDATE through PreparedStatement");
+            if (res > 0) {
+                System.out.println(res);
+            } else {
+                message = "Unknown error";
+            }
+            updatePreparedStatement.close();
+
+            connection.commit();
+            return message;
+        } catch (SQLException e) {
+            System.out.println("Exception Message " + e.getLocalizedMessage());
+            return e.getLocalizedMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getLocalizedMessage();
+        } finally {
+            connection.close();
+        }
     }
 
 
