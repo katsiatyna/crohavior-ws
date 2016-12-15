@@ -184,7 +184,7 @@ doAnalysis = function(){
                         batchLoop();
                     }
                   }
-               }, (frame - 4)*1000)
+               }, (frame)*1000)
             }
             if(!isRealTime){
                 batchLoop();
