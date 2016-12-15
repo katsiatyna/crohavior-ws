@@ -10,6 +10,8 @@ import io.swagger.models.auth.In;
 import org.h2.jdbcx.JdbcConnectionPool;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 // H2 Database Example
@@ -216,4 +218,41 @@ public class ProjectDao {
     }
 
 
+    public static List<Project> getProjectsByUserId(Integer userId) throws SQLException {
+        List<Project> projects = new ArrayList<>();
+        Connection connection = ConnectionUtil.getDBConnection();
+        PreparedStatement selectPreparedStatement = null;
+        String SelectQuery = "select * from CROHAVIOR_PROJECTS where userId=?";
+        try {
+            connection.setAutoCommit(false);
+
+            selectPreparedStatement = connection.prepareStatement(SelectQuery);
+            selectPreparedStatement.setInt(1, userId);
+            ResultSet rs = selectPreparedStatement.executeQuery();
+            System.out.println("H2 Database select through PreparedStatement");
+            while (rs.next()) {
+                Project project = new Project();
+                System.out.println("Id "+rs.getInt("id")+" Name "+rs.getString("projectname"));
+                project.setId(rs.getInt("id"));
+                project.setProjectName(rs.getString("projectName"));
+                project.setMinLatitude(rs.getDouble("minLatitude"));
+                project.setMinLongitude(rs.getDouble("minLongitude"));
+                project.setMaxLatitude(rs.getDouble("maxLatitude"));
+                project.setMaxLongitude(rs.getDouble("maxLongitude"));
+                project.setUserId(rs.getInt("userId"));
+                projects.add(project);
+            }
+            //System.out.println(user.toString());
+            selectPreparedStatement.close();
+
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("Exception Message " + e.getLocalizedMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
+        return projects;
+    }
 }

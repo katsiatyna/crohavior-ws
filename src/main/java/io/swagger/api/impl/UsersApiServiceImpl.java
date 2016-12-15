@@ -3,17 +3,17 @@ package io.swagger.api.impl;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import io.swagger.api.ApiResponseMessage;
-import io.swagger.api.NotFoundException;
-import io.swagger.api.UsersApi;
-import io.swagger.api.UsersApiService;
+import io.swagger.api.*;
+import io.swagger.api.dal.ProjectDao;
 import io.swagger.api.dal.UserDao;
+import io.swagger.model.Project;
 import io.swagger.model.User;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.sql.SQLException;
+import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class UsersApiServiceImpl extends UsersApiService {
@@ -43,11 +43,13 @@ public class UsersApiServiceImpl extends UsersApiService {
       public Response getUserByName(String username,SecurityContext securityContext, UriInfo uri)
       throws NotFoundException {
           User user = null;
+          List<Project> projects = null;
           try {
               user = UserDao.getUserByName(username);
               if(user == null){
                   return Response.status(Response.Status.NOT_FOUND).build();
               }
+              projects = ProjectDao.getProjectsByUserId(user.getId());
           } catch (SQLException e) {
               e.printStackTrace();
               return Response.serverError().build();
@@ -66,6 +68,8 @@ public class UsersApiServiceImpl extends UsersApiService {
                   path(UsersApi.class, "deleteUser").
 
                   build(username).toString(), "delete", "Delete User", "", "");
+
+          userRepr = userRepr.withBeanBasedRepresentation("projects", "http://localhost/", factory.newRepresentation().withBean(projects));
 
           return Response.ok().entity(userRepr.toString(RepresentationFactory.HAL_JSON)).build();
   }
