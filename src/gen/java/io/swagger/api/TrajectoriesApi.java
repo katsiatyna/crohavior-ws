@@ -29,10 +29,10 @@ public class TrajectoriesApi  {
     
     @Produces({ "application/hal+json" })
     public Response getTrajectoriesByParameters(@PathParam("projectId") Integer projectId,
-                                                @QueryParam("batchId") String batchId, @Context SecurityContext securityContext,
+                                                @QueryParam("batchId") String batchId, @QueryParam("api_key") String apiKey,
                                                 @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getTrajectoriesByParameters(projectId, batchId,securityContext, uri);
+        return delegate.getTrajectoriesByParameters(projectId, batchId,apiKey, uri);
     }
 
     @GET
@@ -40,9 +40,9 @@ public class TrajectoriesApi  {
 
     @Produces({ "application/hal+json" })
     public Response getTrajectoriesBatches(@PathParam("projectId") Integer projectId,
-                                                @Context SecurityContext securityContext,
+                                                @QueryParam("api_key") String apiKey,
                                                 @Context UriInfo uri)
             throws NotFoundException {
-        return delegate.getTrajectoriesBatches(projectId, securityContext, uri);
+        return delegate.getTrajectoriesBatches(projectId, apiKey, uri);
     }
 }

@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.swagger.api.*;
 import io.swagger.api.dal.ProjectDao;
 import io.swagger.api.dal.UserDao;
+import io.swagger.api.dal.Utils;
 import io.swagger.model.*;
 
 
@@ -29,9 +30,19 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
     private RepresentationFactory factory = new StandardRepresentationFactory();
 
     @Override
-    public Response createProject(Project body, SecurityContext securityContext)
+    public Response createProject(Project body, String apiKey)
             throws NotFoundException {
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 2){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "You should an ADMIN to perform this operation!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (body == null) {
                 return Response.status(Response.Status.BAD_REQUEST).
                         entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User update object is not provided!")).
@@ -55,9 +66,19 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
     }
 
     @Override
-    public Response deleteProject(Integer projectId, SecurityContext securityContext)
+    public Response deleteProject(Integer projectId, String apiKey)
             throws NotFoundException {
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 2){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "You should an ADMIN to perform this operation!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (!ProjectDao.deleteProjectById(projectId)) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
@@ -69,11 +90,18 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
     }
 
     @Override
-    public Response getProjectById(Integer projectId, SecurityContext securityContext, UriInfo uri)
+    public Response getProjectById(Integer projectId, String apiKey, UriInfo uri)
             throws NotFoundException {
         Project project = null;
         User user = null;
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             project = ProjectDao.getProjectById(projectId);
             if (project == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
@@ -106,9 +134,19 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
     }
 
     @Override
-    public Response updateProject(Integer projectId, Project body, SecurityContext securityContext)
+    public Response updateProject(Integer projectId, Project body, String apiKey)
             throws NotFoundException {
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 2){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "You should an ADMIN to perform this operation!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (body == null) {
                 return Response.status(Response.Status.BAD_REQUEST).
                         entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User update object is not provided!")).

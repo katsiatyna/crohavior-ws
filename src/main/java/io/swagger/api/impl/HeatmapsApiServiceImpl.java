@@ -9,15 +9,18 @@ import edu.upc.bip.batch.HBaseUtils;
 import io.swagger.api.*;
 
 
+import io.swagger.api.dal.Utils;
 import io.swagger.model.HeatmapGrid;
 import io.swagger.model.HeatmapGridCollection;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import io.swagger.api.NotFoundException;
+import io.swagger.model.User;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -35,7 +38,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
     @Override
     public Response getHeatmapsByParameters(Integer projectId, Long startTime, Long endTime, Integer interval,
                                             Long pageNmb,
-                                            SecurityContext securityContext, UriInfo uri)
+                                            String apiKey, UriInfo uri)
             throws NotFoundException {
 
         HeatmapGridCollection heatmapGridCollection = new HeatmapGridCollection();
@@ -47,6 +50,13 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
         heatmapGridCollection.setEndTime(endTime);
         heatmapGridCollection.setIntervalSec(interval);
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (pageNmb == null) {
                 pageNmb = 1l;
             }
@@ -119,6 +129,8 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             }
             return Response.ok().entity(heatmapCollectionRepr.toString(RepresentationFactory.HAL_JSON)).build();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return Response.serverError().build();

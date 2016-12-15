@@ -1,13 +1,16 @@
 package io.swagger.api.impl;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import io.swagger.api.*;
 import io.swagger.api.dal.ProjectDao;
 import io.swagger.api.dal.UserDao;
+import io.swagger.api.dal.Utils;
 import io.swagger.model.Project;
 import io.swagger.model.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
@@ -19,18 +22,22 @@ import java.util.List;
 public class UsersApiServiceImpl extends UsersApiService {
     private RepresentationFactory factory = new StandardRepresentationFactory();
 
-    @Override
-    public Response createUser(User body, SecurityContext securityContext)
-            throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
-    }
 
     @Override
-    public Response deleteUser(String username, SecurityContext securityContext)
+    public Response deleteUser(String username, String apiKey)
             throws NotFoundException {
         // do some magic!
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 2){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "You should an ADMIN to perform this operation!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (!UserDao.deleteUserByName(username)) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
@@ -41,12 +48,21 @@ public class UsersApiServiceImpl extends UsersApiService {
         return Response.ok().build();
     }
 
+
+
     @Override
-    public Response getUserByName(String username, SecurityContext securityContext, UriInfo uri)
+    public Response getUserByName(String username, String apiKey, UriInfo uri)
             throws NotFoundException {
         User user = null;
         List<Project> projects = null;
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.USER);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             user = UserDao.getUserByName(username);
             if (user == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
@@ -81,23 +97,19 @@ public class UsersApiServiceImpl extends UsersApiService {
     }
 
     @Override
-    public Response loginUser(String username, String password, SecurityContext securityContext)
-            throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
-    }
-
-    @Override
-    public Response logoutUser(SecurityContext securityContext)
-            throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
-    }
-
-    @Override
-    public Response updateUser(String username, User body, SecurityContext securityContext)
+    public Response updateUser(String username, User body, String apiKey)
             throws NotFoundException {
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 2){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "You should an ADMIN to perform this operation!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             if (body == null) {
                 return Response.status(Response.Status.BAD_REQUEST).
                         entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User update object is not provided!")).

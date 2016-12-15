@@ -5,12 +5,14 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import edu.upc.bip.batch.HBaseUtils;
 import io.swagger.api.*;
+import io.swagger.api.dal.Utils;
 import io.swagger.model.*;
 
 
 import io.swagger.model.TrajectoryGridCollection;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +34,20 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
     public static final String TABLE_NAME = "datamining";
 
     @Override
-    public Response getTrajectoriesByParameters(Integer projectId, String batchId, SecurityContext securityContext, UriInfo uri)
+    public Response getTrajectoriesByParameters(Integer projectId, String batchId, String apiKey, UriInfo uri)
             throws NotFoundException {
         TrajectoryGrid trajectoryGrid = new TrajectoryGrid();
         List<String> values = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             values = HBaseUtils.getRecordRangeValues(TABLE_NAME, batchId, batchId);
             System.out.println(values);
             if(values == null || values.size() == 0){
@@ -91,16 +100,26 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return Response.serverError().build();
     }
 
     @Override
-    public Response getTrajectoriesBatches(Integer projectId, SecurityContext securityContext, UriInfo uri) throws NotFoundException {
+    public Response getTrajectoriesBatches(Integer projectId, String apiKey, UriInfo uri) throws NotFoundException {
+
         List<String> values = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
+            int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
+            if(auth == 1){
+                return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
+            }
+            if(auth == 3){
+                return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
+            }
             values = HBaseUtils.getAllRowIDs(TABLE_NAME);
             System.out.println(values);
             Batches batches  = new Batches();
@@ -120,6 +139,8 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
 
             return Response.ok().entity(trajectoryGridRepr.toString(RepresentationFactory.HAL_JSON)).build();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return Response.serverError().build();

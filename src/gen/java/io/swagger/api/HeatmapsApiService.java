@@ -19,6 +19,6 @@ import javax.ws.rs.core.UriInfo;
 public abstract class HeatmapsApiService {
       public abstract Response getHeatmapsByParameters(Integer projectId, Long startTime, Long endTime, Integer interval,
                                                        Long pageNmb,
-                                                       SecurityContext securityContext, UriInfo uri)
+                                                       String apiKey, UriInfo uri)
               throws NotFoundException;
 }

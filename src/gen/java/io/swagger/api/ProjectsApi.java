@@ -28,33 +28,33 @@ public class ProjectsApi  {
     
     
     @Produces({ "application/hal+json" })
-    public Response createProject( Project body,@Context SecurityContext securityContext)
+    public Response createProject( Project body,@QueryParam("api_key") String apiKey)
     throws NotFoundException {
-        return delegate.createProject(body,securityContext);
+        return delegate.createProject(body, apiKey);
     }
     @DELETE
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response deleteProject( @PathParam("projectId") Integer projectId,@Context SecurityContext securityContext)
+    public Response deleteProject( @PathParam("projectId") Integer projectId,@QueryParam("api_key") String apiKey)
     throws NotFoundException {
-        return delegate.deleteProject(projectId,securityContext);
+        return delegate.deleteProject(projectId,apiKey);
     }
     @GET
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response getProjectById( @PathParam("projectId") Integer projectId,@Context SecurityContext securityContext,
+    public Response getProjectById( @PathParam("projectId") Integer projectId,@QueryParam("api_key") String apiKey,
                                     @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getProjectById(projectId,securityContext, uri);
+        return delegate.getProjectById(projectId,apiKey, uri);
     }
     @PUT
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response updateProject( @PathParam("projectId") Integer projectId, Project body,@Context SecurityContext securityContext)
+    public Response updateProject( @PathParam("projectId") Integer projectId, Project body,@QueryParam("api_key") String apiKey)
     throws NotFoundException {
-        return delegate.updateProject(projectId,body,securityContext);
+        return delegate.updateProject(projectId,body,apiKey);
     }
 }

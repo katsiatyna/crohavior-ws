@@ -31,8 +31,8 @@ public class HeatmapsApi  {
     public Response getHeatmapsByParameters(@PathParam("projectId") Integer projectId, @QueryParam("startTime") Long startTime,
                                             @QueryParam("endTime") Long endTime, @QueryParam("interval") Integer interval,
                                             @QueryParam("pageNmb") Long pageNmb,
-                                            @Context SecurityContext securityContext, @Context UriInfo uri)
+                                            @QueryParam("api_key") String apiKey, @Context UriInfo uri)
             throws NotFoundException {
-        return delegate.getHeatmapsByParameters(projectId,startTime, endTime, interval, pageNmb, securityContext, uri);
+        return delegate.getHeatmapsByParameters(projectId,startTime, endTime, interval, pageNmb, apiKey, uri);
     }
 }
