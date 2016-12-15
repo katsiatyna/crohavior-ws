@@ -3,25 +3,23 @@ package io.swagger.model;
 import java.util.Objects;
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.MapGrid;
-import io.swagger.model.Trajectory;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class TrajectoryGrid extends MapGrid  {
   
-  private Long nbTrajectories = null;
+  private Integer nbTrajectories = null;
   private List<Trajectory> trajectories = new ArrayList<Trajectory>();
 
   /**
    **/
   
   @JsonProperty("nbTrajectories")
-  public Long getNbTrajectories() {
+  public Integer getNbTrajectories() {
     return nbTrajectories;
   }
-  public void setNbTrajectories(Long nbTrajectories) {
+  public void setNbTrajectories(Integer nbTrajectories) {
     this.nbTrajectories = nbTrajectories;
   }
 

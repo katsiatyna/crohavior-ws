@@ -31,8 +31,9 @@ import javax.ws.rs.core.UriInfo;
 public class HeatmapsApiServiceImpl extends HeatmapsApiService {
 
     public static final String TABLE_NAME = "heatmap";
+
     @Override
-    public Response getHeatmapsByParameters(Long projectId,Long startTime,Long endTime, Integer interval,
+    public Response getHeatmapsByParameters(Integer projectId, Long startTime, Long endTime, Integer interval,
                                             Long pageNmb,
                                             SecurityContext securityContext, UriInfo uri)
             throws NotFoundException {
@@ -46,7 +47,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
         heatmapGridCollection.setEndTime(endTime);
         heatmapGridCollection.setIntervalSec(interval);
         try {
-            if(pageNmb == null){
+            if (pageNmb == null) {
                 pageNmb = 1l;
             }
 
@@ -54,12 +55,12 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             Long diff = endTime - startTime;
             Long diffMin = TimeUnit.MILLISECONDS.toMinutes(diff);
             System.out.println("Minutes: " + diffMin);
-            Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff))%60 == 0) ? diffMin : diffMin + 1;
+            Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff)) % 60 == 0) ? diffMin : diffMin + 1;
             System.out.println("Pages: " + pages);
             Long newStartTime, newEndTime;
             System.out.println("PageNmb=" + pageNmb + ", pages=" + pages + ", Comparison !=" + (pageNmb != pages) +
                     ", Comparison equals = " + !pageNmb.equals(pages));
-            if(pageNmb <= pages) {
+            if (pageNmb <= pages) {
                 newStartTime = startTime + (pageNmb - 1) * 1000 * 60;
                 if (!pageNmb.equals(pages)) {
 
@@ -67,23 +68,25 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                 } else {
                     newEndTime = endTime;
                 }
-            }else {
+            } else {
                 return Response.noContent().build();
             }
 
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            String startDateStr =  interval + "s" + sdf.format(new Date(newStartTime));
-            String endDateStr =  interval + "s" + sdf.format(new Date(newEndTime));
+            String startDateStr = interval + "s" + sdf.format(new Date(newStartTime));
+            String endDateStr = interval + "s" + sdf.format(new Date(newEndTime));
             System.out.println("Start: " + startDateStr + ", End: " + endDateStr);
-            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr );
+            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
             System.out.println(values.size());
             heatmapGridCollection.setNbEl(values.size());
-            for(String val:values){
+            for (String val : values) {
                 HeatmapGrid obj = mapper.readValue(val, HeatmapGrid.class);
+                obj.setProjectId(projectId);
                 elements.add(obj);
             }
 
             heatmapGridCollection.setElements(elements);
+
             RepresentationFactory factory = new StandardRepresentationFactory();
             //"/heatmaps/123?interval=5&startTime=1224726940000&endTime=1224726960000&pageNmb=2"
             Representation heatmapCollectionRepr = factory.newRepresentation(uri.getBaseUriBuilder().
@@ -94,7 +97,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                     queryParam("interval", interval).
                     queryParam("pageNmb", pageNmb).
                     build(projectId)).withBean(heatmapGridCollection);
-            if(pageNmb < pages) {
+            if (pageNmb < pages) {
                 heatmapCollectionRepr = heatmapCollectionRepr.withLink("next", uri.getBaseUriBuilder().
                         path(HeatmapsApi.class).
                         path(HeatmapsApi.class, "getHeatmapsByParameters").
@@ -104,7 +107,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                         queryParam("pageNmb", pageNmb + 1).
                         build(projectId));
             }
-            if(pageNmb > 1) {
+            if (pageNmb > 1) {
                 heatmapCollectionRepr = heatmapCollectionRepr.withLink("prev", uri.getBaseUriBuilder().
                         path(HeatmapsApi.class).
                         path(HeatmapsApi.class, "getHeatmapsByParameters").
