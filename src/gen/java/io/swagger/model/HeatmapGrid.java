@@ -9,32 +9,32 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapGrid extends MapGrid  {
 
-  private Long minCount = null;
-  private Long maxCount = null;
+  /*private Long minCount = null;
+  private Long maxCount = null;*/
   private List<HeatmapPoint> data = new ArrayList<HeatmapPoint>();
 
   /**
    **/
 
-  @JsonProperty("minCount")
+  /*@JsonProperty("minCount")
   public Long getMinCount() {
     return minCount;
   }
   public void setMinCount(Long minCount) {
     this.minCount = minCount;
-  }
+  }*/
 
   /**
    **/
 
-  @JsonProperty("maxCount")
+  /*@JsonProperty("maxCount")
   public Long getMaxCount() {
     return maxCount;
   }
   public void setMaxCount(Long maxCount) {
     this.maxCount = maxCount;
   }
-
+*/
   /**
    **/
 
@@ -56,14 +56,14 @@ public class HeatmapGrid extends MapGrid  {
       return false;
     }
     HeatmapGrid heatmapGrid = (HeatmapGrid) o;
-    return Objects.equals(minCount, heatmapGrid.minCount) &&
-            Objects.equals(maxCount, heatmapGrid.maxCount) &&
+    return /*Objects.equals(minCount, heatmapGrid.minCount) &&
+            Objects.equals(maxCount, heatmapGrid.maxCount) &&*/
             Objects.equals(data, heatmapGrid.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(minCount, maxCount, data);
+    return Objects.hash(/*minCount, maxCount,*/ data);
   }
 
   @Override
@@ -71,8 +71,8 @@ public class HeatmapGrid extends MapGrid  {
     StringBuilder sb = new StringBuilder();
     sb.append("class HeatmapGrid {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    minCount: ").append(toIndentedString(minCount)).append("\n");
-    sb.append("    maxCount: ").append(toIndentedString(maxCount)).append("\n");
+    /*sb.append("    minCount: ").append(toIndentedString(minCount)).append("\n");
+    sb.append("    maxCount: ").append(toIndentedString(maxCount)).append("\n");*/
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();

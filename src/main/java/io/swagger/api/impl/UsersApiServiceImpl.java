@@ -75,21 +75,24 @@ public class UsersApiServiceImpl extends UsersApiService {
         Representation userRepr = factory.newRepresentation(uri.getBaseUriBuilder().
                 path(UsersApi.class).
                 path(UsersApi.class, "getUserByName").
+                queryParam("api_key", apiKey).
                 build(username)).withBean(user);
         userRepr = userRepr.withLink("PUT", uri.getBaseUriBuilder().
                 path(UsersApi.class).
                 path(UsersApi.class, "updateUser").
+                queryParam("api_key", apiKey).
                 build(username).toString(), "update", "Update User", "", "");
 
         userRepr = userRepr.withLink("DELETE", uri.getBaseUriBuilder().
                 path(UsersApi.class).
                 path(UsersApi.class, "deleteUser").
-
+                queryParam("api_key", apiKey).
                 build(username).toString(), "delete", "Delete User", "", "");
         for (Project project : projects) {
             userRepr = userRepr.withRepresentation("projects", factory.newRepresentation(uri.getBaseUriBuilder().
                     path(ProjectsApi.class).
                     path(ProjectsApi.class, "getProjectById").
+                    queryParam("api_key", apiKey).
                     build(project.getId())).withBean(project));
         }
 

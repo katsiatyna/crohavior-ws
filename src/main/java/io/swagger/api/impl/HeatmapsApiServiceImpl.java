@@ -65,7 +65,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             Long diff = endTime - startTime;
             Long diffMin = TimeUnit.MILLISECONDS.toMinutes(diff);
             System.out.println("Minutes: " + diffMin);
-            Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff)) % 60 == 0) ? diffMin : diffMin + 1;
+            Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff)) % 60 == 0) ? diffMin : diffMin + 1; //calcPages
             System.out.println("Pages: " + pages);
             Long newStartTime, newEndTime;
             System.out.println("PageNmb=" + pageNmb + ", pages=" + pages + ", Comparison !=" + (pageNmb != pages) +
@@ -92,6 +92,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             for (String val : values) {
                 HeatmapGrid obj = mapper.readValue(val, HeatmapGrid.class);
                 obj.setProjectId(projectId);
+                obj.setIntervalMs(interval);
                 elements.add(obj);
             }
 
@@ -106,6 +107,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                     queryParam("endTime", endTime).
                     queryParam("interval", interval).
                     queryParam("pageNmb", pageNmb).
+                    queryParam("api_key", apiKey).
                     build(projectId)).withBean(heatmapGridCollection);
             if (pageNmb < pages) {
                 heatmapCollectionRepr = heatmapCollectionRepr.withLink("next", uri.getBaseUriBuilder().
@@ -115,6 +117,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                         queryParam("endTime", endTime).
                         queryParam("interval", interval).
                         queryParam("pageNmb", pageNmb + 1).
+                        queryParam("api_key", apiKey).
                         build(projectId));
             }
             if (pageNmb > 1) {
@@ -125,6 +128,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
                         queryParam("endTime", endTime).
                         queryParam("interval", interval).
                         queryParam("pageNmb", pageNmb - 1).
+                        queryParam("api_key", apiKey).
                         build(projectId));
             }
             return Response.ok().entity(heatmapCollectionRepr.toString(RepresentationFactory.HAL_JSON)).build();

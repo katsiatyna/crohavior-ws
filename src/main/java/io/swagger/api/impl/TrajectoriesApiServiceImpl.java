@@ -72,6 +72,7 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
                     path(TrajectoriesApi.class, "getTrajectoriesByParameters").
                     queryParam("startTime", startTime).
                     queryParam("endTime", endTime).
+                    queryParam("api_key", apiKey).
                     build(projectId)).withBean(trajectoryGrid);
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps5s", uri.getBaseUriBuilder().
                     path(HeatmapsApi.class).
@@ -79,6 +80,7 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
                     queryParam("startTime", startTime.getTime()).
                     queryParam("endTime", endTime.getTime()).
                     queryParam("interval", 5).
+                    queryParam("api_key", apiKey).
                     build(projectId));
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps10s", uri.getBaseUriBuilder().
                     path(HeatmapsApi.class).
@@ -86,6 +88,7 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
                     queryParam("startTime", startTime.getTime()).
                     queryParam("endTime", endTime.getTime()).
                     queryParam("interval", 10).
+                    queryParam("api_key", apiKey).
                     build(projectId));
             trajectoryGridRepr = trajectoryGridRepr.withLink("heatmaps15s", uri.getBaseUriBuilder().
                     path(HeatmapsApi.class).
@@ -93,6 +96,7 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
                     queryParam("startTime", startTime.getTime()).
                     queryParam("endTime", endTime.getTime()).
                     queryParam("interval", 15).
+                    queryParam("api_key", apiKey).
                     build(projectId));
 
             return Response.ok().entity(trajectoryGridRepr.toString(RepresentationFactory.HAL_JSON)).build();
@@ -128,12 +132,14 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
             Representation trajectoryGridRepr = factory.newRepresentation(uri.getBaseUriBuilder().
                     path(TrajectoriesApi.class).
                     path(TrajectoriesApi.class, "getTrajectoriesBatches").
+                    queryParam("api_key", apiKey).
                     build(projectId)).withBean(batches);
             for(String val: values) {
                 trajectoryGridRepr = trajectoryGridRepr.withLink("trajectories", uri.getBaseUriBuilder().
                         path(TrajectoriesApi.class).
                         path(TrajectoriesApi.class, "getTrajectoriesByParameters").
                         queryParam("batchId", val).
+                        queryParam("api_key", apiKey).
                         build(projectId));
             }
 

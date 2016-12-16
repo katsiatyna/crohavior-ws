@@ -114,20 +114,23 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
         Representation projectRepr = factory.newRepresentation(uri.getBaseUriBuilder().
                 path(ProjectsApi.class).
                 path(ProjectsApi.class, "getProjectById").
+                queryParam("api_key", apiKey).
                 build(projectId)).withBean(project);
         projectRepr = projectRepr.withLink("PUT", uri.getBaseUriBuilder().
                 path(ProjectsApi.class).
                 path(ProjectsApi.class, "updateProject").
+                queryParam("api_key", apiKey).
                 build(projectId).toString(), "update", "Update Project", "", "");
 
         projectRepr = projectRepr.withLink("DELETE", uri.getBaseUriBuilder().
                 path(ProjectsApi.class).
                 path(ProjectsApi.class, "deleteProject").
-
+                queryParam("api_key", apiKey).
                 build(projectId).toString(), "delete", "Delete Project", "", "");
         projectRepr = projectRepr.withRepresentation("user", factory.newRepresentation(uri.getBaseUriBuilder().
                 path(UsersApi.class).
                 path(UsersApi.class, "getUserByName").
+                queryParam("api_key", apiKey).
                 build(user.getUsername())).withBean(user));
 
         return Response.ok().entity(projectRepr.toString(RepresentationFactory.HAL_JSON)).build();
@@ -160,7 +163,7 @@ public class ProjectsApiServiceImpl extends ProjectsApiService {
             }
             if (!ProjectDao.updateProjectById(body, projectId)) {
                 return Response.status(Response.Status.NOT_FOUND).
-                        entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "User does not exist!")).
+                        entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Project does not exist!")).
                         build();
             }
         } catch (SQLException e) {
