@@ -1,35 +1,26 @@
 package io.swagger.model;
 
-import java.util.Objects;
-import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.TrajectoryPoint;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
-public class Trajectory   {
+public class Batches  {
   
-  private List<TrajectoryPoint> points = new ArrayList<TrajectoryPoint>();
-  private Integer f = null;
+  private List<String> batches = new ArrayList<>();
 
 
-  @JsonProperty("f")
-  public Integer getF() {
-    return f;
+  /**
+   **/
+  
+  @JsonProperty("batches")
+  public List<String> getBatches() {
+    return batches;
   }
-
-  public void setF(Integer f) {
-    this.f = f;
-  }
-
-
-  @JsonProperty("points")
-  public List<TrajectoryPoint> getPoints() {
-    return points;
-  }
-  public void setPoints(List<TrajectoryPoint> points) {
-    this.points = points;
+  public void setBatches(List<String> batches) {
+    this.batches = batches;
   }
 
 
@@ -41,20 +32,22 @@ public class Trajectory   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Trajectory trajectory = (Trajectory) o;
-    return         Objects.equals(points, trajectory.points);
+    Batches trajectoryGrid = (Batches) o;
+    return
+        Objects.equals(batches, trajectoryGrid.batches);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash( points);
+    return Objects.hash(batches);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Trajectory {\n");
-    sb.append("    points: ").append(toIndentedString(points)).append("\n");
+    sb.append("class Batches {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    batches: ").append(toIndentedString(batches)).append("\n");
     sb.append("}");
     return sb.toString();
   }

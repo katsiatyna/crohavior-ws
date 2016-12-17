@@ -519,7 +519,8 @@ var api = function() {
         var queryParams = {
           'interval' : interval,
           'startTime': startTime,
-          'endTime': endTime
+          'endTime': endTime,
+          'api_key': 'test'
         };
         var headerParams = {
         };
@@ -573,7 +574,8 @@ var api = function() {
             'interval' : interval,
             'startTime': startTime,
             'endTime': endTime,
-            'pageNmb' : page
+            'pageNmb' : page,
+            'api_key': 'test'
           };
           var headerParams = {
           };

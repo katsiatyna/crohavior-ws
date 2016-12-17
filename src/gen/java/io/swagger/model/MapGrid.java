@@ -1,38 +1,26 @@
 package io.swagger.model;
 
 import java.util.Objects;
-import java.util.ArrayList;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class MapGrid   {
   
-  private Long nmCells = null;
-  private Long projectId = null;
-  private Integer startTimestamp = null;
-  private Integer endTimestamp = null;
+  private Integer projectId = null;
+  private Long startTimestamp = null;
+  private Long endTimestamp = null;
   private Integer intervalMs = null;
 
-  /**
-   **/
-  
-  @JsonProperty("nmCells")
-  public Long getNmCells() {
-    return nmCells;
-  }
-  public void setNmCells(Long nmCells) {
-    this.nmCells = nmCells;
-  }
 
   /**
    **/
   
   @JsonProperty("projectId")
-  public Long getProjectId() {
+  public Integer getProjectId() {
     return projectId;
   }
-  public void setProjectId(Long projectId) {
+  public void setProjectId(Integer projectId) {
     this.projectId = projectId;
   }
 
@@ -40,10 +28,10 @@ public class MapGrid   {
    **/
   
   @JsonProperty("startTimestamp")
-  public Integer getStartTimestamp() {
+  public Long getStartTimestamp() {
     return startTimestamp;
   }
-  public void setStartTimestamp(Integer startTimestamp) {
+  public void setStartTimestamp(Long startTimestamp) {
     this.startTimestamp = startTimestamp;
   }
 
@@ -51,10 +39,10 @@ public class MapGrid   {
    **/
   
   @JsonProperty("endTimestamp")
-  public Integer getEndTimestamp() {
+  public Long getEndTimestamp() {
     return endTimestamp;
   }
-  public void setEndTimestamp(Integer endTimestamp) {
+  public void setEndTimestamp(Long endTimestamp) {
     this.endTimestamp = endTimestamp;
   }
 
@@ -79,8 +67,7 @@ public class MapGrid   {
       return false;
     }
     MapGrid mapGrid = (MapGrid) o;
-    return Objects.equals(nmCells, mapGrid.nmCells) &&
-        Objects.equals(projectId, mapGrid.projectId) &&
+    return Objects.equals(projectId, mapGrid.projectId) &&
         Objects.equals(startTimestamp, mapGrid.startTimestamp) &&
         Objects.equals(endTimestamp, mapGrid.endTimestamp) &&
         Objects.equals(intervalMs, mapGrid.intervalMs);
@@ -88,15 +75,13 @@ public class MapGrid   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(nmCells, projectId, startTimestamp, endTimestamp, intervalMs);
+    return Objects.hash(projectId, startTimestamp, endTimestamp, intervalMs);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class MapGrid {\n");
-    
-    sb.append("    nmCells: ").append(toIndentedString(nmCells)).append("\n");
     sb.append("    projectId: ").append(toIndentedString(projectId)).append("\n");
     sb.append("    startTimestamp: ").append(toIndentedString(startTimestamp)).append("\n");
     sb.append("    endTimestamp: ").append(toIndentedString(endTimestamp)).append("\n");

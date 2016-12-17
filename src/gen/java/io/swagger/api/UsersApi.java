@@ -37,40 +37,25 @@ public class UsersApi  {
     @Path("/{username}")
     
     @Produces({ "application/hal+json" })
-    public Response deleteUser( @PathParam("username") String username,@Context SecurityContext securityContext)
+    public Response deleteUser( @PathParam("username") String username,@QueryParam("api_key") String apiKey)
     throws NotFoundException {
-        return delegate.deleteUser(username,securityContext);
+        return delegate.deleteUser(username,apiKey);
     }
     @GET
     @Path("/{username}")
     
     @Produces({ "application/hal+json" })
-    public Response getUserByName( @PathParam("username") String username,@Context SecurityContext securityContext, @Context UriInfo uri)
+    public Response getUserByName( @PathParam("username") String username,@QueryParam("api_key") String apiKey, @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getUserByName(username,securityContext, uri);
+        return delegate.getUserByName(username,apiKey, uri);
     }
-    @GET
-    @Path("/login")
-    
-    @Produces({ "application/hal+json" })
-    public Response loginUser( @QueryParam("username") String username, @QueryParam("password") String password,@Context SecurityContext securityContext)
-    throws NotFoundException {
-        return delegate.loginUser(username,password,securityContext);
-    }
-    @GET
-    @Path("/logout")
-    
-    @Produces({ "application/hal+json" })
-    public Response logoutUser(@Context SecurityContext securityContext)
-    throws NotFoundException {
-        return delegate.logoutUser(securityContext);
-    }
+
     @PUT
     @Path("/{username}")
     @Consumes({"application/json"})
     @Produces({ "application/hal+json" })
-    public Response updateUser( @PathParam("username") String username, User body,@Context SecurityContext securityContext)
+    public Response updateUser( @PathParam("username") String username, User body, @QueryParam("api_key") String apiKey)
     throws NotFoundException {
-        return delegate.updateUser(username,body,securityContext);
+        return delegate.updateUser(username,body,apiKey);
     }
 }

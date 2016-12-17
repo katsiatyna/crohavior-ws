@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/trajectories")
 
@@ -27,8 +28,21 @@ public class TrajectoriesApi  {
     @Path("/{projectId}")
     
     @Produces({ "application/hal+json" })
-    public Response getTrajectoriesByParameters( @PathParam("projectId") Long projectId, @QueryParam("startTime") Integer startTime, @QueryParam("endTime") Integer endTime,@Context SecurityContext securityContext)
+    public Response getTrajectoriesByParameters(@PathParam("projectId") Integer projectId,
+                                                @QueryParam("batchId") String batchId, @QueryParam("api_key") String apiKey,
+                                                @Context UriInfo uri)
     throws NotFoundException {
-        return delegate.getTrajectoriesByParameters(projectId,startTime,endTime,securityContext);
+        return delegate.getTrajectoriesByParameters(projectId, batchId,apiKey, uri);
+    }
+
+    @GET
+    @Path("/batches/{projectId}")
+
+    @Produces({ "application/hal+json" })
+    public Response getTrajectoriesBatches(@PathParam("projectId") Integer projectId,
+                                                @QueryParam("api_key") String apiKey,
+                                                @Context UriInfo uri)
+            throws NotFoundException {
+        return delegate.getTrajectoriesBatches(projectId, apiKey, uri);
     }
 }
