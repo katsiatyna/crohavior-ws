@@ -1,5 +1,7 @@
 package edu.upc.bip.batch;
 
+import io.swagger.api.dal.ProjectDao;
+import io.swagger.api.dal.UserDao;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -16,6 +18,9 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) throws Exception{
+
+        UserDao.initTable();
+        ProjectDao.initTable();
         String webappDirLocation = "src/main/webapp/";
         
         //The port that we should run on can be set into an environment variable
