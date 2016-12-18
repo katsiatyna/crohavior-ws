@@ -6,6 +6,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import edu.upc.bip.batch.HBaseUtils;
+import edu.upc.bip.batch.MongoUtils;
 import io.swagger.api.*;
 
 
@@ -86,7 +87,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             String startDateStr = interval + "s" + sdf.format(new Date(newStartTime));
             String endDateStr = interval + "s" + sdf.format(new Date(newEndTime));
             System.out.println("Start: " + startDateStr + ", End: " + endDateStr);
-            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
+            values = MongoUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
             System.out.println(values.size());
             heatmapGridCollection.setNbEl(values.size());
             for (String val : values) {
