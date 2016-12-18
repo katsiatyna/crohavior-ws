@@ -3,32 +3,25 @@ package io.swagger.api.impl;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import edu.upc.bip.batch.HBaseUtils;
 import edu.upc.bip.batch.MongoUtils;
 import io.swagger.api.*;
 import io.swagger.api.dal.Utils;
-import io.swagger.model.*;
+import io.swagger.model.Batches;
+import io.swagger.model.TrajectoryGrid;
+import io.swagger.model.User;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
 
-
-import io.swagger.model.TrajectoryGridCollection;
-
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import io.swagger.api.NotFoundException;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
-
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
@@ -43,15 +36,15 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
             int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
-            if(auth == 1){
+            if (auth == 1) {
                 return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
             }
-            if(auth == 3){
+            if (auth == 3) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
             }
             values = MongoUtils.getRecordRangeValues(TABLE_NAME, batchId, batchId);
             System.out.println(values);
-            if(values == null || values.size() == 0){
+            if (values == null || values.size() == 0) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Batch does not exist OR the parameter is wrong!")).build();
             }
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -119,15 +112,15 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         try {
             int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
-            if(auth == 1){
+            if (auth == 1) {
                 return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
             }
-            if(auth == 3){
+            if (auth == 3) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
             }
             values = MongoUtils.getAllRowIDs(TABLE_NAME);
             System.out.println(values);
-            Batches batches  = new Batches();
+            Batches batches = new Batches();
             batches.setBatches(values);
             RepresentationFactory factory = new StandardRepresentationFactory();
             Representation trajectoryGridRepr = factory.newRepresentation(uri.getBaseUriBuilder().
@@ -135,7 +128,7 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
                     path(TrajectoriesApi.class, "getTrajectoriesBatches").
                     queryParam("api_key", apiKey).
                     build(projectId)).withBean(batches);
-            for(String val: values) {
+            for (String val : values) {
                 trajectoryGridRepr = trajectoryGridRepr.withLink("trajectories", uri.getBaseUriBuilder().
                         path(TrajectoriesApi.class).
                         path(TrajectoriesApi.class, "getTrajectoriesByParameters").

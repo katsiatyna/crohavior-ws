@@ -1,35 +1,30 @@
 package io.swagger.api.impl;
 
-import com.google.common.collect.FluentIterable;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
-import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import edu.upc.bip.batch.HBaseUtils;
 import edu.upc.bip.batch.MongoUtils;
-import io.swagger.api.*;
-
-
+import io.swagger.api.ApiResponseMessage;
+import io.swagger.api.HeatmapsApi;
+import io.swagger.api.HeatmapsApiService;
+import io.swagger.api.NotFoundException;
 import io.swagger.api.dal.Utils;
 import io.swagger.model.HeatmapGrid;
 import io.swagger.model.HeatmapGridCollection;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import io.swagger.api.NotFoundException;
 import io.swagger.model.User;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapsApiServiceImpl extends HeatmapsApiService {
@@ -52,10 +47,10 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
         heatmapGridCollection.setIntervalSec(interval);
         try {
             int auth = Utils.checkApiKeyAndRole(apiKey, User.UserRoleEnum.ADMIN);
-            if(auth == 1){
+            if (auth == 1) {
                 return Response.status(Response.Status.FORBIDDEN).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Api key does not exist!")).build();
             }
-            if(auth == 3){
+            if (auth == 3) {
                 return Response.status(Response.Status.BAD_REQUEST).entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "Parameter api_key has to be provided")).build();
             }
             if (pageNmb == null) {
