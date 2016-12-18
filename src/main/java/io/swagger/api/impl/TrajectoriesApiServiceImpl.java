@@ -3,11 +3,14 @@ package io.swagger.api.impl;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
+import edu.upc.bip.batch.HBaseUtils;
 import edu.upc.bip.batch.MongoUtils;
 import io.swagger.api.*;
 import io.swagger.api.dal.Utils;
 import io.swagger.model.*;
 
+
+import io.swagger.model.TrajectoryGridCollection;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,7 +23,11 @@ import io.swagger.api.NotFoundException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
+
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")

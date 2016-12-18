@@ -199,7 +199,7 @@
             <version>16.0</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback-version}</version>
@@ -210,7 +210,7 @@
             <artifactId>logback-core</artifactId>
             <version>${logback-version}</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -271,11 +271,11 @@
             <version>2.3.5.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
             <version>1.2.4</version>
-            &lt;!&ndash;<exclusions>
+            <!--<exclusions>
                 <exclusion>
                     <artifactId>jersey-core</artifactId>
                     <groupId>com.sun.jersey</groupId>
@@ -292,8 +292,8 @@
                     <artifactId>jersey-client</artifactId>
                     <groupId>com.sun.jersey</groupId>
                 </exclusion>
-            </exclusions>&ndash;&gt;
-        </dependency>-->
+            </exclusions>-->
+        </dependency>
         <!--<dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
