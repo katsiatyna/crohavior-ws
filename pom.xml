@@ -271,11 +271,11 @@
             <version>2.3.5.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>
             <version>1.2.4</version>
-            <!--<exclusions>
+            &lt;!&ndash;<exclusions>
                 <exclusion>
                     <artifactId>jersey-core</artifactId>
                     <groupId>com.sun.jersey</groupId>
@@ -292,8 +292,8 @@
                     <artifactId>jersey-client</artifactId>
                     <groupId>com.sun.jersey</groupId>
                 </exclusion>
-            </exclusions>-->
-        </dependency>
+            </exclusions>&ndash;&gt;
+        </dependency>-->
         <!--<dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
