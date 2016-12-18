@@ -3,7 +3,7 @@ package io.swagger.api.impl;
 import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
-import edu.upc.bip.batch.MongoUtils;
+import edu.upc.bip.batch.HBaseUtils;
 import io.swagger.api.ApiResponseMessage;
 import io.swagger.api.HeatmapsApi;
 import io.swagger.api.HeatmapsApiService;
@@ -82,7 +82,7 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             String startDateStr = interval + "s" + sdf.format(new Date(newStartTime));
             String endDateStr = interval + "s" + sdf.format(new Date(newEndTime));
             System.out.println("Start: " + startDateStr + ", End: " + endDateStr);
-            values = MongoUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
+            values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
             System.out.println(values.size());
             heatmapGridCollection.setNbEl(values.size());
             for (String val : values) {
