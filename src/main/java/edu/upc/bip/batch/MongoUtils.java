@@ -1,44 +1,17 @@
 package edu.upc.bip.batch;
 
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.function.Function;
 import com.mongodb.spark.MongoSpark;
-import org.bson.Document;
-import static java.util.Arrays.asList;
-
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.spark.MongoConnector;
-import com.mongodb.spark.MongoSpark;
-import com.mongodb.spark.config.ReadConfig;
-import com.mongodb.spark.config.WriteConfig;
 import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
-import com.mongodb.spark.sql.helpers.StructFields;
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.types.DataTypes;
-import org.apache.spark.sql.types.StructType;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+
 public class MongoUtils {
 
     public static void main(String[] agrs) {
