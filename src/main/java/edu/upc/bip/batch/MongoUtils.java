@@ -1,14 +1,13 @@
 package edu.upc.bip.batch;
 
-import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.spark.MongoSpark;
+import com.mongodb.spark.rdd.api.java.JavaMongoRDD;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.bson.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
@@ -17,87 +16,73 @@ public class MongoUtils {
 
     public static void main(String[] agrs) {
 
-        ServerAddress serverAddress = new ServerAddress("ds135798.mlab.com", 35798);
+        SparkConf sc = new SparkConf()
+                .setMaster("local")
+                .setAppName("MongoSparkConnectorTour")
+                .set("spark.mongodb.input.uri", "mongodb://katya:echo216@ds135798.mlab.com:35798/heroku_41659s43.heatmap")
+                .set("spark.mongodb.output.uri", "mongodb://katya:echo216@ds135798.mlab.com:35798/heroku_41659s43.heatmap");
 
-        MongoCredential mongoCredential = MongoCredential.createCredential("katya", "heroku_41659s43", "echo216".toCharArray());
-        MongoClient mongoClient = new MongoClient(serverAddress, Arrays.asList(mongoCredential));
-        MongoDatabase database = mongoClient.getDatabase("heroku_41659s43");
+        JavaSparkContext jsc = new JavaSparkContext(sc); // Create a Java Spark Context
+
+//        JavaRDD<Document> documents = jsc.parallelize(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)).map
+//                (new Function<Integer, Document>() {
+//                    public Document call(final Integer i) throws Exception {
+//                        return Document.parse("{_id: " + i+10 + ", data: " + "[{\"a\":39.981,\"c\":2,\"o\":116.343},{\"a\":39.964,\"c\":2,\"o\":116.396}]" + "}");
+//                    }
+//                });
+//
+//        MongoSpark.save(documents);
 
 
+        JavaMongoRDD<Document> rdd = MongoSpark.load(jsc);
+        System.out.println(rdd.count());
+        System.out.println(rdd.first().toJson());
 
-        //MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://anas_alba:echo216@ds135798.mlab.com:35798/heroku_41659s43"));
+        JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: { _id : { $gte : \"10s2008-10-23T02:53:25\" , $lte: \"10s2008-10-23T02:54:05\"} } }")));
+        System.out.println(aggregatedRdd.count());
+//        System.out.println(aggregatedRdd.first().toJson());
 
+        List<Document> output = aggregatedRdd.collect();
+        for (Document tuple : output) {
+            System.out.println(tuple.toJson());
 
-        // get handle to "heroku_dbname" database
-        //MongoDatabase database = mongoClient.getDatabase("heroku_dbname");
-
-
-        // get a handle to the "book" collection
-        MongoCollection<Document> collection = database.getCollection("heatmap");
-
-        // make a document and insert it
-        Document doc = new Document("title", "Good Habits")
-                .append("author", "Akbar");
-
-        collection.insertOne(doc);
-
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", BasicDBObjectBuilder.start("$gte", "10s2008-10-23T02:53:25").add("$lte", "10s2008-10-23T02:54:05").get());
-        // get it (since it's the only one in there since we dropped the rest earlier on)
-        MongoCursor cursor = collection.find(query).iterator();
-        try {
-            while (cursor.hasNext()) {
-
-                //System.out.println(cursor.next());
-                Document tobj = (Document) cursor.next();
-                System.out.println(tobj.toJson());
-
-            }
-        } finally {
-            cursor.close();
         }
-
-
-        // release resources
-        mongoClient.close();
-
     }
 
     public static List<String> getRecordRangeValues(String tableName, String startRowKey, String stopRowKey) throws IOException {
         List<String> result = new ArrayList<>();
-        ServerAddress serverAddress = new ServerAddress("ds135798.mlab.com", 35798);
+        SparkConf sc = new SparkConf()
+                .setMaster("local")
+                .setAppName("MongoSparkConnectorTour")
+                .set("spark.mongodb.input.uri", "mongodb://katya:echo216@ds135798.mlab.com:35798/heroku_41659s43.heatmap")
+                .set("spark.mongodb.output.uri", "mongodb://katya:echo216@ds135798.mlab.com:35798/heroku_41659s43.heatmap");
 
-        MongoCredential mongoCredential = MongoCredential.createCredential("katya", "heroku_41659s43", "echo216".toCharArray());
-        MongoClient mongoClient = new MongoClient(serverAddress, Arrays.asList(mongoCredential));
-        MongoDatabase database = mongoClient.getDatabase("heroku_41659s43");
-        //MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://anas_alba:echo216@ds135798.mlab.com:35798/heroku_41659s43"));
-        // get handle to "heroku_dbname" database
-        //MongoDatabase database = mongoClient.getDatabase("heroku_dbname");
-        // get a handle to the "book" collection
-        MongoCollection<Document> collection = database.getCollection("heatmap");
+        JavaSparkContext jsc = new JavaSparkContext(sc); // Create a Java Spark Context
 
-        // make a document and insert it
+//        JavaRDD<Document> documents = jsc.parallelize(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)).map
+//                (new Function<Integer, Document>() {
+//                    public Document call(final Integer i) throws Exception {
+//                        return Document.parse("{_id: " + i+10 + ", data: " + "[{\"a\":39.981,\"c\":2,\"o\":116.343},{\"a\":39.964,\"c\":2,\"o\":116.396}]" + "}");
+//                    }
+//                });
+//
+//        MongoSpark.save(documents);
 
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", BasicDBObjectBuilder.start("$gte", "10s2008-10-23T02:53:25").add("$lte", "10s2008-10-23T02:54:05").get());
-        // get it (since it's the only one in there since we dropped the rest earlier on)
-        MongoCursor cursor = collection.find(query).iterator();
-        try {
-            while (cursor.hasNext()) {
 
-                //System.out.println(cursor.next());
-                Document tobj = (Document) cursor.next();
-                System.out.println(tobj.toJson());
-                result.add(tobj.toJson());
-            }
-        } finally {
-            cursor.close();
+        JavaMongoRDD<Document> rdd = MongoSpark.load(jsc);
+        System.out.println(rdd.count());
+        System.out.println(rdd.first().toJson());
+
+        JavaMongoRDD<Document> aggregatedRdd = rdd.withPipeline(singletonList(Document.parse("{ $match: { _id : { $gte : \"10s2008-10-23T02:53:25\" , $lte: \"10s2008-10-23T02:54:05\"} } }")));
+        System.out.println(aggregatedRdd.count());
+//        System.out.println(aggregatedRdd.first().toJson());
+
+        List<Document> output = aggregatedRdd.collect();
+        for (Document tuple : output) {
+            System.out.println(tuple.toJson());
+            result.add(tuple.toJson());
+
         }
-
-
-        // release resources
-        mongoClient.close();
-
         return result;
     }
 

@@ -16,7 +16,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <plugin>
+                 <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.4</version>
@@ -24,9 +24,7 @@
                     <execution>
                         <id>copy-dependencies</id>
                         <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
+                        <goals><goal>copy-dependencies</goal></goals>
                     </execution>
                 </executions>
             </plugin>
@@ -39,37 +37,37 @@
                         <contextPath>/</contextPath>
                     </webAppConfig>
                     <webAppSourceDirectory>target/${project.artifactId}-${project.version}</webAppSourceDirectory>-->
-            <!--<webDefaultXml>${project.basedir}/conf/jetty/webdefault.xml</webDefaultXml>-->
-            <!--<stopPort>8079</stopPort>
-            <stopKey>stopit</stopKey>-->
-            <!--<connectors>
-                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                    <port>8002</port>
-                    <maxIdleTime>60000</maxIdleTime>
-                    <confidentialPort>8443</confidentialPort>
-                </connector>
-            </connectors>-->
-            <!--</configuration>-->
-            <!--<executions>
-                <execution>
-                    <id>start-jetty</id>
-                    <phase>pre-integration-test</phase>
-                    <goals>
-                        <goal>run</goal>
-                    </goals>
-                    <configuration>
-                        <scanIntervalSeconds>0</scanIntervalSeconds>-->
-            <!--<daemon>true</daemon>-->
-            <!-- </configuration>
-         </execution>
-         <execution>
-             <id>stop-jetty</id>
-             <phase>post-integration-test</phase>
-             <goals>
-                 <goal>stop</goal>
-             </goals>
-         </execution>
-     </executions>-->
+                    <!--<webDefaultXml>${project.basedir}/conf/jetty/webdefault.xml</webDefaultXml>-->
+                    <!--<stopPort>8079</stopPort>
+                    <stopKey>stopit</stopKey>-->
+                    <!--<connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8002</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                            <confidentialPort>8443</confidentialPort>
+                        </connector>
+                    </connectors>-->
+                <!--</configuration>-->
+                <!--<executions>
+                    <execution>
+                        <id>start-jetty</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>-->
+                            <!--<daemon>true</daemon>-->
+                       <!-- </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-jetty</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>-->
             <!--</plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -85,8 +83,7 @@
                         <configuration>
                             <sources>
                                 <source>
-                                    src/gen/java
-                                </source>
+                                    src/gen/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -139,18 +136,36 @@
         </plugins>
     </build>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-core_2.10 -->
         <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.10</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql_2.10 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.10</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+       <!-- <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.4.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-core &ndash;&gt;
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-core</artifactId>
             <version>3.4.0</version>
-        </dependency>
+        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.mongodb.spark/mongo-spark-connector_2.10 -->
         <dependency>
+            <groupId>org.mongodb.spark</groupId>
+            <artifactId>mongo-spark-connector_2.10</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+             <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>7.6.0.v20120127</version>
