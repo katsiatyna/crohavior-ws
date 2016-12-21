@@ -3,9 +3,6 @@ var frame = 5;
 var cur_ts = 0;
 var isRealTime = true;
 
-
-
-
 //set up elasticsearch client
 var client = new elasticsearch.Client({
     host: 'http://localhost:9200',
@@ -197,7 +194,15 @@ doAnalysis = function(){
 }
 doAnalysis();
 setIsRealTime = function(state){
+if (isRealTime != state){
     isRealTime = state;
     console.log(isRealTime.toString());
     doAnalysis();
+    }
+}
+
+setFrame = function(val){
+    if(frame != val){
+        frame = val;
+    }
 }

@@ -126,7 +126,18 @@ $(function () {
     //Date range picker
     $('#reservation').daterangepicker();
     //Date range picker with time picker
-    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
+    $('#reservationtime').daterangepicker({
+         "timePicker": true,
+            "timePicker24Hour": true,
+            "timePickerSeconds": true,
+            "startDate": "10/23/2008",
+            "endDate": "10/23/2008 23:55:59",
+            "minDate": "10/23/2008",
+            "maxDate": "10/23/2008 23:55:59",
+            "format": 'MM/DD/YYYY h:mm:ss'
+        }, function(start, end, label) {
+          console.log("New date range selected: " + start.format('x') + " to " + end.format('x') + ")");
+        });
     //Date range as a button
 
 

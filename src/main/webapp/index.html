@@ -487,6 +487,9 @@
         increaseArea: '20%'
       });
     });
+    $("[name='iCheck']").on('ifChecked', function(event){
+        setFrame(this.value);
+    });
 </script>
 
 <!-- Morris.js charts -->
