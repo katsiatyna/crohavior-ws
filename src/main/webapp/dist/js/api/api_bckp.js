@@ -947,6 +947,9 @@ var HeatmapPoint = function() {
     MapGridCollection.constructFromObject = function(data, obj) {
       if (data) {
         obj = obj || new MapGridCollection();
+        if (data.hasOwnProperty('nmbPages')) {
+          obj['nmbPages'] = convertToType(data['nmbPages'], 'Number');
+        }
         if (data.hasOwnProperty('page')) {
           obj['page'] = convertToType(data['page'], 'Number');
         }
@@ -978,6 +981,8 @@ var HeatmapPoint = function() {
     MapGridCollection.prototype['nbEl'] = undefined;
 
     MapGridCollection.prototype['page'] = undefined;
+
+    MapGridCollection.prototype['nmbPages'] = undefined;
     /**
      * @member {Number} startTime
      */

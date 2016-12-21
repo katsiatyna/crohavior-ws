@@ -2,6 +2,10 @@ var projectId = 789; // {Number} id of the project of logged in user
 var frame = 5;
 var cur_ts = 0;
 var isRealTime = true;
+var drp = $('#reservationtime').data('daterangepicker');
+var startTime = 1224716400000;
+var endTime = 1224802559000; // {Number} End date/time
+var speedTimeout = null, batchTimeout = null;
 
 //set up elasticsearch client
 var client = new elasticsearch.Client({
@@ -93,7 +97,7 @@ var myLatlng = new google.maps.LatLng(39.905, 116.375);
 
 
 function speedLoop () {           //  create a loop function
-     setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+     speedTimeout = setTimeout(function () {    //  call a 3s setTimeout when the loop is called
         if(isRealTime){
           updateSpeedView();
             speedLoop();
@@ -111,15 +115,8 @@ doAnalysis = function(){
         speedLoop();
     } else{
 
-        var startTime = 1224726800000; // {Number} Start date/time
-
-        var interval = frame;
-
-        var endTime = 1224726960000; // {Number} End date/time
-
         var res = {};
         var elements = null, elementsNext = null;
-
         var callback = function(error, data, response) {
           if (error) {
             console.error(error);
@@ -132,9 +129,10 @@ doAnalysis = function(){
             var nextRetrieved = false;
             var nextLink = res['_links']['next'][0]['href'];
             var currentPage = res['page'];
+            var pages = res['nmbPages'];
             function batchLoop () {           //  create a loop function
-               setTimeout(function () {
-                  if(elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
+               batchTimeout = setTimeout(function () {
+                  if(elements != null && elements[i] != null && elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
                         heatmap.setData(elements[i]);
                         document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000);
                   } else {
@@ -143,7 +141,7 @@ doAnalysis = function(){
                   console.log(i);
                   i++;
                   iGlobal++;
-                  if(i >= (elements.length / 2) && (nextRetrieved === false) && nextLink && !isRealTime){ //half of the array is gone
+                  if(((elements == null || i >= (elements.length / 2)) && (nextRetrieved === false) && nextLink) && !isRealTime){ //half of the array is gone
                     //read next page
                     console.log('Retrieving next page...');
                     var callbackUri = function(error, dataUri, response){
@@ -160,13 +158,13 @@ doAnalysis = function(){
                             currentPage = dataUri['page'];
                         }
                     }
-                    api.getHeatmapsByParametersPage(currentPage + 1, projectId, interval, startTime, endTime, callbackUri);
+                    api.getHeatmapsByParametersPage(currentPage + 1, projectId, frame, startTime, endTime, callbackUri);
                     nextRetrieved = true;
                   }
-                  if (i < elements.length && !isRealTime) {            //  if the counter < 10, call the loop function
+                  if (elements != null && i < elements.length && !isRealTime) {            //  if the counter < 10, call the loop function
                      batchLoop();             //  ..  again which will trigger another
                   }else {
-                    if(elementsNext == null && !isRealTime){
+                    if(currentPage >= pages && !isRealTime){
                         console.log('Done!');
                         document.getElementById("ts").innerHTML='DONE!';
                     } else if(!isRealTime) {
@@ -188,7 +186,7 @@ doAnalysis = function(){
             }
           }
         };
-        api.getHeatmapsByParameters(projectId, interval, startTime, endTime, callback);
+        api.getHeatmapsByParameters(projectId, frame, startTime, endTime, callback);
     }
 
 }
@@ -197,6 +195,8 @@ setIsRealTime = function(state){
 if (isRealTime != state){
     isRealTime = state;
     console.log(isRealTime.toString());
+    //clear both timeouts
+    clearTimeouts();
     doAnalysis();
     }
 }
@@ -205,4 +205,22 @@ setFrame = function(val){
     if(frame != val){
         frame = val;
     }
+    clearTimeouts();
+    doAnalysis();
+}
+
+setDateRange = function(startTs, endTs){
+    if(startTime != startTs){
+        startTime = startTs;
+    }
+    if(endTime != endTs){
+        endTime = endTs;
+    }
+    clearTimeouts();
+    doAnalysis();
+}
+
+clearTimeouts = function(){
+    clearTimeout(speedTimeout);
+    clearTimeout(batchTimeout);
 }

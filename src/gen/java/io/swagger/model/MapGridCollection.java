@@ -16,6 +16,7 @@ public class MapGridCollection   {
   //private List<Link> links = new ArrayList<Link>();
   //private List<EmbeddedResource> embedded = new ArrayList<EmbeddedResource>();
   private Long page = 1l;
+  private Long nmbPages = 1l;
 
   /**
    **/
@@ -92,6 +93,15 @@ public class MapGridCollection   {
     this.page = page;
   }
 
+  @JsonProperty("nmbPages")
+  public Long getNmbPages() {
+    return nmbPages;
+  }
+
+  public void setNmbPages(Long nmbPages) {
+    this.nmbPages = nmbPages;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -105,14 +115,15 @@ public class MapGridCollection   {
             Objects.equals(startTime, mapGridCollection.startTime) &&
             Objects.equals(endTime, mapGridCollection.endTime) &&
             Objects.equals(intervalSec, mapGridCollection.intervalSec) &&
-            Objects.equals(page, mapGridCollection.page);// &&
+            Objects.equals(page, mapGridCollection.page) &&
+            Objects.equals(nmbPages, mapGridCollection.nmbPages);
     //Objects.equals(links, mapGridCollection.links) &&
     //Objects.equals(embedded, mapGridCollection.embedded);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nbEl, startTime, endTime, intervalSec); //, links, embedded);
+    return Objects.hash(nbEl, startTime, endTime, intervalSec, page, nmbPages); //, links, embedded);
   }
 
   @Override
@@ -124,6 +135,8 @@ public class MapGridCollection   {
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
     sb.append("    intervalSec: ").append(toIndentedString(intervalSec)).append("\n");
+    sb.append("    page: ").append(toIndentedString(page)).append("\n");
+    sb.append("    nmbPages: ").append(toIndentedString(nmbPages)).append("\n");
     //sb.append("    links: ").append(toIndentedString(links)).append("\n");
     //sb.append("    embedded: ").append(toIndentedString(embedded)).append("\n");
     sb.append("}");

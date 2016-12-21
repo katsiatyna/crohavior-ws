@@ -58,10 +58,12 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             }
 
             heatmapGridCollection.setPage(pageNmb);
+
             Long diff = endTime - startTime;
             Long diffMin = TimeUnit.MILLISECONDS.toMinutes(diff);
             System.out.println("Minutes: " + diffMin);
             Long pages = ((TimeUnit.MILLISECONDS.toSeconds(diff)) % 60 == 0) ? diffMin : diffMin + 1; //calcPages
+            heatmapGridCollection.setNmbPages(pages);
             System.out.println("Pages: " + pages);
             Long newStartTime, newEndTime;
             System.out.println("PageNmb=" + pageNmb + ", pages=" + pages + ", Comparison !=" + (pageNmb != pages) +

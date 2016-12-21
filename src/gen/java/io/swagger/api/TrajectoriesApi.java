@@ -36,6 +36,17 @@ public class TrajectoriesApi  {
     }
 
     @GET
+    @Path("/{projectId}/ar")
+
+    @Produces({ "application/hal+json" })
+    public Response getAssociationRulesByParameters(@PathParam("projectId") Integer projectId,
+                                                @QueryParam("batchId") String batchId, @QueryParam("api_key") String apiKey,
+                                                @Context UriInfo uri)
+            throws NotFoundException {
+        return delegate.getAssociationRulesByParameters(projectId, batchId,apiKey, uri);
+    }
+
+    @GET
     @Path("/batches/{projectId}")
 
     @Produces({ "application/hal+json" })

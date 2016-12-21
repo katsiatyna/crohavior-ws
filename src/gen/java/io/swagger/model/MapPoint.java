@@ -17,7 +17,15 @@ public class MapPoint   {
   public Double getA() {
     return a;
   }
+
+  public Double getLatitude() {
+    return a;
+  }
   public void setA(Double a) {
+    this.a = a;
+  }
+  @JsonProperty("latitude")
+  public void setLatitude(Double a) {
     this.a = a;
   }
 
@@ -28,7 +36,15 @@ public class MapPoint   {
   public Double getO() {
     return o;
   }
+
+  public Double getLongitude() {
+    return o;
+  }
   public void setO(Double o) {
+    this.o = o;
+  }
+  @JsonProperty("longitude")
+  public void setLongitude(Double o) {
     this.o = o;
   }
 

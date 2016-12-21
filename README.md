@@ -23,19 +23,19 @@ http://localhost:8080/api/heatmaps/1?startTime=1224726800000&endTime=12247269600
 
 expected response: second page with links to next and prev
 
-4. GET trajectories batches
+4. GET data batches
 
-http://localhost:8080/api/trajectories/batches/1?api_key=crohavior
+http://localhost:8080/api/data/batches/1?api_key=crohavior
 
-expected response: list of trajectories with links
+expected response: list of data with links
 
-5. GET trajectories batch by link from 4.
+5. GET data batch by link from 4.
 
-http://localhost:8080/api/trajectories/1?batchId=ss2008-10-23T02%3A56%3A15e2008-10-23T04%3A56%3A15&api_key=crohavior
+http://localhost:8080/api/data/1?batchId=ss2008-10-23T02%3A56%3A15e2008-10-23T04%3A56%3A15&api_key=crohavior
 
-expected response: valid list of trajectories
+expected response: valid list of data
 
-6. GET heatmaps by the link from the trajectories
+6. GET heatmaps by the link from the data
 
 http://localhost:8080/api/heatmaps/1?startTime=1224726975000&endTime=1224734175000&interval=5&api_key=crohavior
 

@@ -134,11 +134,18 @@ $(function () {
             "endDate": "10/23/2008 23:55:59",
             "minDate": "10/23/2008",
             "maxDate": "10/23/2008 23:55:59",
-            "format": 'MM/DD/YYYY h:mm:ss'
+            "locale": {
+                        "format": "MM/DD/YYYY HH:mm:ss"
+            }
         }, function(start, end, label) {
           console.log("New date range selected: " + start.format('x') + " to " + end.format('x') + ")");
+          setDateRange(start.format('x'), end.format('x'));
         });
-    //Date range as a button
+    /*$('#reservationtime').on('show.daterangepicker', function(ev, picker) {
+      console.log(picker.startDate.format('MM/DD/YYYY HH:mm:ss'));
+      console.log(picker.endDate.format('MM/DD/YYYY HH:mm:ss'));
+      setDateRange(picker.startDate.format('x'), picker.endDate.format('x'));
+    });*/
 
 
     //Date picker

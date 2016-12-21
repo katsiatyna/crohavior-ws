@@ -1,16 +1,16 @@
 package io.swagger.model;
 
-import java.util.Objects;
-import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
-public class TrajectoryGrid extends MapGrid  {
+public class AssociationRulesCollection extends MapGrid  {
   
   private Integer nbTrajectories = null;
-  private List<Trajectory> data = new ArrayList<Trajectory>();
+  private List<AssociationRule> data = new ArrayList<>();
 
   /**
    **/
@@ -27,10 +27,10 @@ public class TrajectoryGrid extends MapGrid  {
    **/
   
   @JsonProperty("data")
-  public List<Trajectory> getData() {
+  public List<AssociationRule> getData() {
     return data;
   }
-  public void setData(List<Trajectory> data) {
+  public void setData(List<AssociationRule> data) {
     this.data = data;
   }
 
@@ -43,7 +43,7 @@ public class TrajectoryGrid extends MapGrid  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TrajectoryGrid trajectoryGrid = (TrajectoryGrid) o;
+    AssociationRulesCollection trajectoryGrid = (AssociationRulesCollection) o;
     return Objects.equals(nbTrajectories, trajectoryGrid.nbTrajectories) &&
         Objects.equals(data, trajectoryGrid.data);
   }

@@ -23,4 +23,7 @@ public abstract class TrajectoriesApiService {
 
     public abstract Response getTrajectoriesBatches(Integer projectId, String apiKey, UriInfo uri)
             throws NotFoundException;
+
+    public abstract Response getAssociationRulesByParameters(Integer projectId, String batchId, String apiKey, UriInfo uri)
+        throws NotFoundException;
 }

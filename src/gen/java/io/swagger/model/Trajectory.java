@@ -1,35 +1,35 @@
 package io.swagger.model;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.Objects;
 import java.util.ArrayList;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.TrajectoryPoint;
+
 import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class Trajectory   {
   
-  private List<TrajectoryPoint> points = new ArrayList<TrajectoryPoint>();
-  private Integer f = null;
+  private List<TrajectoryPoint> items = new ArrayList<TrajectoryPoint>();
+  private Integer frequency = null;
 
 
-  @JsonProperty("f")
-  public Integer getF() {
-    return f;
+  @JsonProperty("frequency")
+  public Integer getFrequency() {
+    return frequency;
   }
 
-  public void setF(Integer f) {
-    this.f = f;
+  public void setFrequency(Integer frequency) {
+    this.frequency = frequency;
   }
 
 
-  @JsonProperty("points")
-  public List<TrajectoryPoint> getPoints() {
-    return points;
+  @JsonProperty("items")
+  public List<TrajectoryPoint> getItems() {
+    return items;
   }
-  public void setPoints(List<TrajectoryPoint> points) {
-    this.points = points;
+  public void setItems(List<TrajectoryPoint> items) {
+    this.items = items;
   }
 
 
@@ -42,19 +42,19 @@ public class Trajectory   {
       return false;
     }
     Trajectory trajectory = (Trajectory) o;
-    return         Objects.equals(points, trajectory.points);
+    return         Objects.equals(items, trajectory.items);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash( points);
+    return Objects.hash(items);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Trajectory {\n");
-    sb.append("    points: ").append(toIndentedString(points)).append("\n");
+    sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("}");
     return sb.toString();
   }
