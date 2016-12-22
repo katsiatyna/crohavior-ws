@@ -468,30 +468,59 @@ var api = function() {
    */
   api.instance = new api();
   
-  var heatmapsApi = function() {
+
+
+var trajectoryApi = function() {
+    this.apiClient = api.instance;
+
+
+    this.getAssociationRulesByParameters = function(projectId, batchId, callback) {
+      var postBody = null;
+
+      // verify the required parameter 'projectId' is set
+      if (projectId == undefined || projectId == null) {
+        throw new Error("Missing the required parameter 'projectId' when calling getAssociationRulesByParameters");
+      }
+
+      // verify the required parameter 'startTime' is set
+      if (batchId == undefined || batchId == null) {
+        throw new Error("Missing the required parameter 'batchId' when calling getAssociationRulesByParameters");
+      }
+
+      var pathParams = {
+        'projectId': projectId
+      };
+      var queryParams = {
+        'batchId': batchId,
+        'api_key': 'test'
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = ['UserSecurity'];
+      var contentTypes = [];
+      var accepts = ['application/hal+json'];
+      var returnType = [AssociationRulesCollection];
+
+      return this.apiClient.callApi(
+        '/trajectories/{projectId}/ar', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+
+  }
+
+
+var heatmapsApi = function() {
       this.apiClient = api.instance;
-  
-  
-      /**
-       * Callback function to receive the result of the getHeatmapsByParameters operation.
-       * @callback module:api/HeatmapApi~getHeatmapsByParametersCallback
-       * @param {String} error Error message, if any.
-       * @param {Array.<module:model/HeatmapGridCollection>} data The data returned by the service call.
-       * @param {String} response The complete HTTP response.
-       */
-  
-      /**
-       * Retrieves heatmap collection by parameters
-       * parameters are currently project, the start time and end time range
-       * @param {Number} projectId id of the project of logged in user
-       * @param {Number} startTime Start date/time
-       * @param {Number} endTime End date/time
-       * @param {module:api/HeatmapApi~getHeatmapsByParametersCallback} callback The callback function, accepting three arguments: error, data, response
-       * data is of type: {@link Array.<module:model/HeatmapGridCollection>}
-       */
+
       this.getHeatmapsByParameters = function(projectId, interval, startTime, endTime, callback) {
         var postBody = null;
-  
+
         // verify the required parameter 'projectId' is set
         if (projectId == undefined || projectId == null) {
           throw new Error("Missing the required parameter 'projectId' when calling getHeatmapsByParameters");
@@ -506,13 +535,13 @@ var api = function() {
         if (startTime == undefined || startTime == null) {
           throw new Error("Missing the required parameter 'startTime' when calling getHeatmapsByParameters");
         }
-  
+
         // verify the required parameter 'endTime' is set
         if (endTime == undefined || endTime == null) {
           throw new Error("Missing the required parameter 'endTime' when calling getHeatmapsByParameters");
         }
-  
-  
+
+
         var pathParams = {
           'projectId': projectId
         };
@@ -526,12 +555,12 @@ var api = function() {
         };
         var formParams = {
         };
-  
+
         var authNames = ['UserSecurity'];
         var contentTypes = [];
         var accepts = ['application/hal+json'];
         var returnType = [HeatmapGridCollection];
-  
+
         return this.apiClient.callApi(
           '/heatmaps/{projectId}', 'GET',
           pathParams, queryParams, headerParams, formParams, postBody,
@@ -592,7 +621,7 @@ var api = function() {
             pathParams, queryParams, headerParams, formParams, postBody,
             authNames, contentTypes, accepts, returnType, callback
           );
-    };
+    }
 
 
 }
@@ -773,6 +802,152 @@ var MapPoint = function() {
    */
   MapPoint.prototype['o'] = undefined;
 
+/**
+   * The TrajectoryPoint model module.
+   * @module model/TrajectoryPoint
+   * @version 1.0.0
+   */
+
+  /**
+   * Constructs a new <code>TrajectoryPoint</code>.
+   * @alias module:model/TrajectoryPoint
+   * @class
+   * @extends module:model/MapPoint
+   */
+  var TrajectoryPoint = function() {
+    var _this = this;
+    MapPoint.call(_this);
+
+  };
+
+  /**
+   * Constructs a <code>TrajectoryPoint</code> from a plain JavaScript object, optionally creating a new instance.
+   * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+   * @param {Object} data The plain JavaScript object bearing properties of interest.
+   * @param {module:model/TrajectoryPoint} obj Optional instance to populate.
+   * @return {module:model/TrajectoryPoint} The populated <code>TrajectoryPoint</code> instance.
+   */
+  TrajectoryPoint.constructFromObject = function(data, obj) {
+    if (data) {
+      obj = obj || new TrajectoryPoint();
+      MapPoint.constructFromObject(data, obj);
+      if (data.hasOwnProperty('order')) {
+        obj['order'] = convertToType(data['order'], 'Number');
+      }
+    }
+    return obj;
+  }
+
+  TrajectoryPoint.prototype = Object.create(MapPoint.prototype);
+  TrajectoryPoint.prototype.constructor = TrajectoryPoint;
+
+  /**
+   * @member {Number} order
+   */
+  TrajectoryPoint.prototype['order'] = undefined;
+
+/**
+   * The Trajectory model module.
+   * @module model/Trajectory
+   * @version 1.0.0
+   */
+
+  /**
+   * Constructs a new <code>Trajectory</code>.
+   * @alias module:model/Trajectory
+   * @class
+   */
+  var Trajectory = function() {
+    var _this = this;
+
+
+
+  };
+
+  /**
+   * Constructs a <code>Trajectory</code> from a plain JavaScript object, optionally creating a new instance.
+   * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+   * @param {Object} data The plain JavaScript object bearing properties of interest.
+   * @param {module:model/Trajectory} obj Optional instance to populate.
+   * @return {module:model/Trajectory} The populated <code>Trajectory</code> instance.
+   */
+  Trajectory.constructFromObject = function(data, obj) {
+    if (data) {
+      obj = obj || new Trajectory();
+
+      if (data.hasOwnProperty('frequency')) {
+        obj['frequency'] = convertToType(data['frequency'], 'Number');
+      }
+      if (data.hasOwnProperty('items')) {
+        obj['items'] = convertToType(data['items'], [TrajectoryPoint]);
+      }
+    }
+    return obj;
+  }
+
+  /**
+   * @member {Number} nmPeople
+   */
+  Trajectory.prototype['frequency'] = undefined;
+  /**
+   * @member {Array.<module:model/TrajectoryPoint>} points
+   */
+  Trajectory.prototype['items'] = undefined;
+
+/**
+   * The AssociationRule model module.
+   * @module model/AssociationRule
+   * @version 1.0.0
+   */
+
+  /**
+   * Constructs a new <code>AssociationRule</code>.
+   * @alias module:model/AssociationRule
+   * @class
+   */
+  var AssociationRule = function() {
+    var _this = this;
+
+
+  };
+
+  /**
+   * Constructs a <code>TrajectoryGrid</code> from a plain JavaScript object, optionally creating a new instance.
+   * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+   * @param {Object} data The plain JavaScript object bearing properties of interest.
+   * @param {module:model/TrajectoryGrid} obj Optional instance to populate.
+   * @return {module:model/TrajectoryGrid} The populated <code>TrajectoryGrid</code> instance.
+   */
+  AssociationRule.constructFromObject = function(data, obj) {
+    if (data) {
+      obj = obj || new AssociationRule();
+      if (data.hasOwnProperty('confidence')) {
+        obj['confidence'] = convertToType(data['confidence'], 'Number');
+      }
+      if (data.hasOwnProperty('antecedent')) {
+        obj['antecedent'] = convertToType(data['antecedent'], [TrajectoryPoint]);
+      }
+      if (data.hasOwnProperty('consequent')) {
+          obj['consequent'] = convertToType(data['consequent'], [TrajectoryPoint]);
+        }
+    }
+    return obj;
+  }
+
+  AssociationRule.prototype.constructor = AssociationRule;
+
+  /**
+   * @member {Number} nbTrajectories
+   */
+  AssociationRule.prototype['confidence'] = undefined;
+  /**
+   * @member {Array.<module:model/Trajectory>} trajectories
+   */
+  AssociationRule.prototype['antecedent'] = undefined;
+
+  AssociationRule.prototype['consequent'] = undefined;
+
+
 
 
 var HeatmapPoint = function() {
@@ -880,6 +1055,51 @@ var HeatmapPoint = function() {
        * @member {Number} intervalMs
        */
       MapGrid.prototype['intervalMs'] = undefined;
+
+/**
+     * The AssociationRulesCollection model module.
+     * @module model/AssociationRulesCollection
+     * @version 1.0.0
+     */
+
+    /**
+     * Constructs a new <code>AssociationRulesCollection</code>.
+     * @alias module:model/AssociationRulesCollection
+     * @class
+     * @extends module:model/MapGrid
+     */
+    var AssociationRulesCollection = function() {
+      var _this = this;
+      MapGrid.call(_this);
+
+    };
+
+    /**
+     * Constructs a <code>TrajectoryGridCollection</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/TrajectoryGridCollection} obj Optional instance to populate.
+     * @return {module:model/TrajectoryGridCollection} The populated <code>TrajectoryGridCollection</code> instance.
+     */
+    AssociationRulesCollection.constructFromObject = function(data, obj) {
+      if (data) {
+        obj = obj || new AssociationRulesCollection();
+        MapGrid.constructFromObject(data, obj);
+        if (data.hasOwnProperty('data')) {
+          obj['data'] = convertToType(data['data'], [AssociationRule]);
+        }
+      }
+      return obj;
+    }
+
+    AssociationRulesCollection.prototype = Object.create(MapGrid.prototype);
+    AssociationRulesCollection.prototype.constructor = AssociationRulesCollection;
+
+    /**
+     * @member {Array.<module:model/TrajectoryGrid>} elements
+     */
+    AssociationRulesCollection.prototype['data'] = undefined;
+
 
 
 

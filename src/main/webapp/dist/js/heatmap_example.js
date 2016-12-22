@@ -108,7 +108,7 @@ function speedLoop () {           //  create a loop function
 
 
 
-var api = new heatmapsApi();
+var HMApi = new heatmapsApi();
 
 doAnalysis = function(){
     if(isRealTime){
@@ -158,7 +158,7 @@ doAnalysis = function(){
                             currentPage = dataUri['page'];
                         }
                     }
-                    api.getHeatmapsByParametersPage(currentPage + 1, projectId, frame, startTime, endTime, callbackUri);
+                    HMApi.getHeatmapsByParametersPage(currentPage + 1, projectId, frame, startTime, endTime, callbackUri);
                     nextRetrieved = true;
                   }
                   if (elements != null && i < elements.length && !isRealTime) {            //  if the counter < 10, call the loop function
@@ -186,11 +186,18 @@ doAnalysis = function(){
             }
           }
         };
-        api.getHeatmapsByParameters(projectId, frame, startTime, endTime, callback);
+        HMApi.getHeatmapsByParameters(projectId, frame, startTime, endTime, callback);
     }
 
 }
-doAnalysis();
+
+
+//doAnalysis();
+
+
+
+
+
 setIsRealTime = function(state){
 if (isRealTime != state){
     isRealTime = state;

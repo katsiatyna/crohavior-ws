@@ -10,7 +10,7 @@ import java.util.Objects;
 public class AssociationRule {
 
     private List<TrajectoryPoint> antecedent = new ArrayList<TrajectoryPoint>();
-    private List<TrajectoryPoint> consequent = new ArrayList<TrajectoryPoint>();
+    private List<TrajectoryPoint> consequent = new ArrayList<>();
     private Double confidence = null;
 
 
