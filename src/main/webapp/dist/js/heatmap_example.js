@@ -134,9 +134,11 @@ doAnalysis = function(){
                batchTimeout = setTimeout(function () {
                   if(elements != null && elements[i] != null && elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
                         heatmap.setData(elements[i]);
-                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000);
+                        //setReportTime(elements[i]);
+                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (elements[i]['startTimestamp'] + ' - ' + elements[i]['endTimestamp']);
                   } else {
-                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (startTime + frame*iGlobal*1000) + ': no data';
+                        //setReportTime(null);
+                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + 'no data';
                   }
                   console.log(i);
                   i++;
@@ -192,7 +194,7 @@ doAnalysis = function(){
 }
 
 
-//doAnalysis();
+doAnalysis();
 
 
 
@@ -228,6 +230,7 @@ setDateRange = function(startTs, endTs){
 }
 
 clearTimeouts = function(){
+    heatmap.setData({data:[]});
     clearTimeout(speedTimeout);
     clearTimeout(batchTimeout);
 }

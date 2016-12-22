@@ -87,11 +87,15 @@ public class HeatmapsApiServiceImpl extends HeatmapsApiService {
             values = HBaseUtils.getRecordRangeValues(TABLE_NAME, startDateStr, endDateStr);
             System.out.println(values.size());
             heatmapGridCollection.setNbEl(values.size());
+            int element = 0;
             for (String val : values) {
                 HeatmapGrid obj = mapper.readValue(val, HeatmapGrid.class);
                 obj.setProjectId(projectId);
                 obj.setIntervalMs(interval);
+                obj.setStartTimestamp(newStartTime + element*interval*1000);
+                obj.setEndTimestamp(newStartTime+((element + 1)*interval*1000));
                 elements.add(obj);
+                element++;
             }
 
             heatmapGridCollection.setElements(elements);

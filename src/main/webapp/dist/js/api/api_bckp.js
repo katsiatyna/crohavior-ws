@@ -831,9 +831,9 @@ var MapPoint = function() {
     if (data) {
       obj = obj || new TrajectoryPoint();
       MapPoint.constructFromObject(data, obj);
-      if (data.hasOwnProperty('order')) {
+      /*if (data.hasOwnProperty('order')) {
         obj['order'] = convertToType(data['order'], 'Number');
-      }
+      }*/
     }
     return obj;
   }
@@ -844,7 +844,7 @@ var MapPoint = function() {
   /**
    * @member {Number} order
    */
-  TrajectoryPoint.prototype['order'] = undefined;
+  //TrajectoryPoint.prototype['order'] = undefined;
 
 /**
    * The Trajectory model module.
@@ -997,11 +997,6 @@ var HeatmapPoint = function() {
        */
       var MapGrid = function() {
         var _this = this;
-
-
-
-
-
 
       };
 
