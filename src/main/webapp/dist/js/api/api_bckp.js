@@ -511,6 +511,43 @@ var trajectoryApi = function() {
       );
     }
 
+    this.getSequentialPatternsByParameters = function(projectId, batchId, callback) {
+          var postBody = null;
+
+          // verify the required parameter 'projectId' is set
+          if (projectId == undefined || projectId == null) {
+            throw new Error("Missing the required parameter 'projectId' when calling getAssociationRulesByParameters");
+          }
+
+          // verify the required parameter 'startTime' is set
+          if (batchId == undefined || batchId == null) {
+            throw new Error("Missing the required parameter 'batchId' when calling getAssociationRulesByParameters");
+          }
+
+          var pathParams = {
+            'projectId': projectId
+          };
+          var queryParams = {
+            'batchId': batchId,
+            'api_key': 'test'
+          };
+          var headerParams = {
+          };
+          var formParams = {
+          };
+
+          var authNames = ['UserSecurity'];
+          var contentTypes = [];
+          var accepts = ['application/hal+json'];
+          var returnType = [AssociationRulesCollection];
+
+          return this.apiClient.callApi(
+            '/trajectories/{projectId}', 'GET',
+            pathParams, queryParams, headerParams, formParams, postBody,
+            authNames, contentTypes, accepts, returnType, callback
+          );
+        }
+
 
   }
 

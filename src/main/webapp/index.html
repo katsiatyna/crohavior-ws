@@ -51,7 +51,7 @@
         <!-- Logo -->
         <a href="index.html" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-lg"><img src="dist/img/crohavior.png"></span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg">CROHAVIOR</span>
         </a>
@@ -63,165 +63,326 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Heatmap
+                Dashboard
 
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#"> Dashboard</a></li>
-                <li class="active">Heatmap</li>
+                <li class="active">Dashboard</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
-                <!-- /.col (left) -->
-                <div class="col-md-12">
-                    <div class="box box-solid bg-light-blue-gradient">
-                        <div class="box-header">
-                            <h3 class="box-title">Parameters</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-group col-md-3">
-                                <label>Real-time</label>
-                                <div class="input-group">
-                                    <input type="checkbox" name="my-checkbox" class="" checked>
-                                </div>
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" data-toggle="tab">Heatmap</a></li>
+                    <li ><a href="#tab_2" data-toggle="tab">Trajectories</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="row">
 
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Time Frame (Snapshot Size)</label>
-                                <div class="input-group">
-                                    <input type="radio" name="iCheck" id="5s" value="5" checked><label for="5s">5
-                                    sec</label>
-                                    <input type="radio" name="iCheck" id="10s" value="10"><label for="10s">10
-                                    sec</label>
-                                    <input type="radio" name="iCheck" id="15s" value="15"><label for="15s">15
-                                    sec</label>
-                                </div>
-                            </div>
-                            <!-- Date and time range -->
-                            <div class="form-group col-md-3">
-                                <label>Date and time range:</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-clock-o"></i>
+                            <!-- /.col (left) -->
+                            <div class="col-md-12">
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <!--<div class="box-header">
+                                        <h3 class="box-title">Parameters</h3>
+                                    </div>-->
+                                    <div class="box-body">
+                                        <div class="form-group col-md-3">
+                                            <label>Real-time</label>
+
+                                            <div class="input-group">
+                                                <input type="checkbox" name="my-checkbox" class="" checked>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Time Frame (Snapshot Size)</label>
+
+                                            <div class="input-group">
+                                                <input type="radio" name="iCheck" id="5s" value="5" checked><label for="5s">5
+                                                sec</label>
+                                                <input type="radio" name="iCheck" id="10s" value="10"><label for="10s">10
+                                                sec</label>
+                                                <input type="radio" name="iCheck" id="15s" value="15"><label for="15s">15
+                                                sec</label>
+                                            </div>
+                                        </div>
+                                        <!-- Date and time range -->
+                                        <div class="form-group col-md-3">
+                                            <label>Date and time range:</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control pull-right" id="reservationtime"
+                                                       disabled>
+                                            </div>
+                                            <!-- /.input group -->
+                                        </div>
+                                        <!-- /.form group -->
+                                        <div class="form-group col-md-3">
+
+
+
+
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control pull-right" id="reservationtime" disabled>
+                                    <!-- /.box-body -->
                                 </div>
-                                <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                            <div class="form-group col-md-3">
-
-                                <label>Behavioral Patterns for:</label>
-                                <div class="input-group">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-primary" id="showassrules">Show</button>
-                                    </div>
-                                    <select class="form-control" id="batchSelector">
-                                        <option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50</option>
-                                    </select>
-                                </div>
+                                <!-- /.box -->
 
 
                             </div>
+                            <!-- /.col (right) -->
                         </div>
-                        <!-- /.box-body -->
+                        <!-- Main row -->
+                        <div class="row">
+                            <!-- Left col -->
+                            <section class="col-lg-7 connectedSortable">
+                                <!-- Map box -->
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <div class="box-header">
+                                        <!-- tools box -->
+                                        <!--<div class="pull-right box-tools">
+                                          <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range">
+                                            <i class="fa fa-calendar"></i></button>
+                                          <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                                            <i class="fa fa-minus"></i></button>
+                                        </div>-->
+                                        <!-- /. tools -->
+
+                                        <i class="fa fa-map-marker"></i>
+
+                                        <h3 class="box-title">
+                                            Map
+                                        </h3>
+                                    </div>
+                                    <div id="ts"></div>
+                                    <div class="box-body">
+
+                                        <div id="world-map" style="height: 400px; width: 100%;"></div>
+                                    </div>
+                                    <!-- /.box-body-->
+                                    <!--<div class="box-footer no-border">
+                                      <div class="row">
+                                        <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                          <div id="sparkline-1"></div>
+                                          <div class="knob-label">Visitors</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                        <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                          <div id="sparkline-2"></div>
+                                          <div class="knob-label">Online</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                        <div class="col-xs-4 text-center">
+                                          <div id="sparkline-3"></div>
+                                          <div class="knob-label">Exists</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                      </div>
+                                      &lt;!&ndash; /.row &ndash;&gt;
+                                    </div>-->
+                                </div>
+                                <!-- /.box -->
+
+                            </section>
+                            <!-- /.Left col -->
+                            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                            <section class="col-lg-5 connectedSortable">
+
+
+                                <!-- stats report -->
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Report</h3>
+
+                                        <div class="box-tools">
+                                            <ul class="pagination pagination-sm no-margin pull-right" id="reportPagingHeat">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body no-padding">
+                                        <div class="box-group" id="accordionHeat">
+                                            <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <!-- /.box -->
+
+                                    <!-- Calendar -->
+
+                                    <!-- /.box -->
+                                </div>
+                            </section>
+                            <!-- right col -->
+                        </div>
                     </div>
-                    <!-- /.box -->
+                    <div class="tab-pane" id="tab_2">
+                        <div class="row">
+
+                            <!-- /.col (left) -->
+                            <div class="col-md-12">
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <!--<div class="box-header">
+                                        <h3 class="box-title">Parameters</h3>
+                                    </div>-->
+                                    <div class="box-body">
+                                        <div class="form-group col-md-3">
+                                            <!--<label>Real-time</label>
+
+                                            <div class="input-group">
+                                                <input type="checkbox" name="my-checkbox" class="" checked>
+                                            </div>-->
+
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <!--<label>Time Frame (Snapshot Size)</label>
+
+                                            <div class="input-group">
+
+                                            </div>-->
+                                        </div>
+                                        <!-- Date and time range -->
+                                        <div class="form-group col-md-3">
+                                            <label>Date and time range:</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-clock-o"></i>
+                                                </div>
+                                                <input type="text" class="form-control pull-right" id="reservationtimeTrajectory">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary" id="requestbatchbtn">Request
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- /.input group -->
+                                        </div>
+                                        <!-- /.form group -->
+                                        <div class="form-group col-md-3">
+
+                                            <label>Behavioral Patterns for:</label>
+
+                                            <div class="input-group">
+
+                                                <select class="form-control" id="batchSelector">
+                                                    <option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50
+                                                    </option>
+                                                </select>
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary" id="showassrules">Show
+                                                    </button>
+                                                </div>
+                                            </div>
 
 
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+
+
+                            </div>
+                            <!-- /.col (right) -->
+                        </div>
+                        <!-- Main row -->
+                        <div class="row">
+                            <!-- Left col -->
+                            <section class="col-lg-7 connectedSortable">
+                                <!-- Map box -->
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <div class="box-header">
+                                        <!-- tools box -->
+                                        <!--<div class="pull-right box-tools">
+                                          <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range">
+                                            <i class="fa fa-calendar"></i></button>
+                                          <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
+                                            <i class="fa fa-minus"></i></button>
+                                        </div>-->
+                                        <!-- /. tools -->
+
+                                        <i class="fa fa-map-marker"></i>
+
+                                        <h3 class="box-title">
+                                            Map
+                                        </h3>
+                                    </div>
+                                    <div id="ts_traj"></div>
+                                    <div class="box-body">
+
+                                        <div id="world-map-traj" style="height: 400px; width: 100%;"></div>
+                                    </div>
+                                    <!-- /.box-body-->
+                                    <!--<div class="box-footer no-border">
+                                      <div class="row">
+                                        <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                          <div id="sparkline-1"></div>
+                                          <div class="knob-label">Visitors</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                        <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                          <div id="sparkline-2"></div>
+                                          <div class="knob-label">Online</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                        <div class="col-xs-4 text-center">
+                                          <div id="sparkline-3"></div>
+                                          <div class="knob-label">Exists</div>
+                                        </div>
+                                        &lt;!&ndash; ./col &ndash;&gt;
+                                      </div>
+                                      &lt;!&ndash; /.row &ndash;&gt;
+                                    </div>-->
+                                </div>
+                                <!-- /.box -->
+
+                            </section>
+                            <!-- /.Left col -->
+                            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                            <section class="col-lg-5 connectedSortable">
+
+
+                                <!-- stats report -->
+                                <div class="box box-solid bg-light-blue-gradient">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Report</h3>
+
+                                        <div class="box-tools">
+                                            <ul class="pagination pagination-sm no-margin pull-right" id="reportPaging">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body no-padding">
+                                        <div class="box-group" id="accordion">
+                                            <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <!-- /.box -->
+
+                                    <!-- Calendar -->
+
+                                    <!-- /.box -->
+                                </div>
+                            </section>
+                            <!-- right col -->
+                        </div>
+                    </div>
                 </div>
-                <!-- /.col (right) -->
+
             </div>
-            <!-- Main row -->
-            <div class="row">
-                <!-- Left col -->
-                <section class="col-lg-7 connectedSortable">
-                    <!-- Map box -->
-                    <div class="box box-solid bg-light-blue-gradient">
-                        <div class="box-header">
-                            <!-- tools box -->
-                            <!--<div class="pull-right box-tools">
-                              <button type="button" class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range">
-                                <i class="fa fa-calendar"></i></button>
-                              <button type="button" class="btn btn-primary btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="Collapse" style="margin-right: 5px;">
-                                <i class="fa fa-minus"></i></button>
-                            </div>-->
-                            <!-- /. tools -->
-
-                            <i class="fa fa-map-marker"></i>
-
-                            <h3 class="box-title">
-                                Heatmap
-                            </h3>
-                        </div>
-                        <div id="ts"></div>
-                        <div class="box-body">
-
-                            <div id="world-map" style="height: 400px; width: 100%;"></div>
-                        </div>
-                        <!-- /.box-body-->
-                        <!--<div class="box-footer no-border">
-                          <div class="row">
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                              <div id="sparkline-1"></div>
-                              <div class="knob-label">Visitors</div>
-                            </div>
-                            &lt;!&ndash; ./col &ndash;&gt;
-                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                              <div id="sparkline-2"></div>
-                              <div class="knob-label">Online</div>
-                            </div>
-                            &lt;!&ndash; ./col &ndash;&gt;
-                            <div class="col-xs-4 text-center">
-                              <div id="sparkline-3"></div>
-                              <div class="knob-label">Exists</div>
-                            </div>
-                            &lt;!&ndash; ./col &ndash;&gt;
-                          </div>
-                          &lt;!&ndash; /.row &ndash;&gt;
-                        </div>-->
-                    </div>
-                    <!-- /.box -->
-
-                </section>
-                <!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-5 connectedSortable">
-
-
-                    <!-- stats report -->
-                    <div class="box box-solid bg-light-blue-gradient">
-                        <div class="box-header">
-                            <h3 class="box-title">Report</h3>
-
-                            <div class="box-tools">
-                                <ul class="pagination pagination-sm no-margin pull-right" id="reportPaging">
-
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body no-padding">
-                            <div class="box-group" id="accordion">
-                                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                        <!-- /.box -->
-
-                        <!-- Calendar -->
-
-                        <!-- /.box -->
-                        </div>
-                </section>
-                <!-- right col -->
-            </div>
-
         </section>
         <!-- /.content -->
     </div>
@@ -456,6 +617,8 @@
 
 
 
+
+
 </script>
 <script src="plugins/iCheck/icheck.js"></script>
 <script>
@@ -468,10 +631,10 @@
     $("[name='iCheck']").on('ifChecked', function(event){
         setFrame(this.value);
     });
-
-
-
-
+    $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+        google.maps.event.trigger(trajObj, 'resize');
+        trajObj.setZoom( trajObj.getZoom() );
+    })
 
 </script>
 
@@ -520,9 +683,6 @@
 <script src="plugins/select2/select2.full.min.js"></script>
 <script>
     $(".select2").select2();
-
-
-
 </script>
 <!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>

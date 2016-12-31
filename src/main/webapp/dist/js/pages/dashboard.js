@@ -141,6 +141,21 @@ $(function () {
           console.log("New date range selected: " + start.format('x') + " to " + end.format('x') + ")");
           setDateRange(start.format('x'), end.format('x'));
         });
+    $('#reservationtimeTrajectory').daterangepicker({
+         "timePicker": true,
+            "timePicker24Hour": true,
+            "timePickerSeconds": true,
+            "startDate": "10/23/2008",
+            "endDate": "10/23/2008 23:55:59",
+            "minDate": "10/23/2008",
+            "maxDate": "10/23/2008 23:55:59",
+            "locale": {
+                        "format": "MM/DD/YYYY HH:mm:ss"
+            }
+        }, function(start, end, label) {
+          console.log("New date range selected TRAJ: " + start.format('x') + " to " + end.format('x') + ")");
+          setDateRange(start.format('x'), end.format('x'));
+        });
     /*$('#reservationtime').on('show.daterangepicker', function(ev, picker) {
       console.log(picker.startDate.format('MM/DD/YYYY HH:mm:ss'));
       console.log(picker.endDate.format('MM/DD/YYYY HH:mm:ss'));

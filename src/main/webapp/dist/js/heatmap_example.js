@@ -13,17 +13,17 @@ var client = new elasticsearch.Client({
     log: 'info'
   });
 
-var myLatlng = new google.maps.LatLng(39.905, 116.375);
-  //var myLatlng = new google.maps.LatLng(39.99900555, 116.4215235);
+//var myLatlng = new google.maps.LatLng(39.905, 116.375);
+  var myLatlng = new google.maps.LatLng(39.979, 116.327);
   // map options,
   var myOptions = {
-    zoom: 11,
+    zoom: 12,
     center: myLatlng
   };
   // standard map
-  map = new google.maps.Map(document.getElementById("world-map"), myOptions);
+  heatmapObj = new google.maps.Map(document.getElementById("world-map"), myOptions);
   // heatmap layer
-  heatmap = new HeatmapOverlay(map,
+  var heatmapMap = new HeatmapOverlay(heatmapObj,
     {
       // radius should be small ONLY if scaleRadius is true (or small radius is intended)
       "radius": 20,
@@ -89,7 +89,7 @@ var myLatlng = new google.maps.LatLng(39.905, 116.375);
               }
         }
   });
-  heatmap.setData(speedData);
+  heatmapMap.setData(speedData);
   document.getElementById("ts").innerHTML='REAL-TIME: ' + cur_ts;
   }
 
@@ -133,7 +133,7 @@ doAnalysis = function(){
             function batchLoop () {           //  create a loop function
                batchTimeout = setTimeout(function () {
                   if(elements != null && elements[i] != null && elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
-                        heatmap.setData(elements[i]);
+                        heatmapMap.setData(elements[i]);
                         //setReportTime(elements[i]);
                         document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (elements[i]['startTimestamp'] + ' - ' + elements[i]['endTimestamp']);
                   } else {
@@ -230,7 +230,7 @@ setDateRange = function(startTs, endTs){
 }
 
 clearTimeouts = function(){
-    heatmap.setData({data:[]});
+    heatmapMap.setData({data:[]});
     clearTimeout(speedTimeout);
     clearTimeout(batchTimeout);
 }
