@@ -47,31 +47,34 @@
 <body class="hold-transition skin-blue sidebar-collapse">
 <div class="wrapper">
 
-    <header class=" main-header" style="margin-left:15px;">
+    <nav class="navbar navbar-default">
         <!-- Logo -->
-        <a href="index.html" class="logo">
+        <a href="index.html" class="navbar-brand" >
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-lg"><img src="dist/img/crohavior.png"></span>
+            <img  src="dist/img/logo.png">
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg">CROHAVIOR</span>
+            <!--<span class="logo-lg">CROHAVIOR</span>-->
         </a>
 
-    </header>
+    </nav>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
+            <div class="page-header">
             <h1>
                 Dashboard
 
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="active">Dashboard</li>
-            </ol>
-        </section>
 
+            </div>
+
+        </section>
+        <ol class="breadcrumb">
+            <li><a href="#"> Home</a></li>
+            <li class="active"><i class="fa fa-dashboard"></i>Dashboard</li>
+        </ol>
         <!-- Main content -->
         <section class="content">
             <div class="nav-tabs-custom">
@@ -235,24 +238,37 @@
                                         <h3 class="box-title">Parameters</h3>
                                     </div>-->
                                     <div class="box-body">
-                                        <div class="form-group col-md-3">
-                                            <!--<label>Real-time</label>
+                                        <div class="form-group col-md-4">
+                                            <label>Behavioral Patterns for:</label>
 
                                             <div class="input-group">
-                                                <input type="checkbox" name="my-checkbox" class="" checked>
-                                            </div>-->
 
+                                                <select class="form-control" id="batchSelector">
+                                                    <option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50
+                                                    </option>
+                                                </select>
+
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <!--<label>Time Frame (Snapshot Size)</label>
+
+                                        <div class="form-nline form-group col-md-4">
+                                            <label>Show patterns of length:</label>
 
                                             <div class="input-group">
+                                                <select class="form-control" id="signSelector">
+                                                    <option selected="selected"><=</option>
+                                                    <option>=</option>
+                                                    <option>>=</option>
+                                                </select>
+                                                <input class="form-control " type="number" value="2" min="1" max="1000" id="lengthInput">
+                                                <button type="button" class="btn btn-primary" id="showassrules">Show
+                                                    </button>
 
-                                            </div>-->
+                                            </div>
                                         </div>
                                         <!-- Date and time range -->
-                                        <div class="form-group col-md-3">
-                                            <label>Date and time range:</label>
+                                        <div class="form-group col-md-4">
+                                            <label>Request a batch:</label>
 
                                             <div class="input-group">
                                                 <div class="input-group-addon">
@@ -267,24 +283,6 @@
                                             <!-- /.input group -->
                                         </div>
                                         <!-- /.form group -->
-                                        <div class="form-group col-md-3">
-
-                                            <label>Behavioral Patterns for:</label>
-
-                                            <div class="input-group">
-
-                                                <select class="form-control" id="batchSelector">
-                                                    <option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50
-                                                    </option>
-                                                </select>
-                                                <div class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary" id="showassrules">Show
-                                                    </button>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
