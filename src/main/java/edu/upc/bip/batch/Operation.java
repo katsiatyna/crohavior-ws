@@ -86,7 +86,7 @@ public class Operation implements Serializable {
         }
     }
 
-    public static void addToOperationsTable(Date start, Date end, Double support, Double confidence) throws Exception {
+    public static boolean addToOperationsTable(Date start, Date end, Double support, Double confidence) throws Exception {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String startString = formatter.format(start);
         String endString = formatter.format(end);
@@ -96,8 +96,10 @@ public class Operation implements Serializable {
         {
             if (HBaseUtils.getOneRecordValue("datamining","r"+startString+"e"+endString) == "") {
                 HBaseUtils.addRecord("operations", rowID, "data", "", o.toJson());
+                return true;
             }
         }
+        return  false;
     }
 
     public static void addToOperationsTable(String start, String end, Double support, Double confidence) throws Exception {

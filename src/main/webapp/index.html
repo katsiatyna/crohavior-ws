@@ -636,19 +636,11 @@
   $( "#showassrules" ).click(function() {
     var batchId = $( "#batchSelector option:selected" ).text();
     //later put in the real formatted number
-    showAssociationRules("r2008-10-23T02:53:15e2008-10-23T04:34:50");
+    showPatterns("s2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:53:15e2008-10-23T04:34:50");
   });
   $("#next_page a").click(function(){
     nextPageAR();
   });
-  $('#requestbatchbtn').click(function(){
-    var startTs = $('#reservationtimeTrajectory').data('daterangepicker').startDate.format('x');
-    var endTs = $('#reservationtimeTrajectory').data('daterangepicker').endDate.format('x');
-    requestBatch(startTs, endTs, null, null);
-  });
-
-
-
 
 </script>
 <script src="plugins/iCheck/icheck.js"></script>

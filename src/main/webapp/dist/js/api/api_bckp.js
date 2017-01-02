@@ -539,7 +539,7 @@ var trajectoryApi = function() {
           var authNames = ['UserSecurity'];
           var contentTypes = [];
           var accepts = ['application/hal+json'];
-          var returnType = [AssociationRulesCollection];
+          var returnType = [TrajectoryGrid];
 
           return this.apiClient.callApi(
             '/trajectories/{projectId}', 'GET',
@@ -605,7 +605,7 @@ var trajectoryApi = function() {
       var authNames = ['UserSecurity'];
       var contentTypes = [];
       var accepts = ['application/hal+json'];
-      var returnType = [AssociationRulesCollection];
+      var returnType = 'String';
 
       return this.apiClient.callApi(
         '/trajectories/batches/{projectId}/request', 'GET',
@@ -1198,6 +1198,50 @@ var HeatmapPoint = function() {
      */
     AssociationRulesCollection.prototype['data'] = undefined;
 
+
+/**
+     * The AssociationRulesCollection model module.
+     * @module model/AssociationRulesCollection
+     * @version 1.0.0
+     */
+
+    /**
+     * Constructs a new <code>AssociationRulesCollection</code>.
+     * @alias module:model/AssociationRulesCollection
+     * @class
+     * @extends module:model/MapGrid
+     */
+    var TrajectoryGrid = function() {
+      var _this = this;
+      MapGrid.call(_this);
+
+    };
+
+    /**
+     * Constructs a <code>TrajectoryGridCollection</code> from a plain JavaScript object, optionally creating a new instance.
+     * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+     * @param {Object} data The plain JavaScript object bearing properties of interest.
+     * @param {module:model/TrajectoryGridCollection} obj Optional instance to populate.
+     * @return {module:model/TrajectoryGridCollection} The populated <code>TrajectoryGridCollection</code> instance.
+     */
+    TrajectoryGrid.constructFromObject = function(data, obj) {
+      if (data) {
+        obj = obj || new AssociationRulesCollection();
+        MapGrid.constructFromObject(data, obj);
+        if (data.hasOwnProperty('data')) {
+          obj['data'] = convertToType(data['data'], [Trajectory]);
+        }
+      }
+      return obj;
+    }
+
+    TrajectoryGrid.prototype = Object.create(MapGrid.prototype);
+    TrajectoryGrid.prototype.constructor = TrajectoryGrid;
+
+    /**
+     * @member {Array.<module:model/TrajectoryGrid>} elements
+     */
+    TrajectoryGrid.prototype['data'] = undefined;
 
 
 

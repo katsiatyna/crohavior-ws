@@ -228,12 +228,14 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
     @Override
     public Response requestBatch(Integer projectId, String apiKey, Long startTimestamp, Long endTimestamp, Double support, Double confidence, UriInfo uri) {
         try {
-            Operation.addToOperationsTable(new Date(startTimestamp), new Date(endTimestamp), support, confidence);
+            if(!Operation.addToOperationsTable(new Date(startTimestamp), new Date(endTimestamp), support, confidence)){
+                return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.INFO, "DUPLICATE")).build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return Response.serverError().entity(new ApiResponseMessage(ApiResponseMessage.ERROR, "ERROR")).build();
         }
-        return Response.ok().build();
+        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.INFO, "OK")).build();
     }
 }
 

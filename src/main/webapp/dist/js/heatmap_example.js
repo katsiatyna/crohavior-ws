@@ -102,7 +102,7 @@ function speedLoop () {           //  create a loop function
           updateSpeedView();
             speedLoop();
       }//  ..  again which will trigger another
-     }, 3000)
+     }, (frame -2)*1000)
   }
 
 
@@ -194,7 +194,7 @@ doAnalysis = function(){
 }
 
 
-doAnalysis();
+//doAnalysis();
 
 
 
@@ -233,4 +233,5 @@ clearTimeouts = function(){
     heatmapMap.setData({data:[]});
     clearTimeout(speedTimeout);
     clearTimeout(batchTimeout);
+    document.getElementById("ts").innerHTML = "";
 }

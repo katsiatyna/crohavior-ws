@@ -154,14 +154,17 @@ $(function () {
             }
         }, function(start, end, label) {
           console.log("New date range selected TRAJ: " + start.format('x') + " to " + end.format('x') + ")");
-          requestBatch(start.format('x'), end.format('x'));
+          //requestBatch(start.format('x'), end.format('x'));
         });
-    /*$('#reservationtime').on('show.daterangepicker', function(ev, picker) {
-      console.log(picker.startDate.format('MM/DD/YYYY HH:mm:ss'));
-      console.log(picker.endDate.format('MM/DD/YYYY HH:mm:ss'));
-      setDateRange(picker.startDate.format('x'), picker.endDate.format('x'));
-    });*/
-
+    $("#supportInput").val(support);
+    $("#confInput").val(conf);
+    $('#requestbatchbtn').click(function(){
+      var startTs = $('#reservationtimeTrajectory').data('daterangepicker').startDate.format('x');
+      var endTs = $('#reservationtimeTrajectory').data('daterangepicker').endDate.format('x');
+      var s = $("#supportInput").val();
+      var c = $("#confInput").val();
+      requestBatch(startTs, endTs, s, c);
+    });
 
     //Date picker
     $('#datepicker').datepicker({
