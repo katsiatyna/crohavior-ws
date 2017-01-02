@@ -5,6 +5,7 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.standard.StandardRepresentationFactory;
 import edu.upc.bip.batch.HBaseUtils;
+import edu.upc.bip.batch.Operation;
 import io.swagger.api.*;
 import io.swagger.api.dal.Utils;
 import io.swagger.model.*;
@@ -222,6 +223,17 @@ public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
             e.printStackTrace();
         }
         return Response.serverError().build();
+    }
+
+    @Override
+    public Response requestBatch(Integer projectId, String apiKey, Long startTimestamp, Long endTimestamp, Double support, Double confidence, UriInfo uri) {
+        try {
+            Operation.addToOperationsTable(new Date(startTimestamp), new Date(endTimestamp), support, confidence);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
+        return Response.ok().build();
     }
 }
 

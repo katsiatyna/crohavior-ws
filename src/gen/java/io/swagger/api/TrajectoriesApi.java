@@ -56,4 +56,19 @@ public class TrajectoriesApi  {
             throws NotFoundException {
         return delegate.getTrajectoriesBatches(projectId, apiKey, uri);
     }
+
+    @GET
+    @Path("/batches/{projectId}/request")
+
+    @Produces({ "application/hal+json" })
+    public Response requestBatch(@PathParam("projectId") Integer projectId,
+                                           @QueryParam("api_key") String apiKey,
+                                           @QueryParam("startTs") Long startTimestamp,
+                                           @QueryParam("endTs") Long endTimestamp,
+                                           @QueryParam("support") Double support,
+                                           @QueryParam("conf") Double confidence,
+                                           @Context UriInfo uri)
+            throws NotFoundException {
+        return delegate.requestBatch(projectId, apiKey, startTimestamp, endTimestamp, support, confidence, uri);
+    }
 }

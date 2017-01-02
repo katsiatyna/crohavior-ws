@@ -93,7 +93,7 @@
                                         <h3 class="box-title">Parameters</h3>
                                     </div>-->
                                     <div class="box-body">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label>Real-time</label>
 
                                             <div class="input-group">
@@ -101,7 +101,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label>Time Frame (Snapshot Size)</label>
 
                                             <div class="input-group">
@@ -114,7 +114,7 @@
                                             </div>
                                         </div>
                                         <!-- Date and time range -->
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label>Date and time range:</label>
 
                                             <div class="input-group">
@@ -127,12 +127,7 @@
                                             <!-- /.input group -->
                                         </div>
                                         <!-- /.form group -->
-                                        <div class="form-group col-md-3">
 
-
-
-
-                                        </div>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
@@ -251,23 +246,25 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-nline form-group col-md-4">
-                                            <label>Show patterns of length:</label>
+                                        <form class="form-inline col-md-4">
+                                            <div class="form-group">
+                                                <label>Show patterns of length:</label>
 
-                                            <div class="input-group">
-                                                <select class="form-control" id="signSelector">
-                                                    <option selected="selected"><=</option>
-                                                    <option>=</option>
-                                                    <option>>=</option>
-                                                </select>
-                                                <input class="form-control " type="number" value="2" min="1" max="1000" id="lengthInput">
-                                                <button type="button" class="btn btn-primary" id="showassrules">Show
-                                                    </button>
+                                                <div class="input-group">
+                                                    <select class="form-control" id="signSelector">
+                                                        <option selected="selected"><=</option>
+                                                        <option>=</option>
+                                                        <option>>=</option>
+                                                    </select>
+                                                    <input class="form-control " type="number" value="2" min="1" max="1000" id="lengthInput">
+                                                    <button type="button" class="btn btn-primary" id="showassrules">Show
+                                                        </button>
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                         <!-- Date and time range -->
-                                        <div class="form-group col-md-4">
+                                       <!-- <div class="form-group col-md-4">
                                             <label>Request a batch:</label>
 
                                             <div class="input-group">
@@ -280,8 +277,39 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <!-- /.input group -->
-                                        </div>
+                                            &lt;!&ndash; /.input group &ndash;&gt;
+                                            <div class="input-group">
+                                                <label>Support:</label>
+                                                <input type="number" step = "0.01" class="form-control" id="supportInput">
+                                                <label>Confidence:</label>
+                                                <input type="number" step = "0.01" class="form-control" id="confInput">
+                                            </div>
+                                        </div>-->
+                                        <form class="form-inline col-md-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control pull-right" id="reservationtimeTrajectory">
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-xs-4">
+                                                    <label for="supportInput">Support</label>
+                                                    <input type="number" step="0.01" class="form-control" id="supportInput" >
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <label for="confInput">Confidence</label>
+                                                    <input type="number" step="0.01" class="form-control" id="confInput" >
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <button type="button" class="btn btn-primary" id="requestbatchbtn">Request a batch
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
                                         <!-- /.form group -->
                                     </div>
                                     <!-- /.box-body -->
@@ -393,16 +421,16 @@
         reserved.
     </footer>
 
-    <!-- Control Sidebar -->
+    <!--&lt;!&ndash; Control Sidebar &ndash;&gt;
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
+        &lt;!&ndash; Create the tabs &ndash;&gt;
         <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
             <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
             <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
         </ul>
-        <!-- Tab panes -->
+        &lt;!&ndash; Tab panes &ndash;&gt;
         <div class="tab-content">
-            <!-- Home tab content -->
+            &lt;!&ndash; Home tab content &ndash;&gt;
             <div class="tab-pane" id="control-sidebar-home-tab">
                 <h3 class="control-sidebar-heading">Recent Activity</h3>
                 <ul class="control-sidebar-menu">
@@ -451,7 +479,7 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.control-sidebar-menu -->
+                &lt;!&ndash; /.control-sidebar-menu &ndash;&gt;
 
                 <h3 class="control-sidebar-heading">Tasks Progress</h3>
                 <ul class="control-sidebar-menu">
@@ -504,14 +532,14 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.control-sidebar-menu -->
+                &lt;!&ndash; /.control-sidebar-menu &ndash;&gt;
 
             </div>
-            <!-- /.tab-pane -->
-            <!-- Stats tab content -->
+            &lt;!&ndash; /.tab-pane &ndash;&gt;
+            &lt;!&ndash; Stats tab content &ndash;&gt;
             <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-            <!-- /.tab-pane -->
-            <!-- Settings tab content -->
+            &lt;!&ndash; /.tab-pane &ndash;&gt;
+            &lt;!&ndash; Settings tab content &ndash;&gt;
             <div class="tab-pane" id="control-sidebar-settings-tab">
                 <form method="post">
                     <h3 class="control-sidebar-heading">General Settings</h3>
@@ -526,7 +554,7 @@
                             Some information about this general settings option
                         </p>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
@@ -538,7 +566,7 @@
                             Other sets of options are available
                         </p>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
@@ -550,7 +578,7 @@
                             Allow the user to show his name in blog posts
                         </p>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
 
                     <h3 class="control-sidebar-heading">Chat Settings</h3>
 
@@ -560,7 +588,7 @@
                             <input type="checkbox" class="pull-right" checked>
                         </label>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
@@ -568,7 +596,7 @@
                             <input type="checkbox" class="pull-right">
                         </label>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
 
                     <div class="form-group">
                         <label class="control-sidebar-subheading">
@@ -576,12 +604,12 @@
                             <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
                         </label>
                     </div>
-                    <!-- /.form-group -->
+                    &lt;!&ndash; /.form-group &ndash;&gt;
                 </form>
             </div>
-            <!-- /.tab-pane -->
+            &lt;!&ndash; /.tab-pane &ndash;&gt;
         </div>
-    </aside>
+    </aside>-->
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
@@ -597,6 +625,7 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="bootstrap/js/bootstrap-switch.min.js"></script>
+<script src="dist/js/bootstrap-notify.min.js"></script>
 <script>
   $.widget.bridge('uibutton', $.ui.button);
   $("[name='my-checkbox']").bootstrapSwitch();
@@ -605,14 +634,18 @@
     $('#reservationtime').prop('disabled', state);
   });
   $( "#showassrules" ).click(function() {
-  var batchId = $( "#batchSelector option:selected" ).text();
-  //later put in the real formatted number
+    var batchId = $( "#batchSelector option:selected" ).text();
+    //later put in the real formatted number
     showAssociationRules("r2008-10-23T02:53:15e2008-10-23T04:34:50");
   });
   $("#next_page a").click(function(){
     nextPageAR();
   });
-
+  $('#requestbatchbtn').click(function(){
+    var startTs = $('#reservationtimeTrajectory').data('daterangepicker').startDate.format('x');
+    var endTs = $('#reservationtimeTrajectory').data('daterangepicker').endDate.format('x');
+    requestBatch(startTs, endTs, null, null);
+  });
 
 
 

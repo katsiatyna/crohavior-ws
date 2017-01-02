@@ -1,22 +1,18 @@
 package edu.upc.bip.batch;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HBaseUtils {
 
     private static Configuration conf = null;
     private static Connection connection = null;
-
     /**
      * Initialization
      */
@@ -26,12 +22,13 @@ public class HBaseUtils {
         conf = HBaseConfiguration.create();
         conf.clear();
         conf.set("hbase.zookeeper.quorum", "127.0.0.1");
-        conf.set("hbase.zookeeper.property.clientPort", "2181");
+        conf.set("hbase.zookeeper.property.clientPort","2181");
 
 
         try {
             connection = ConnectionFactory.createConnection(conf);
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             System.out.println("fuck");
         }
     }
@@ -43,17 +40,17 @@ public class HBaseUtils {
             throws Exception {
         try {
             Connection connection = ConnectionFactory.createConnection(conf);
-            Admin admin = connection.getAdmin();
-            if (admin.tableExists(TableName.valueOf(tableName))) {
-                System.out.println("table already exists!");
-            } else {
-                HTableDescriptor tableDesc = new HTableDescriptor(TableName.valueOf(tableName));
-                for (int i = 0; i < familys.length; i++) {
-                    tableDesc.addFamily(new HColumnDescriptor(familys[i]));
-                }
-                admin.createTable(tableDesc);
-                System.out.println("create table " + tableName + " ok.");
+        Admin admin = connection.getAdmin();
+        if (admin.tableExists(TableName.valueOf(tableName))) {
+            System.out.println("table already exists!");
+        } else {
+            HTableDescriptor tableDesc = new HTableDescriptor(TableName.valueOf(tableName));
+            for (int i = 0; i < familys.length; i++) {
+                tableDesc.addFamily(new HColumnDescriptor(familys[i]));
             }
+            admin.createTable(tableDesc);
+            System.out.println("create table " + tableName + " ok.");
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -113,13 +110,13 @@ public class HBaseUtils {
     /**
      * Get a row
      */
-    public static void getOneRecord(String tableName, String rowKey) throws IOException {
+    public static void getOneRecord (String tableName, String rowKey) throws IOException{
         Connection connection = ConnectionFactory.createConnection(conf);
         HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
         Get get = new Get(rowKey.getBytes());
         Result rs = table.get(get);
 
-        for (Cell cell : rs.rawCells()) {
+        for(Cell cell : rs.rawCells()){
 
             String row = new String(CellUtil.cloneRow(cell));
             String family = new String(CellUtil.cloneFamily(cell));
@@ -134,9 +131,23 @@ public class HBaseUtils {
     /**
      * Get a row
      */
-    public static List<String> getRecordRangeValues(String tableName, String startRowKey, String stopRowKey) throws IOException {
-        try {
-            //Connection connection = ConnectionFactory.createConnection(conf);
+    public static String getOneRecordValue (String tableName, String rowKey) throws IOException{
+        Connection connection = ConnectionFactory.createConnection(conf);
+        HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
+        Get get = new Get(rowKey.getBytes());
+        Result rs = table.get(get);
+        if(rs.rawCells().length>0) {
+            Cell cell = rs.rawCells()[0];
+            return new String(CellUtil.cloneValue(cell));
+        }
+        return "";
+    }
+    /**
+     * Get a row
+     */
+    public static List<String> getRecordRangeValues (String tableName, String startRowKey, String stopRowKey) throws IOException{
+        try{
+            Connection connection = ConnectionFactory.createConnection(conf);
             HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
             Scan s = new Scan();
 
@@ -145,23 +156,49 @@ public class HBaseUtils {
             s.setStopRow(Bytes.toBytes(stopRowKey));
             ResultScanner ss = table.getScanner(s);
 
-            for (Result r : ss) {
-                for (Cell cell : r.rawCells()) {
+            for(Result r:ss){
+                for(Cell cell : r.rawCells()){
                     result.add(new String(CellUtil.cloneValue(cell)));
                 }
             }
+            ss.close();
             return result;
-        } catch (IOException e) {
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /**
+     * Get a row
+     */
+    public static List<String> getAllRowIDs (String tableName) throws IOException{
+        try{
+            Connection connection = ConnectionFactory.createConnection(conf);
+            HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
+            Scan s = new Scan();
+
+            List<String> result = new ArrayList<>();
+            ResultScanner ss = table.getScanner(s);
+
+            for(Result r:ss){
+                for(Cell cell : r.rawCells()){
+                    result.add(new String(CellUtil.cloneRow(cell)));
+                }
+            }
+            ss.close();
+            return result;
+        } catch (IOException e){
             e.printStackTrace();
         }
         return null;
     }
 
+
     /**
      * Scan (or list) a table
      */
-    public static void getAllRecord(String tableName) {
-        try {
+    public static void getAllRecord (String tableName) {
+        try{
             Connection connection = ConnectionFactory.createConnection(conf);
             HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
             Scan s = new Scan();
@@ -178,8 +215,8 @@ public class HBaseUtils {
 //            s.setStopRow(Bytes.toBytes("ban"));
             ResultScanner ss = table.getScanner(s);
 
-            for (Result r : ss) {
-                for (Cell cell : r.rawCells()) {
+            for(Result r:ss){
+                for(Cell cell : r.rawCells()){
                     String row = new String(CellUtil.cloneRow(cell));
                     String family = new String(CellUtil.cloneFamily(cell));
                     String column = new String(CellUtil.cloneQualifier(cell));
@@ -188,7 +225,7 @@ public class HBaseUtils {
                     System.out.printf("%s column=%s:%s, timestamp=%s, value=%s\n", row, family, column, timestamp, value);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -196,7 +233,7 @@ public class HBaseUtils {
     public static void main(String[] agrs) {
         try {
             String tablename = "scores";
-            String[] familys = {"grade", "course"};
+            String[] familys = { "grade", "course" };
             HBaseUtils.creatTable(tablename, familys);
 
             // add record zkb
@@ -207,6 +244,9 @@ public class HBaseUtils {
             // add record baoniu
             HBaseUtils.addRecord(tablename, "baoniu", "grade", "", "4");
             HBaseUtils.addRecord(tablename, "baoniu", "course", "math", "89");
+
+            List<String> asd = HBaseUtils.getAllRowIDs(tablename);
+            List<String> adsd = HBaseUtils.getRecordRangeValues(tablename,"zkb","zkb");
 
             System.out.println("===========get one record========");
             HBaseUtils.getOneRecord(tablename, "zkb");
@@ -230,27 +270,4 @@ public class HBaseUtils {
             e.printStackTrace();
         }
     }
-
-    public static List<String> getAllRowIDs(String tableName) throws IOException {
-        try {
-            Connection connection = ConnectionFactory.createConnection(conf);
-            HTable table = (HTable) connection.getTable(TableName.valueOf(tableName));
-            Scan s = new Scan();
-
-            List<String> result = new ArrayList<>();
-            ResultScanner ss = table.getScanner(s);
-
-            for (Result r : ss) {
-                for (Cell cell : r.rawCells()) {
-                    result.add(new String(CellUtil.cloneRow(cell)));
-                }
-            }
-            ss.close();
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

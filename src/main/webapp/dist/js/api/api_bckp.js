@@ -548,6 +548,72 @@ var trajectoryApi = function() {
           );
         }
 
+    this.getTrajectoriesBatches = function(projectId, callback) {
+      var postBody = null;
+
+      // verify the required parameter 'projectId' is set
+      if (projectId == undefined || projectId == null) {
+        throw new Error("Missing the required parameter 'projectId' when calling getAssociationRulesByParameters");
+      }
+
+      var pathParams = {
+        'projectId': projectId
+      };
+      var queryParams = {
+        'api_key': 'test'
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = ['UserSecurity'];
+      var contentTypes = [];
+      var accepts = ['application/hal+json'];
+      var returnType = [AssociationRulesCollection];
+
+      return this.apiClient.callApi(
+        '/trajectories/batches/{projectId}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    this.requestBatch = function(projectId, startTs, endTs, support, conf, callback) {
+      var postBody = null;
+
+      // verify the required parameter 'projectId' is set
+      if (projectId == undefined || projectId == null) {
+        throw new Error("Missing the required parameter 'projectId' when calling getAssociationRulesByParameters");
+      }
+
+      var pathParams = {
+        'projectId': projectId
+      };
+      var queryParams = {
+        'api_key': 'test',
+        'startTs':startTs,
+        'endTs':endTs,
+        'support':support,
+        'conf':conf
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = ['UserSecurity'];
+      var contentTypes = [];
+      var accepts = ['application/hal+json'];
+      var returnType = [AssociationRulesCollection];
+
+      return this.apiClient.callApi(
+        '/trajectories/batches/{projectId}/request', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
 
   }
 

@@ -154,7 +154,7 @@ $(function () {
             }
         }, function(start, end, label) {
           console.log("New date range selected TRAJ: " + start.format('x') + " to " + end.format('x') + ")");
-          setDateRange(start.format('x'), end.format('x'));
+          requestBatch(start.format('x'), end.format('x'));
         });
     /*$('#reservationtime').on('show.daterangepicker', function(ev, picker) {
       console.log(picker.startDate.format('MM/DD/YYYY HH:mm:ss'));

@@ -4,6 +4,9 @@ var dataAR = null, dataSP = null;
 var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',  'c', 'd', 'e', 'f'];
 var pos = [];
 var drpTraj = $('#reservationtimeTrajectory').data('daterangepicker');
+var ARApi = new trajectoryApi();
+var support = 0.05;
+var conf = 0.8;
 
 var trajLatlng = new google.maps.LatLng(39.979, 116.327);
   // map options,
@@ -130,7 +133,7 @@ var ARcallback = function(error, data, response){
     dataAR = data['data'];
     updateReportAR();
 }
-var ARApi = new trajectoryApi();
+
 
 nextPageAR = function(){
     if(currentPageAR + 1 < pages){
@@ -166,4 +169,49 @@ var SPcallback = function(error, data, response){
     dataSP = data['data'];
     updateMapSP();
 }
+
+var requestBatchCallback = function(error, data, response){
+    var alert = 'Request submitted';
+    var alertType = 'success';
+
+    if(error){
+        alert = "Something happened!";
+        alertType = 'danger';
+    }
+    event.preventDefault();
+    var notify = $.notify({
+        icon: 'glyphicon glyphicon-warning-sign',
+        title: 'Notification',
+        message: alert,
+        url: null,
+        target: '_blank'
+    },{
+        type: alertType,
+        allow_dismiss: true,
+        newest_on_top: true,
+        placement: {
+            from: 'bottom',
+            align: 'right'
+        },
+        offset: {
+            x: '20',
+            y: '20'
+        },
+        spacing: '10',
+        z_index: '1031',
+        delay: '5000',
+        mouse_over: null
+    });
+
+}
+requestBatch = function(startTs, endTs, sup, confi){
+    if(sup != null && sup != support){
+        support = sup;
+    }
+    if(confi != null && confi != conf){
+        conf = confi;
+    }
+    ARApi.requestBatch(projectId, startTs, endTs, support, conf, requestBatchCallback);
+}
+
 
