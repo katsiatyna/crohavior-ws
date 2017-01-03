@@ -7,6 +7,10 @@ var drpTraj = $('#reservationtimeTrajectory').data('daterangepicker');
 var ARApi = new trajectoryApi();
 var support = 0.05;
 var conf = 0.8;
+var lengthSeq = 2;
+var signSeq = ">=";
+var currentBatch = null;
+var batches = [];
 
 
 var trajLatlng = new google.maps.LatLng(39.979, 116.327);
@@ -17,29 +21,8 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
   };
   // standard map
   trajObj = new google.maps.Map(document.getElementById("world-map-traj"), trajOptions);
-  // heatmap layer
-  /*var trajMap = new HeatmapOverlay(trajObj,
-    {
-      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-      "radius": 20,
-      "maxOpacity": 1,
-      // scales the radius based on map zoom
-      "scaleRadius": false,
-      // if set to false the heatmap uses the global maximum for colorization
-      // if activated: uses the data maximum within the current map boundaries
-      //   (there will always be a red spot with useLocalExtremas true)
-      "useLocalExtrema": true,
-      // which field name in your data represents the latitude - default "lat"
-      latField: 'a',
-      // which field name in your data represents the longitude - default "lng"
-      lngField: 'o',
-      // which field name in your data represents the data value - default "value"
-      valueField: 'c'
-    }
-  );
-*/
 
-updateReportAR = function(){
+  updateReportAR = function(){
     var assrules = "", pagingInfo = "";
     pages = dataAR.length / 7;
     if(dataAR.length % 7 != 0){
@@ -150,14 +133,25 @@ prevPageAR = function(){
     }
 }
 
-
-showPatterns = function(sbatchId,rbatchId){
+//"s2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:53:15e2008-10-23T04:34:50");
+showPatterns = function(batchId, sign, length){
     //clearTimeouts();
-    dataAR = null;
-    currentPageAR = 0;
-    dataSP = null;
-    ARApi.getSequentialPatternsByParameters(1, sbatchId, SPcallback);
-    ARApi.getAssociationRulesByParameters(1, rbatchId, ARcallback);
+    var readFromServer = false;
+    if(currentBatch == null || currentBatch != batchId){
+        currentBatch = batchId;
+        readFromServer = true;
+    }
+    if(readFromServer){
+        dataAR = null;
+        currentPageAR = 0;
+        dataSP = null;
+        var sbatchId = 's'+ batchId;
+        var rbatchId = 'r' + batchId;
+        ARApi.getSequentialPatternsByParameters(projectId, sbatchId, SPcallback);
+        ARApi.getAssociationRulesByParameters(projectId, rbatchId, ARcallback);
+    }else{
+
+    }
 }
 
 var SPcallback = function(error, data, response){
@@ -214,6 +208,47 @@ requestBatch = function(startTs, endTs, sup, confi){
     }
     ARApi.requestBatch(projectId, startTs, endTs, support, conf, requestBatchCallback);
 }
+
+var allBatchesCallback = function(error, data, response){
+
+    if(error){
+        console.log(error);
+    } else{
+        batches = [];
+        var rawBatches = data['batches'];
+        var batchesIndex = 0;
+        for(var i = 0; i< rawBatches.length; i++){
+            if(rawBatches[i].startsWith('r')){
+                continue;
+            }
+            batches[batchesIndex] = {value:'', text:''};
+            var value = rawBatches[i].substring(1, rawBatches[i].length);
+            batches[batchesIndex].value = value;
+            var parts = value.split('e');
+            var startDate = moment(parts[0], "YYYY-MM-DD'T'HH:mm:ss");
+            var endDate = moment(parts[1], "YYYY-MM-DD'T'HH:mm:ss");
+            batches[batchesIndex].text =startDate.format('MM/DD/YYYY HH:mm:ss') + ' - ' + endDate.format('MM/DD/YYYY HH:mm:ss');
+            batchesIndex++;
+        }
+        $.each(batches, function (i, item) {
+            $('#batchSelector').append($('<option>', {
+                value: item.value,
+                text : item.text
+            }));
+        });
+
+    }
+}
+
+allBatches = function(){
+
+    ARApi.getTrajectoriesBatches(projectId, allBatchesCallback);
+}
+
+allBatches();
+
+
+
 
 
 

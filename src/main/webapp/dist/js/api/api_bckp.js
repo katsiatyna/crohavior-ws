@@ -570,7 +570,7 @@ var trajectoryApi = function() {
       var authNames = ['UserSecurity'];
       var contentTypes = [];
       var accepts = ['application/hal+json'];
-      var returnType = [AssociationRulesCollection];
+      var returnType = Batches;
 
       return this.apiClient.callApi(
         '/trajectories/batches/{projectId}', 'GET',
@@ -728,6 +728,38 @@ var heatmapsApi = function() {
 
 
 }
+
+var Batches = function() {
+    var _this = this;
+
+  };
+
+  /**
+   * Constructs a <code>LinkBody</code> from a plain JavaScript object, optionally creating a new instance.
+   * Copies all relevant properties from <code>data</code> to <code>obj</code> if supplied or a new instance if not.
+   * @param {Object} data The plain JavaScript object bearing properties of interest.
+   * @param {module:model/LinkBody} obj Optional instance to populate.
+   * @return {module:model/LinkBody} The populated <code>LinkBody</code> instance.
+   */
+  Batches.constructFromObject = function(data, obj) {
+    if (data) {
+      obj = obj || new Batches();
+
+      if (data.hasOwnProperty('batches')) {
+        obj['batches'] = convertToType(data['batches'], ['String']);
+      }
+
+    }
+    return obj;
+  }
+
+  /**
+   * @member {module:model/CuriesLinkBody} Curie
+   */
+  Batches.prototype['batches'] = undefined;
+
+
+
 
 var LinkBody = function() {
     var _this = this;

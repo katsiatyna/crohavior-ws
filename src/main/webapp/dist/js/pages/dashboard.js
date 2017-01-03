@@ -156,8 +156,18 @@ $(function () {
           console.log("New date range selected TRAJ: " + start.format('x') + " to " + end.format('x') + ")");
           //requestBatch(start.format('x'), end.format('x'));
         });
+
     $("#supportInput").val(support);
     $("#confInput").val(conf);
+    $("#lengthInput").val(lengthSeq);
+    $("#signSelector").val(signSeq);
+    $( "#showassrules" ).click(function() {
+      var batchId = $( "#batchSelector option:selected" ).val();
+      //later put in the real formatted number
+      var length = $("#lengthInput").val();
+      var sign = $("#signSelector option:selected").val();
+      showPatterns( batchId, sign, length);//"s2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:53:15e2008-10-23T04:34:50");
+    });
     $('#requestbatchbtn').click(function(){
       var startTs = $('#reservationtimeTrajectory').data('daterangepicker').startDate.format('x');
       var endTs = $('#reservationtimeTrajectory').data('daterangepicker').endDate.format('x');

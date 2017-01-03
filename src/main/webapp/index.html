@@ -239,8 +239,8 @@
                                             <div class="input-group">
 
                                                 <select class="form-control" id="batchSelector">
-                                                    <option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50
-                                                    </option>
+                                                    <!--<option selected="selected">10/23/20018 02:53:15 - 10/23/20018 04:34:50
+                                                    </option>-->
                                                 </select>
 
                                             </div>
@@ -252,11 +252,11 @@
 
                                                 <div class="input-group">
                                                     <select class="form-control" id="signSelector">
-                                                        <option selected="selected"><=</option>
-                                                        <option>=</option>
-                                                        <option>>=</option>
+                                                        <option value=">=">>=</option>
+                                                        <option value="=">=</option>
+                                                        <option value="<="><=</option>
                                                     </select>
-                                                    <input class="form-control " type="number" value="2" min="1" max="1000" id="lengthInput">
+                                                    <input class="form-control " type="number"  min="1"  id="lengthInput">
                                                     <button type="button" class="btn btn-primary" id="showassrules">Show
                                                         </button>
 
@@ -626,23 +626,6 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="bootstrap/js/bootstrap-switch.min.js"></script>
 <script src="dist/js/bootstrap-notify.min.js"></script>
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-  $("[name='my-checkbox']").bootstrapSwitch();
-  $("[name='my-checkbox']").on('switchChange.bootstrapSwitch', function (event, state) {
-    setIsRealTime(state);
-    $('#reservationtime').prop('disabled', state);
-  });
-  $( "#showassrules" ).click(function() {
-    var batchId = $( "#batchSelector option:selected" ).text();
-    //later put in the real formatted number
-    showPatterns("s2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:53:15e2008-10-23T04:34:50");
-  });
-  $("#next_page a").click(function(){
-    nextPageAR();
-  });
-
-</script>
 <script src="plugins/iCheck/icheck.js"></script>
 <script>
     $(document).ready(function(){
@@ -650,14 +633,27 @@
         radioClass: 'iradio_square-blue',
         increaseArea: '20%'
       });
-    });
-    $("[name='iCheck']").on('ifChecked', function(event){
+      $.widget.bridge('uibutton', $.ui.button);
+      $("[name='my-checkbox']").bootstrapSwitch();
+      $("[name='my-checkbox']").on('switchChange.bootstrapSwitch', function (event, state) {
+          setIsRealTime(state);
+          $('#reservationtime').prop('disabled', state);
+      });
+      $("#next_page a").click(function(){
+        nextPageAR();
+      });
+      $("[name='iCheck']").on('ifChecked', function(event){
         setFrame(this.value);
-    });
-    $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+      });
+      $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
         google.maps.event.trigger(trajObj, 'resize');
         trajObj.setZoom( trajObj.getZoom() );
-    })
+        google.maps.event.trigger(heatmapObj, 'resize');
+        heatmapObj.setZoom( heatmapObj.getZoom() );
+      });
+
+
+    });
 
 </script>
 
