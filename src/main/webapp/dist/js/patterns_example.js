@@ -63,35 +63,67 @@ updateMapSPInternal = function(patterns){
     }
     //trajObj.clear();
     polylines = [];
+    var freqMin = Math.min.apply(this, $.map(patterns, function(o){ return o.frequency; }));
+    var freqMax = Math.max.apply(this, $.map(patterns, function(o){ return o.frequency; }));
+    var rangeMin = 1, rangeMax = 25;
     for(var j = 0; j < patterns.length; j++){
         var pattern = patterns[j];
         items = pattern['items'];
         /*if(items.length < 2){
             continue;
         }*/
+        //range of strokes:[1,20]
+        //find min and max of frequencies
+
         var patternCoordinates = [];
         for(var i=0; i < items.length; i++){
             patternCoordinates[i] = {'lat':items[i]['a'], 'lng':items[i]['o']};
         }
          var lineSymbol = {
-            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+            path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+            scale: 5
           };
         var seqPath = new google.maps.Polyline({
             path: patternCoordinates,
             geodesic: true,
             strokeColor: hexCode(),
-            strokeOpacity: 1.0,
-            strokeWeight: 5,
-            icons: [{
+            strokeOpacity: 0.5,
+            strokeWeight: ((rangeMax-rangeMin)*(pattern.frequency - freqMin)/(freqMax - freqMin)) + rangeMin,
+            /*icons: [{
               icon: lineSymbol,
-              offset: '100%',
-              scale: 2
-            }],
+              offset: '100%'
+
+            }]*/
           });
+          createInfoWindow(seqPath, pattern.frequency);
+          //myInfoWindow.setContent('Hello World!');
+          /*google.maps.event.addListener(seqPath, 'mouseover', function(e) {
+              myInfoWindow.setPosition(e.latLng);
+              myInfoWindow.open(trajObj);
+              // mymap represents the map you created using google.maps.Map
+          });*/
+
+          // assuming you want the InfoWindow to close on mouseout
 
           seqPath.setMap(trajObj);
           polylines[j] = seqPath;
       }
+}
+
+function createInfoWindow(poly,content) {
+    var iwOptions = {
+    content:"<div style='color:#000000;'>"+ content +"</div>"
+
+    };
+    var myInfoWindow = new google.maps.InfoWindow(iwOptions);
+    google.maps.event.addListener(poly, 'mouseover', function(event) {
+        //infowindow.content = content;
+        myInfoWindow.position = event.latLng;
+        myInfoWindow.open(trajObj);
+    });
+    google.maps.event.addListener(poly, 'mouseout', function() {
+        myInfoWindow.close();
+    });
 }
 
 filterPatterns = function(){
