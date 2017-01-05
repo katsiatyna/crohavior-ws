@@ -1,5 +1,5 @@
 var  pages = 1;
-var currentPageAR = 0;
+var currentPageAR = 0, currentPageSP = 0;
 var dataAR = null, dataSP = null, dataSPfiltered = null;
 var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',  'c', 'd', 'e', 'f'];
 var pos = [];
@@ -11,7 +11,7 @@ var lengthSeq = 2;
 var signSeq = ">=";
 var currentBatch = null;
 var batches = [];
-var polylines = [];
+var polylinesDisplay = [];
 
 var trajLatlng = new google.maps.LatLng(39.979, 116.327);
   // map options,
@@ -56,13 +56,53 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
     document.getElementById('accordion').innerHTML = assrules;
 }
 
+updateReportSP = function(data){
+    var spatterns = "", pagingInfo = "";
+    pages = polylinesDisplay.length / 10;
+    if(polylinesDisplay.length % 10 != 0){
+        pages++;
+    }
+    pagingInfo += '<li id="prev_page_sp" onclick="prevPageSP();" '
+     if(currentPageSP - 1 < 0){
+        pagingInfo += 'disabled="true" >';
+     } else {
+        pagingInfo += '>';
+     }
+
+    pagingInfo += '<a href="#" >&laquo;</a></li>';
+    pagingInfo += '<li><a href="#">'+(currentPageSP + 1)+'</a></li>';
+    pagingInfo += '<li id="next_page_sp" onclick="nextPageSP();"><a href="#" >&raquo;</a></li>'
+
+    document.getElementById('reportPaging').innerHTML = pagingInfo;
+    for(var i = currentPageSP*10; i < currentPageSP*10 + 10; i++){
+      if(data[i] == null){
+        continue;
+      }
+      spatterns += '<li><span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>';
+      spatterns += '<input type="checkbox" value="" name="iCheckBox" checked>';
+      var seq = "";
+      for(var j = 0; j < data[i].items.length; j++){
+        seq += "(" + data[i].items[j].a + "," + data[i].items[j].o + ")";
+        if(j < data[i].items.length - 1){
+            seq += '<i class="fa fa-long-arrow-right"></i>'
+        }
+      }
+      spatterns += '<span class="text">'+ seq +'</span>'
+      spatterns += '<small class="label label-warning">'+ JSON.stringify(data[i].frequency)+'</small></li>';
+
+    }
+    document.getElementById('patternsList').innerHTML = spatterns;
+}
+
+
 updateMapSPInternal = function(patterns){
     var items = [];
-    for(var j = 0; j < polylines.length; j++){
-        polylines[j].setMap(null);
+    for(var j = 0; j < polylinesDisplay.length; j++){
+        polylinesDisplay[j].displayed = false;
+        polylinesDisplay[j].poly.setMap(null);
     }
     //trajObj.clear();
-    polylines = [];
+    polylinesDisplay = [];
     var freqMin = Math.min.apply(this, $.map(patterns, function(o){ return o.frequency; }));
     var freqMax = Math.max.apply(this, $.map(patterns, function(o){ return o.frequency; }));
     var rangeMin = 1, rangeMax = 25;
@@ -106,8 +146,9 @@ updateMapSPInternal = function(patterns){
           // assuming you want the InfoWindow to close on mouseout
 
           seqPath.setMap(trajObj);
-          polylines[j] = seqPath;
+          polylinesDisplay[j] = {poly:seqPath ,displayed:true};
       }
+      updateReportSP(patterns);
 }
 
 function createInfoWindow(poly,content) {
@@ -314,7 +355,6 @@ allBatches = function(){
 }
 
 allBatches();
-
 
 
 

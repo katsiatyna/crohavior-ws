@@ -49,9 +49,9 @@
 
     <nav class="navbar navbar-default">
         <!-- Logo -->
-        <a href="index.html" class="navbar-brand" >
+        <a href="index.html" class="navbar-brand">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <img  src="dist/img/logo.png">
+            <img src="dist/img/logo.png">
             <!-- logo for regular state and mobile devices -->
             <!--<span class="logo-lg">CROHAVIOR</span>-->
         </a>
@@ -63,10 +63,10 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="page-header">
-            <h1>
-                Dashboard
+                <h1>
+                    Dashboard
 
-            </h1>
+                </h1>
 
             </div>
 
@@ -80,7 +80,7 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_1" data-toggle="tab">Heatmap</a></li>
-                    <li ><a href="#tab_2" data-toggle="tab">Trajectories</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">Trajectories</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
@@ -105,7 +105,8 @@
                                             <label>Time Frame (Snapshot Size)</label>
 
                                             <div class="input-group">
-                                                <input type="radio" name="iCheck" id="5s" value="5" checked><label for="5s">5
+                                                <input type="radio" name="iCheck" id="5s" value="5" checked><label
+                                                    for="5s">5
                                                 sec</label>
                                                 <input type="radio" name="iCheck" id="10s" value="10"><label for="10s">10
                                                 sec</label>
@@ -200,7 +201,8 @@
                                         <h3 class="box-title">Report</h3>
 
                                         <div class="box-tools">
-                                            <ul class="pagination pagination-sm no-margin pull-right" id="reportPagingHeat">
+                                            <ul class="pagination pagination-sm no-margin pull-right"
+                                                id="reportPagingHeat">
 
                                             </ul>
                                         </div>
@@ -211,30 +213,42 @@
                                             <table class="table no-margin">
                                                 <thead>
                                                 <tr>
+                                                    <th></th>
                                                     <th>Metric</th>
                                                     <th>Value</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <tr>
+                                                    <td><i class="fa  fa-clock-o"></i></td>
                                                     <td>Start Time</td>
-                                                    <td id="startTsStat"><span class="label label-warning">no data</span></td>
+                                                    <td id="startTsStat"><span
+                                                            class="label label-warning">no data</span></td>
                                                 </tr>
                                                 <tr>
+                                                    <td><i class="fa  fa-clock-o"></i></td>
                                                     <td>End Time</td>
-                                                    <td id="endTsStat"><span class="label label-warning">no data</span></td>
+                                                    <td id="endTsStat"><span class="label label-warning">no data</span>
+                                                    </td>
                                                 </tr>
                                                 <tr>
+                                                    <td><i class="fa fa-ellipsis-v"></i>
+                                                        <i class="fa fa-ellipsis-v"></i></td>
                                                     <td># Points</td>
-                                                    <td id="pointsStat"><span class="label label-warning">no data</span></td>
+                                                    <td id="pointsStat"><span class="label label-warning">no data</span>
+                                                    </td>
                                                 </tr>
                                                 <tr>
+                                                    <td><i class="fa  fa-clock-o"></i></td>
                                                     <td>Min count</td>
-                                                    <td id="minCountStat"><span class="label label-warning">no data</span></td>
+                                                    <td id="minCountStat"><span
+                                                            class="label label-warning">no data</span></td>
                                                 </tr>
                                                 <tr>
+                                                    <td><i class="fa  fa-clock-o"></i></td>
                                                     <td>Max count</td>
-                                                    <td id="maxCountStat"><span class="label label-warning">no data</span></td>
+                                                    <td id="maxCountStat"><span
+                                                            class="label label-warning">no data</span></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -285,56 +299,60 @@
                                                         <option value="=">=</option>
                                                         <option value="<="><=</option>
                                                     </select>
-                                                    <input class="form-control " type="number"  min="1"  id="lengthInput">
+                                                    <input class="form-control " type="number" min="1" id="lengthInput">
                                                     <button type="button" class="btn btn-primary" id="showassrules">Show
-                                                        </button>
+                                                    </button>
 
                                                 </div>
                                             </div>
                                         </form>
                                         <!-- Date and time range -->
-                                       <!-- <div class="form-group col-md-4">
-                                            <label>Request a batch:</label>
+                                        <!-- <div class="form-group col-md-4">
+                                             <label>Request a batch:</label>
 
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-clock-o"></i>
-                                                </div>
-                                                <input type="text" class="form-control pull-right" id="reservationtimeTrajectory">
-                                                <div class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary" id="requestbatchbtn">Request
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            &lt;!&ndash; /.input group &ndash;&gt;
-                                            <div class="input-group">
-                                                <label>Support:</label>
-                                                <input type="number" step = "0.01" class="form-control" id="supportInput">
-                                                <label>Confidence:</label>
-                                                <input type="number" step = "0.01" class="form-control" id="confInput">
-                                            </div>
-                                        </div>-->
+                                             <div class="input-group">
+                                                 <div class="input-group-addon">
+                                                     <i class="fa fa-clock-o"></i>
+                                                 </div>
+                                                 <input type="text" class="form-control pull-right" id="reservationtimeTrajectory">
+                                                 <div class="input-group-btn">
+                                                     <button type="button" class="btn btn-primary" id="requestbatchbtn">Request
+                                                     </button>
+                                                 </div>
+                                             </div>
+                                             &lt;!&ndash; /.input group &ndash;&gt;
+                                             <div class="input-group">
+                                                 <label>Support:</label>
+                                                 <input type="number" step = "0.01" class="form-control" id="supportInput">
+                                                 <label>Confidence:</label>
+                                                 <input type="number" step = "0.01" class="form-control" id="confInput">
+                                             </div>
+                                         </div>-->
                                         <form class="form-inline col-md-4">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-clock-o"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="reservationtimeTrajectory">
+                                                    <input type="text" class="form-control pull-right"
+                                                           id="reservationtimeTrajectory">
 
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <div class="col-xs-4">
                                                     <label for="supportInput">Support</label>
-                                                    <input type="number" step="0.01" class="form-control" id="supportInput" >
+                                                    <input type="number" step="0.01" class="form-control"
+                                                           id="supportInput">
                                                 </div>
                                                 <div class="col-xs-4">
                                                     <label for="confInput">Confidence</label>
-                                                    <input type="number" step="0.01" class="form-control" id="confInput" >
+                                                    <input type="number" step="0.01" class="form-control"
+                                                           id="confInput">
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <button type="button" class="btn btn-primary" id="requestbatchbtn">Request a batch
+                                                    <button type="button" class="btn btn-primary" id="requestbatchbtn">
+                                                        Request a batch
                                                     </button>
                                                 </div>
                                             </div>
@@ -409,7 +427,7 @@
                                 <!-- stats report -->
                                 <div class="box box-solid bg-light-blue-gradient">
                                     <div class="box-header">
-                                        <h3 class="box-title">Report</h3>
+                                        <h3 class="box-title">Patterns</h3>
 
                                         <div class="box-tools">
                                             <ul class="pagination pagination-sm no-margin pull-right" id="reportPaging">
@@ -420,10 +438,13 @@
                                     </div>
                                     <!-- /.box-header -->
                                     <div class="box-body no-padding">
-                                        <div class="box-group" id="accordion">
-                                            <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                                        <!--<div class="box-group" id="accordion">
+                                            &lt;!&ndash; we are adding the .panel class so bootstrap.js collapse plugin detects it &ndash;&gt;
 
-                                        </div>
+                                        </div>-->
+                                        <ul class="todo-list" id="patternsList">
+
+                                        </ul>
                                     </div>
                                     <!-- /.box-body -->
                                     <!-- /.box -->
@@ -663,6 +684,10 @@
         radioClass: 'iradio_square-blue',
         increaseArea: '20%'
       });
+      $("[name='iCheckBox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+      });
       $.widget.bridge('uibutton', $.ui.button);
       $("[name='my-checkbox']").bootstrapSwitch();
       $("[name='my-checkbox']").on('switchChange.bootstrapSwitch', function (event, state) {
@@ -684,6 +709,11 @@
 
 
     });
+
+
+
+
+
 
 </script>
 
@@ -732,6 +762,11 @@
 <script src="plugins/select2/select2.full.min.js"></script>
 <script>
     $(".select2").select2();
+
+
+
+
+
 </script>
 <!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
