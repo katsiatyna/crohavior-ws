@@ -239,13 +239,13 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td><i class="fa  fa-clock-o"></i></td>
+                                                    <td><i class="fa  fa-sort-amount-asc"></i></td>
                                                     <td>Min count</td>
                                                     <td id="minCountStat"><span
                                                             class="label label-warning">no data</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><i class="fa  fa-clock-o"></i></td>
+                                                    <td><i class="fa  fa-sort-amount-desc"></i></td>
                                                     <td>Max count</td>
                                                     <td id="maxCountStat"><span
                                                             class="label label-warning">no data</span></td>
@@ -684,19 +684,14 @@
         radioClass: 'iradio_square-blue',
         increaseArea: '20%'
       });
-      $("[name='iCheckBox']").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
-      });
+
       $.widget.bridge('uibutton', $.ui.button);
       $("[name='my-checkbox']").bootstrapSwitch();
       $("[name='my-checkbox']").on('switchChange.bootstrapSwitch', function (event, state) {
           setIsRealTime(state);
           $('#reservationtime').prop('disabled', state);
       });
-      $("#next_page a").click(function(){
-        nextPageAR();
-      });
+
       $("[name='iCheck']").on('ifChecked', function(event){
         setFrame(this.value);
       });

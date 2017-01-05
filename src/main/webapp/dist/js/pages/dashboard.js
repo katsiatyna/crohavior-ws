@@ -176,6 +176,7 @@ $(function () {
       requestBatch(startTs, endTs, s, c);
     });
 
+
     //Date picker
     $('#datepicker').datepicker({
       autoclose: true

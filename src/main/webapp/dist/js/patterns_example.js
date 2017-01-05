@@ -1,4 +1,4 @@
-var  pages = 1;
+var  pages = 1, pagesSP = 1;
 var currentPageAR = 0, currentPageSP = 0;
 var dataAR = null, dataSP = null, dataSPfiltered = null;
 var hex = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',  'c', 'd', 'e', 'f'];
@@ -28,16 +28,16 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
     if(dataAR.length % 7 != 0){
         pages++;
     }
-    pagingInfo += '<li id="prev_page" onclick="prevPageAR();" '
+    pagingInfo += '<li id="prev_page_ar" onclick="prevPageAR();" '
      if(currentPageAR - 1 < 0){
         pagingInfo += 'disabled="true" >';
      } else {
         pagingInfo += '>';
      }
 
-    pagingInfo += '<a href="#" >&laquo;</a></li>';
-    pagingInfo += '<li><a href="#">'+(currentPageAR + 1)+'</a></li>';
-    pagingInfo += '<li id="next_page" onclick="nextPageAR();"><a href="#" >&raquo;</a></li>'
+    pagingInfo += '<a href="" >&laquo;</a></li>';
+    pagingInfo += '<li><a href="">'+(currentPageAR + 1)+'</a></li>';
+    pagingInfo += '<li id="next_page_ar" onclick="nextPageAR();"><a href="" >&raquo;</a></li>'
 
     document.getElementById('reportPaging').innerHTML = pagingInfo;
     for(var i = currentPageAR*7; i < currentPageAR*7 + 7; i++){
@@ -53,25 +53,25 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
       assrules += JSON.stringify(dataAR[i]) + ' </div></div></div>';
 
     }
-    document.getElementById('accordion').innerHTML = assrules;
+    //document.getElementById('accordion').innerHTML = assrules;
 }
 
 updateReportSP = function(data){
     var spatterns = "", pagingInfo = "";
-    pages = polylinesDisplay.length / 10;
+    pagesSP = polylinesDisplay.length / 10;
     if(polylinesDisplay.length % 10 != 0){
-        pages++;
+        pagesSP++;
     }
-    pagingInfo += '<li id="prev_page_sp" onclick="prevPageSP();" '
+    pagingInfo += '<li id="prev_page_sp" class="page-item '
      if(currentPageSP - 1 < 0){
-        pagingInfo += 'disabled="true" >';
+        pagingInfo += ' disabled" >';
      } else {
-        pagingInfo += '>';
+        pagingInfo += '">';
      }
 
-    pagingInfo += '<a href="#" >&laquo;</a></li>';
-    pagingInfo += '<li><a href="#">'+(currentPageSP + 1)+'</a></li>';
-    pagingInfo += '<li id="next_page_sp" onclick="nextPageSP();"><a href="#" >&raquo;</a></li>'
+    pagingInfo += '<a class="page-link" href="#" >&laquo;</a></li>';
+    pagingInfo += '<li><a class="page-link" href="#">'+(currentPageSP + 1)+'</a></li>';
+    pagingInfo += '<li id="next_page_sp"><a class="page-link" href="#" >&raquo;</a></li>'
 
     document.getElementById('reportPaging').innerHTML = pagingInfo;
     for(var i = currentPageSP*10; i < currentPageSP*10 + 10; i++){
@@ -79,7 +79,7 @@ updateReportSP = function(data){
         continue;
       }
       spatterns += '<li><span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>';
-      spatterns += '<input type="checkbox" value="" name="iCheckBox" checked>';
+      spatterns += '<input type="checkbox" value="'+ i +'" name="iCheckBox" checked>';
       var seq = "";
       for(var j = 0; j < data[i].items.length; j++){
         seq += "(" + data[i].items[j].a + "," + data[i].items[j].o + ")";
@@ -92,6 +92,28 @@ updateReportSP = function(data){
 
     }
     document.getElementById('patternsList').innerHTML = spatterns;
+    $("[name='iCheckBox']").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        increaseArea: '20%'
+    });
+
+    $("#next_page_sp a").click(function(e){
+        e.preventDefault();
+        if(currentPageSP != (pagesSP - 1)){
+            nextPageSP();
+        } else {
+            return false;
+        }
+    });
+
+    $("#prev_page_sp a").click(function(e){
+        e.preventDefault();
+        if(currentPageSP != 0){
+            prevPageSP();
+        } else {
+            return false;
+        }
+    });
 }
 
 
@@ -214,7 +236,11 @@ function hexCode() {
 
 var ARcallback = function(error, data, response){
     console.log(data);
-    dataAR = data['data'];
+    if(data == null){
+        dataAR = '[{"antecedent":[{"latitude":39.983,"longitude":116.327}{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.981,"longitude":116.327}],"confidence":0.9295908658420552},{"antecedent"[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.984,"longitude":116.327}],"confidence":0.9419600380589914},{"antecedent"[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.985,"longitude":116.327}],"confidence":0.8049476688867745}]';
+    } else{
+        dataAR = data['data'];
+    }
     updateReportAR();
 }
 
@@ -233,6 +259,20 @@ prevPageAR = function(){
     }
 }
 
+nextPageSP = function(){
+    if(currentPageSP + 1 < pagesSP){
+        currentPageSP++;
+        updateReportSP(dataSPfiltered);
+    }
+}
+
+prevPageSP = function(){
+    if(currentPageSP - 1 >= 0){
+        currentPageSP--;
+        updateReportSP(dataSPfiltered);
+    }
+}
+
 //"s2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:53:15e2008-10-23T04:34:50");
 showPatterns = function(batchId, sign, length){
     //clearTimeouts();
@@ -247,6 +287,7 @@ showPatterns = function(batchId, sign, length){
         currentBatch = batchId;
         readFromServer = true;
     }
+    currentPageSP = 0;
     if(readFromServer){
         dataAR = null;
         currentPageAR = 0;
@@ -262,7 +303,11 @@ showPatterns = function(batchId, sign, length){
 
 var SPcallback = function(error, data, response){
     console.log(data);
-    dataSP = data['data'];
+    if(data == null){
+
+    } else {
+        dataSP = data['data'];
+    }
     updateMapSP();
 }
 
