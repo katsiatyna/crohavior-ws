@@ -118,7 +118,7 @@ function createInfoWindow(poly,content) {
     var myInfoWindow = new google.maps.InfoWindow(iwOptions);
     google.maps.event.addListener(poly, 'mouseover', function(event) {
         //infowindow.content = content;
-        myInfoWindow.position = event.latLng;
+        myInfoWindow.setPosition(event.latLng);
         myInfoWindow.open(trajObj);
     });
     google.maps.event.addListener(poly, 'mouseout', function() {

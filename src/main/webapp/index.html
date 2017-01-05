@@ -207,10 +207,39 @@
                                     </div>
                                     <!-- /.box-header -->
                                     <div class="box-body no-padding">
-                                        <div class="box-group" id="accordionHeat">
-                                            <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-
+                                        <div class="table-responsive" id="heatReport">
+                                            <table class="table no-margin">
+                                                <thead>
+                                                <tr>
+                                                    <th>Metric</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Start Time</td>
+                                                    <td id="startTsStat"><span class="label label-warning">no data</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>End Time</td>
+                                                    <td id="endTsStat"><span class="label label-warning">no data</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td># Points</td>
+                                                    <td id="pointsStat"><span class="label label-warning">no data</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Min count</td>
+                                                    <td id="minCountStat"><span class="label label-warning">no data</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Max count</td>
+                                                    <td id="maxCountStat"><span class="label label-warning">no data</span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
+                                        <!-- /.table-responsive -->
                                     </div>
                                     <!-- /.box-body -->
                                     <!-- /.box -->
@@ -386,6 +415,7 @@
                                             <ul class="pagination pagination-sm no-margin pull-right" id="reportPaging">
 
                                             </ul>
+
                                         </div>
                                     </div>
                                     <!-- /.box-header -->
