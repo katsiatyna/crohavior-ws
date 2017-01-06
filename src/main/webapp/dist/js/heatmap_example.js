@@ -14,10 +14,12 @@ var client = new elasticsearch.Client({
   });
 
 //var myLatlng = new google.maps.LatLng(39.905, 116.375);
-  var myLatlng = new google.maps.LatLng(39.979, 116.327);
+  //2.1124435
+  //var myLatlng = new google.maps.LatLng(39.979, 116.327);
+  var myLatlng = new google.maps.LatLng(41.388451, 2.1124435);
   // map options,
   var myOptions = {
-    zoom: 12,
+    zoom: 17,
     center: myLatlng
   };
   // standard map

@@ -91,7 +91,7 @@ updateReportSP = function(data){
       }
 
       spatterns += '<span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>';
-      spatterns += '<input type="checkbox" value="'+ i +'" name="iCheckBox"';
+      spatterns += '<input style="width: 22px;height: 22px;" type="checkbox" value="'+ i +'" name="iCheckBox"';
       if(polylinesDisplay[i].displayed){
         spatterns += ' checked>';
       } else {
@@ -105,14 +105,14 @@ updateReportSP = function(data){
             seq += '<i class="fa fa-long-arrow-right"></i>'
         }
       }
-      spatterns += '<span class="text">'+ seq +'</span>'
+      spatterns += '<small class="text">'+ seq +'</small>'
       spatterns += '<small class="label label-warning">'+ JSON.stringify(data[i].frequency)+'</small></li>';
 
     }
     document.getElementById('patternsList').innerHTML = spatterns;
     $("[name='iCheckBox']").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        increaseArea: '20%'
+        checkboxClass: 'icheckbox_flat-blue'//,
+        //increaseArea: '20%'
     });
 
     $("#next_page_sp a").click(function(e){
@@ -277,7 +277,7 @@ function hexCode() {
 var ARcallback = function(error, data, response){
     console.log(data);
     if(data == null){
-        dataAR = '[{"antecedent":[{"latitude":39.983,"longitude":116.327}{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.981,"longitude":116.327}],"confidence":0.9295908658420552},{"antecedent"[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.984,"longitude":116.327}],"confidence":0.9419600380589914},{"antecedent"[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent"[{"latitude":39.985,"longitude":116.327}],"confidence":0.8049476688867745}]';
+        dataAR = [{"antecedent":[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent":[{"latitude":39.981,"longitude":116.327}],"confidence":0.9295908658420552},{"antecedent":[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent":[{"latitude":39.984,"longitude":116.327}],"confidence":0.9419600380589914},{"antecedent":[{"latitude":39.983,"longitude":116.327},{"latitude":39.98,"longitude":116.327}],"consequent":[{"latitude":39.985,"longitude":116.327}],"confidence":0.8049476688867745}];
     } else{
         dataAR = data['data'];
     }
@@ -441,7 +441,64 @@ allBatches = function(){
 
 allBatches();
 
+/*
+<table class="table no-margin" id="heatReportTable">
+<thead>
+<tr>
+    <th></th>
+    <th>Metric</th>
+    <th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td><i class="fa  fa-clock-o"></i></td>
+    <td>Start Time</td>
+    <td id="startTsStat"><span
+            class="label label-warning">no data</span></td>
+</tr>
+<tr>
+    <td><i class="fa  fa-clock-o"></i></td>
+    <td>End Time</td>
+    <td id="endTsStat"><span class="label label-warning">no data</span>
+    </td>
+</tr>
+<tr>
+    <td><i class="fa fa-ellipsis-v"></i>
+        <i class="fa fa-ellipsis-v"></i></td>
+    <td># Points</td>
+    <td id="pointsStat"><span class="label label-warning">no data</span>
+    </td>
+</tr>
+<tr>
+    <td><i class="fa  fa-sort-amount-asc"></i></td>
+    <td>Min count</td>
+    <td id="minCountStat"><span
+            class="label label-warning">no data</span></td>
+</tr>
+<tr>
+    <td><i class="fa  fa-sort-amount-desc"></i></td>
+    <td>Max count</td>
+    <td id="maxCountStat"><span
+            class="label label-warning">no data</span></td>
+</tr>
+</tbody>
+</table>
+*/
 
+loadPDF = function(){
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    var elem = document.getElementById("heatReportTable");
+    var res = pdf.autoTableHtmlToJson(elem);
+    pdf.autoTable(res.columns, res.data);
+    pdf.save("table.pdf");
+}
+
+loadCSV = function(){
+    return false;
+}
 
 
 
