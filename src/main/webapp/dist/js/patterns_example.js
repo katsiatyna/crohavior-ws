@@ -461,18 +461,18 @@ loadPDF = function(){
     }
     tableEl += '</tbody></table>';
     document.getElementById("hidden").innerHTML = tableEl;
-        var res = pdf.autoTableHtmlToJson(document.getElementById("arTable"));
-        //pdf.text(1, 1, 'Paranyan loves jsPDF');
-        pdf.autoTable(res.columns, res.data, {
-        styles: {
-          overflow: 'linebreak',
-          columnWidth: 'wrap'
-        },
-        columnStyles: {
-          0: {columnWidth: 'auto'},
-          1: {columnWidth: 'auto'}
-        }
-      });
+    var res = pdf.autoTableHtmlToJson(document.getElementById("arTable"));
+    pdf.text(40, 35, 'Association Rules for ' + $("#batchSelector option:selected").text());
+    pdf.autoTable(res.columns, res.data, {
+    styles: {
+      overflow: 'linebreak',
+      columnWidth: 'wrap'
+    },
+    columnStyles: {
+      0: {columnWidth: 'auto'},
+      1: {columnWidth: 'auto'}
+    }
+  });
     document.getElementById("hidden").innerHTML = "";
     pdf.save("AssociationRules.pdf");
 }
