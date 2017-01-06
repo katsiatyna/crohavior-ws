@@ -24,7 +24,7 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
 
   updateReportAR = function(){
     var assrules = "", pagingInfo = "";
-    pages = dataAR.length / 7;
+    pages = Math.ceil(dataAR.length / 7);
     if(dataAR.length % 7 != 0){
         pages++;
     }
@@ -58,10 +58,8 @@ var trajLatlng = new google.maps.LatLng(39.979, 116.327);
 
 updateReportSP = function(data){
     var spatterns = "", pagingInfo = "";
-    pagesSP = polylinesDisplay.length / 10;
-    if(polylinesDisplay.length % 10 != 0){
-        pagesSP++;
-    }
+    pagesSP = Math.ceil(polylinesDisplay.length / 10);
+
     pagingInfo += '<li id="prev_page_sp" class="page-item '
      if(currentPageSP - 1 < 0){
         pagingInfo += ' disabled" >';
@@ -70,16 +68,36 @@ updateReportSP = function(data){
      }
 
     pagingInfo += '<a class="page-link" href="#" >&laquo;</a></li>';
-    pagingInfo += '<li><a class="page-link" href="#">'+(currentPageSP + 1)+'</a></li>';
-    pagingInfo += '<li id="next_page_sp"><a class="page-link" href="#" >&raquo;</a></li>'
+    pagingInfo += '<li id="cur_page_sp"><a class="page-link" href="#">'+(currentPageSP + 1)+'</a></li>';
+    pagingInfo += '<li id="next_page_sp" class="page-item ';
 
+    if(currentPageSP == (pagesSP - 1)){
+        pagingInfo += ' disabled">';
+    } else {
+        pagingInfo += '">'
+    }
+
+    pagingInfo += '<a href="#" class="page-link">&raquo;</a></li>';
     document.getElementById('reportPaging').innerHTML = pagingInfo;
     for(var i = currentPageSP*10; i < currentPageSP*10 + 10; i++){
       if(data[i] == null){
         continue;
       }
-      spatterns += '<li><span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>';
-      spatterns += '<input type="checkbox" value="'+ i +'" name="iCheckBox" checked>';
+      spatterns += '<li '
+      if(polylinesDisplay[i].displayed){
+        spatterns += '>';
+      } else {
+        spatterns += 'class="done">';
+      }
+
+      spatterns += '<span class="handle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>';
+      spatterns += '<input type="checkbox" value="'+ i +'" name="iCheckBox"';
+      if(polylinesDisplay[i].displayed){
+        spatterns += ' checked>';
+      } else {
+        spatterns += '>';
+      }
+
       var seq = "";
       for(var j = 0; j < data[i].items.length; j++){
         seq += "(" + data[i].items[j].a + "," + data[i].items[j].o + ")";
@@ -114,6 +132,28 @@ updateReportSP = function(data){
             return false;
         }
     });
+
+    $("#cur_page_sp a").click(function(e){
+        e.preventDefault();
+    });
+    // For oncheck callback
+    $('[name="iCheckBox"]').on('ifChecked', function (e) { //Do your code
+        var index = $( this ).val();
+        polylinesDisplay[index].poly.setMap(trajObj);
+        polylinesDisplay[index].displayed = true;
+        b=$( this ).parents("li").first();
+        b.removeClass("done");
+    });
+
+    // For onUncheck callback
+    $('[name="iCheckBox"]').on('ifUnchecked', function (e) { //Do your code
+        var index = $( this ).val();
+        polylinesDisplay[index].poly.setMap(null);
+        polylinesDisplay[index].displayed = false;
+        b=$( this ).parents("li").first();
+        b.toggleClass("done");
+    });
+
 }
 
 

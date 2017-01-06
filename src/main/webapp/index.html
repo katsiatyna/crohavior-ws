@@ -695,6 +695,7 @@
       $("[name='iCheck']").on('ifChecked', function(event){
         setFrame(this.value);
       });
+
       $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
         google.maps.event.trigger(trajObj, 'resize');
         trajObj.setZoom( trajObj.getZoom() );
