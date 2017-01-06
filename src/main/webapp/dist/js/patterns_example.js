@@ -442,15 +442,7 @@ allBatches = function(){
 allBatches();
 
 /*
-<table class="table no-margin" id="heatReportTable">
-<thead>
-<tr>
-    <th></th>
-    <th>Metric</th>
-    <th>Value</th>
-</tr>
-</thead>
-<tbody>
+
 <tr>
     <td><i class="fa  fa-clock-o"></i></td>
     <td>Start Time</td>
@@ -490,10 +482,35 @@ loadPDF = function(){
     var pdf = new jsPDF('p', 'pt', 'letter');
     // source can be HTML-formatted string, or a reference
     // to an actual DOM element from which the text will be scraped.
-    var elem = document.getElementById("heatReportTable");
-    var res = pdf.autoTableHtmlToJson(elem);
-    pdf.autoTable(res.columns, res.data);
-    pdf.save("table.pdf");
+    var tableEl = '<table class="table no-margin" id="arTable"><thead><tr><th>Antecedent</th><th>Consequent</th><th>Confidence</th></tr></thead><tbody>';
+    for(var i = 0; i < dataAR.length; i++){
+        tableEl += '<tr><td>';
+        for(var j = 0; j < dataAR[i].antecedent.length; j++){
+            tableEl += '<pre>(' + dataAR[i].antecedent[j].latitude + ',' + dataAR[i].antecedent[j].longitude + ')</pre>';
+        }
+        tableEl += '</td><td>';
+        for(var k = 0; k < dataAR[i].consequent.length; k++){
+            tableEl += '<pre>(' + dataAR[i].consequent[k].latitude + ',' + dataAR[i].consequent[k].longitude + ')</pre>';
+        }
+        tableEl += '</td><td>' + dataAR[i].confidence + '</td></tr>';
+
+    }
+    tableEl += '</tbody></table>';
+    document.getElementById("hidden").innerHTML = tableEl;
+        var res = pdf.autoTableHtmlToJson(document.getElementById("arTable"));
+        //pdf.text(1, 1, 'Paranyan loves jsPDF');
+        pdf.autoTable(res.columns, res.data, {
+        styles: {
+          overflow: 'linebreak',
+          columnWidth: 'wrap'
+        },
+        columnStyles: {
+          0: {columnWidth: 'auto'},
+          1: {columnWidth: 'auto'}
+        }
+      });
+    document.getElementById("hidden").innerHTML = "";
+    pdf.save("AssociationRules.pdf");
 }
 
 loadCSV = function(){
