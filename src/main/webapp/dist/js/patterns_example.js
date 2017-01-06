@@ -441,42 +441,6 @@ allBatches = function(){
 
 allBatches();
 
-/*
-
-<tr>
-    <td><i class="fa  fa-clock-o"></i></td>
-    <td>Start Time</td>
-    <td id="startTsStat"><span
-            class="label label-warning">no data</span></td>
-</tr>
-<tr>
-    <td><i class="fa  fa-clock-o"></i></td>
-    <td>End Time</td>
-    <td id="endTsStat"><span class="label label-warning">no data</span>
-    </td>
-</tr>
-<tr>
-    <td><i class="fa fa-ellipsis-v"></i>
-        <i class="fa fa-ellipsis-v"></i></td>
-    <td># Points</td>
-    <td id="pointsStat"><span class="label label-warning">no data</span>
-    </td>
-</tr>
-<tr>
-    <td><i class="fa  fa-sort-amount-asc"></i></td>
-    <td>Min count</td>
-    <td id="minCountStat"><span
-            class="label label-warning">no data</span></td>
-</tr>
-<tr>
-    <td><i class="fa  fa-sort-amount-desc"></i></td>
-    <td>Max count</td>
-    <td id="maxCountStat"><span
-            class="label label-warning">no data</span></td>
-</tr>
-</tbody>
-</table>
-*/
 
 loadPDF = function(){
     var pdf = new jsPDF('p', 'pt', 'letter');
@@ -514,7 +478,25 @@ loadPDF = function(){
 }
 
 loadCSV = function(){
-    return false;
+    var json = dataAR;
+    var fields = Object.keys(json[0]);
+    var replacer = function(key, value) { return value === null ? '' : value };
+    var csv = json.map(function(row){
+        return fields.map(function(fieldName){
+            return JSON.stringify(row[fieldName], replacer);
+        }).join(';');
+    });
+    csv.unshift(fields.join(';')); // add header column
+    csv = csv.join('\r\n');
+    var downloadLink = document.createElement("a");
+    var blob = new Blob(["\ufeff", csv]);
+    var url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = "AssociationRules.csv";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
 
 
