@@ -97,19 +97,39 @@ updateReportSP = function(data){
       } else {
         spatterns += '>';
       }
+      spatterns += '<small class="label label-warning">'+ JSON.stringify(data[i].frequency)+'</small>';
 
+      var long = (data[i].items.length > 2);
       var seq = "";
-      for(var j = 0; j < data[i].items.length; j++){
+      for(var j = 0; j < (long ? 2 : data[i].items.length); j++){
         seq += "(" + data[i].items[j].a + "," + data[i].items[j].o + ")";
         if(j < data[i].items.length - 1){
             seq += '<i class="fa fa-long-arrow-right"></i>'
         }
       }
-      spatterns += '<small class="text">'+ seq +'</small>'
-      spatterns += '<small class="label label-warning">'+ JSON.stringify(data[i].frequency)+'</small></li>';
+      var seqHidden = "";
+      if(long){
+        for(var j = 2; j < data[i].items.length; j++){
+          seqHidden += "(" + data[i].items[j].a + "," + data[i].items[j].o + ")";
+          if(j < data[i].items.length - 1){
+              seqHidden += '<i class="fa fa-long-arrow-right"></i>'
+          }
+        }
+      }
+      spatterns += '<small class="text">'+ seq +'</small>';
+      if(long){
+          spatterns += '<a  href="#" id="moreLink'+ i +'" class="seemore">...</a>';
+          spatterns += '<small class="text" style="display:none" id="collapseExample' + i + '" >' + seqHidden + '</small>';
+      }
+      spatterns += '</li>';
+
 
     }
     document.getElementById('patternsList').innerHTML = spatterns;
+    $("#cur_page_sp a").click(function(e){
+        e.preventDefault();
+
+    });
     $("[name='iCheckBox']").iCheck({
         checkboxClass: 'icheckbox_flat-blue'//,
         //increaseArea: '20%'
@@ -124,6 +144,12 @@ updateReportSP = function(data){
         }
     });
 
+    $(".seemore").click(function(e){
+        e.preventDefault();
+        var id = $(this).attr('id');
+        $("#collapseExample" + id.substring(8, id.length)).toggle();
+    });
+
     $("#prev_page_sp a").click(function(e){
         e.preventDefault();
         if(currentPageSP != 0){
@@ -133,9 +159,7 @@ updateReportSP = function(data){
         }
     });
 
-    $("#cur_page_sp a").click(function(e){
-        e.preventDefault();
-    });
+
     // For oncheck callback
     $('[name="iCheckBox"]').on('ifChecked', function (e) { //Do your code
         var index = $( this ).val();
@@ -429,7 +453,7 @@ var allBatchesCallback = function(error, data, response){
                 text : item.text
             }));
         });
-        currentBatch = batches[0].value;
+        //currentBatch = batches[0].value;
         showPatterns(batches[0].value, signSeq, lengthSeq);
     }
 }
@@ -477,6 +501,40 @@ loadPDF = function(){
     pdf.save("AssociationRules.pdf");
 }
 
+SPloadPDF = function(){
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    var tableEl = '<table class="table no-margin" id="spTable"><thead><tr><th>Items</th><th>Frequency</th></tr></thead><tbody>';
+    for(var i = 0; i < dataSP.length; i++){
+        tableEl += '<tr><td>';
+        for(var j = 0; j < dataSP[i].items.length; j++){
+            tableEl += '<pre>(' + dataSP[i].items[j].latitude + ',' + dataSP[i].items[j].longitude + ')</pre>';
+        }
+        tableEl += '</td>';
+
+        tableEl += '<td>' + dataSP[i].frequency + '</td></tr>';
+
+    }
+    tableEl += '</tbody></table>';
+    document.getElementById("hidden").innerHTML = tableEl;
+    var res = pdf.autoTableHtmlToJson(document.getElementById("spTable"));
+    pdf.text(40, 35, 'Sequential Patterns for ' + $("#batchSelector option:selected").text());
+    pdf.autoTable(res.columns, res.data, {
+    styles: {
+      overflow: 'linebreak',
+      columnWidth: 'wrap'
+    },
+    columnStyles: {
+      0: {columnWidth: 'auto'},
+      1: {columnWidth: 'auto'}
+    }
+  });
+    document.getElementById("hidden").innerHTML = "";
+    pdf.save("SequentialPatterns.pdf");
+}
+
+
 loadCSV = function(){
     var json = dataAR;
     var fields = Object.keys(json[0]);
@@ -493,6 +551,28 @@ loadCSV = function(){
     var url = URL.createObjectURL(blob);
     downloadLink.href = url;
     downloadLink.download = "AssociationRules.csv";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+SPloadCSV = function(){
+    var json = dataSP;
+    var fields = Object.keys(json[0]);
+    var replacer = function(key, value) { return value === null ? '' : value };
+    var csv = json.map(function(row){
+        return fields.map(function(fieldName){
+            return JSON.stringify(row[fieldName], replacer);
+        }).join(';');
+    });
+    csv.unshift(fields.join(';')); // add header column
+    csv = csv.join('\r\n');
+    var downloadLink = document.createElement("a");
+    var blob = new Blob(["\ufeff", csv]);
+    var url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = "SequentialPatterns.csv";
 
     document.body.appendChild(downloadLink);
     downloadLink.click();
