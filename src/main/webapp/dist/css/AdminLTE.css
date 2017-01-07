@@ -4934,3 +4934,30 @@ table.text-center th {
     white-space: normal !important;
   }
 }
+
+.form-compact {
+  //font-size: 0.8em;
+}
+
+.form-compact .input-group .input-group-addon .form-control{
+    //height:22px;
+    width:50px;
+    padding:0px;
+}
+#select-addon {
+    padding:0px;
+    width:50px;
+}
+
+.form-compact .form-control {
+  padding: 1px 2px;
+  //height: 24px;
+  font-size:1em;
+}
+.form-compact label {
+  margin-bottom: 1px;
+}
+.form-compact .form-group
+{
+  margin-bottom:0px;
+}

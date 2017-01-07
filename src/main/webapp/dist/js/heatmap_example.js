@@ -92,7 +92,25 @@ var client = new elasticsearch.Client({
         }
   });
   heatmapMap.setData(speedData);
-  document.getElementById("ts").innerHTML='REAL-TIME: ' + cur_ts;
+  fillInReport(speedData['data'], cur_ts, false);
+  }
+
+  resetReport = function(){
+    $('#startTsStat span').val('no data');
+    $('#endTsStat span').val('no data');
+    $('#pointsStat span').val('no data');
+    $('#minCountStat span').val('no data');
+    $('#maxCountStat span').val('no data');
+  }
+
+  fillInReport = function(data, ts, is_ts_start){
+    var startTsStat = (is_ts_start) ? ts : (ts - 1000*frame);
+    var endTsStat = (is_ts_start) ? (ts + 1000*frame) : ts;
+    $('#startTsStat span').val(moment(startTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
+    $('#endTsStat span').val(moment(endTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
+    $('#pointsStat span').val(data.length);
+    $('#minCountStat span').val(Math.min.apply(this, $.map(data, function(o){ return o.c; })));
+    $('#maxCountStat span').val(Math.max.apply(this, $.map(data, function(o){ return o.c; })));
   }
 
 
