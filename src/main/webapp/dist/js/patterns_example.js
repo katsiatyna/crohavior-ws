@@ -205,6 +205,7 @@ updateMapSPInternal = function(patterns){
         for(var i=0; i < items.length; i++){
             patternCoordinates[i] = {'lat':items[i]['a'], 'lng':items[i]['o']};
         }
+        var lineWidth = ((rangeMax-rangeMin)*(pattern.frequency - freqMin)/(freqMax - freqMin)) + rangeMin;
          var lineSymbol = {
             path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
             scale: 5
@@ -214,22 +215,14 @@ updateMapSPInternal = function(patterns){
             geodesic: true,
             strokeColor: hexCode(),
             strokeOpacity: 0.5,
-            strokeWeight: ((rangeMax-rangeMin)*(pattern.frequency - freqMin)/(freqMax - freqMin)) + rangeMin,
-            /*icons: [{
+            strokeWeight: lineWidth ,
+            icons: [{
               icon: lineSymbol,
               offset: '100%'
 
-            }]*/
+            }]
           });
           createInfoWindow(seqPath, pattern.frequency);
-          //myInfoWindow.setContent('Hello World!');
-          /*google.maps.event.addListener(seqPath, 'mouseover', function(e) {
-              myInfoWindow.setPosition(e.latLng);
-              myInfoWindow.open(trajObj);
-              // mymap represents the map you created using google.maps.Map
-          });*/
-
-          // assuming you want the InfoWindow to close on mouseout
 
           seqPath.setMap(trajObj);
           polylinesDisplay[j] = {poly:seqPath ,displayed:true};
@@ -578,6 +571,5 @@ SPloadCSV = function(){
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
-
 
 

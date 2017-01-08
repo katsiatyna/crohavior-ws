@@ -101,6 +101,8 @@ var client = new elasticsearch.Client({
     $('#pointsStat span').val('no data');
     $('#minCountStat span').val('no data');
     $('#maxCountStat span').val('no data');
+    $('#sumPeopleStat span').val('no data');
+    $('#avgPeopleStat span').val('no data');
   }
 
   fillInReport = function(data, ts, is_ts_start){
@@ -111,6 +113,9 @@ var client = new elasticsearch.Client({
     $('#pointsStat span').val(data.length);
     $('#minCountStat span').val(Math.min.apply(this, $.map(data, function(o){ return o.c; })));
     $('#maxCountStat span').val(Math.max.apply(this, $.map(data, function(o){ return o.c; })));
+    var sumPeople = Math.sum.apply(this, $.map(data, function(o){ return o.c; }));
+    $('#sumPeopleStat span').val(sumPeople);
+    $('#avgPeopleStat span').val(sumPeopleStat / data.length);
   }
 
 
