@@ -4,6 +4,7 @@ import io.swagger.jaxrs.config.BeanConfig;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,27 @@ public class RestApplication extends Application {
         beanConfig.setFilterClass("io.swagger.sample.util.ApiAuthorizationFilterImpl");
         beanConfig.setResourcePackage("io.swagger.sample.resource");
         beanConfig.setScan(true);
+        init();
+    }
+
+    private void init() {
+        //recreate the index for elasticsearch
+
+
+        try {
+            String command = "curl -XDELETE '127.0.0.1 :9200/heatmap?pretty'";
+            Process delete = Runtime.getRuntime().exec(command);
+            String commandEScreate = "curl -XPUT 'localhost:9200/heatmap?pretty' -d' {    \"mappings\" : {        \"5\" : {            \"properties\" : {                \"a\" : { \"type\" : \"double\", \"include_in_all\":false,\"index\": false },                \"o\" : { \"type\" : \"double\",\"include_in_all\": false,\"index\": false },                \"c\" : { \"type\" : \"integer\",\"include_in_all\": false,\"index\": false },                \"ts\" : { \"type\" : \"long\" },\t\t\"rdd\" : { \"type\" : \"integer\" },                \"type\" : { \"type\" :\"keyword\"}            }        },\t\"10\" : {            \"properties\" : {                \"a\" : { \"type\" : \"double\", \"include_in_all\": false,\"index\": false },                \"o\" : { \"type\" : \"double\", \"include_in_all\": false,\"index\":false },                \"c\" : { \"type\" : \"integer\", \"include_in_all\":false,\"index\": false},                \"ts\" : { \"type\" : \"long\" },\t\t\"rdd\" : { \"type\" : \"integer\" },                \"type\" : { \"type\" :\"keyword\"}            }        },\t\"15\" : {            \"properties\" : {                \"a\" : { \"type\" : \"double\", \"include_in_all\": false,\"index\": false },                \"o\" : { \"type\" : \"double\", \"include_in_all\": false,\"index\":false },                \"c\" : { \"type\" : \"integer\", \"include_in_all\":false,\"index\": false },                \"ts\" : { \"type\" : \"long\" },\t\t\"rdd\" : { \"type\" : \"integer\" },                \"type\" : { \"type\" :\"keyword\"}            }        }    }}'";
+            Process create = Runtime.getRuntime().exec(commandEScreate);
+            String commandStreaming = "";
+            Process streaming = Runtime.getRuntime().exec(commandStreaming);
+            String commandProducer = "";
+            Process producer = Runtime.getRuntime().exec(commandProducer);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
