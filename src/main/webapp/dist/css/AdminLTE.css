@@ -4961,3 +4961,7 @@ table.text-center th {
 {
   margin-bottom:0px;
 }
+
+.navbar {
+    margin-bottom: 0 !important;
+}
