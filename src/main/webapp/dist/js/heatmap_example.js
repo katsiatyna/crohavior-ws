@@ -1,10 +1,10 @@
 var projectId = 789; // {Number} id of the project of logged in user
 var frame = 5;
 var cur_ts = 0;
-var isRealTime = true;
+var isRealTime = ($("[name='my-checkbox']").val() === "on");
 var drp = $('#reservationtime').data('daterangepicker');
-var startTime = 1224716400000;
-var endTime = 1224802559000; // {Number} End date/time
+var startTime = 0;
+var endTime = 0; // {Number} End date/time
 var speedTimeout = null, batchTimeout = null;
 
 //set up elasticsearch client
@@ -92,30 +92,35 @@ var client = new elasticsearch.Client({
         }
   });
   heatmapMap.setData(speedData);
-  fillInReport(speedData['data'], cur_ts, false);
+  if(speedData != null && speedData["data"] != ""){
+    fillInReport(speedData['data'], cur_ts, false);
+  }
   }
 
   resetReport = function(){
-    $('#startTsStat span').val('no data');
-    $('#endTsStat span').val('no data');
-    $('#pointsStat span').val('no data');
-    $('#minCountStat span').val('no data');
-    $('#maxCountStat span').val('no data');
-    $('#sumPeopleStat span').val('no data');
-    $('#avgPeopleStat span').val('no data');
+    $('#startTsStat').text('no data');
+    $('#endTsStat').text('no data');
+    $('#pointsStat').text('no data');
+    $('#minCountStat').text('no data');
+    $('#maxCountStat').text('no data');
+    $('#sumPeopleStat').text('no data');
+    $('#avgPeopleStat').text('no data');
   }
 
   fillInReport = function(data, ts, is_ts_start){
     var startTsStat = (is_ts_start) ? ts : (ts - 1000*frame);
     var endTsStat = (is_ts_start) ? (ts + 1000*frame) : ts;
-    $('#startTsStat span').val(moment(startTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
-    $('#endTsStat span').val(moment(endTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
-    $('#pointsStat span').val(data.length);
-    $('#minCountStat span').val(Math.min.apply(this, $.map(data, function(o){ return o.c; })));
-    $('#maxCountStat span').val(Math.max.apply(this, $.map(data, function(o){ return o.c; })));
-    var sumPeople = Math.sum.apply(this, $.map(data, function(o){ return o.c; }));
-    $('#sumPeopleStat span').val(sumPeople);
-    $('#avgPeopleStat span').val(sumPeopleStat / data.length);
+    $('#startTsStat').text(moment(startTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
+    $('#endTsStat').text(moment(endTsStat, 'x').format('MM/DD/YYYY HH:mm:ss'));
+    $('#pointsStat').text(data.length);
+    $('#minCountStat').text(Math.min.apply(this, $.map(data, function(o){ return o.c; })));
+    $('#maxCountStat').text(Math.max.apply(this, $.map(data, function(o){ return o.c; })));
+    var sumPeople = 0;
+    for(var i = 0; i < data.length; i++){
+        sumPeople += data[i].c;
+    }
+    $('#sumPeopleStat').text(sumPeople);
+    $('#avgPeopleStat').text(sumPeople / data.length);
   }
 
 
@@ -127,7 +132,7 @@ function speedLoop () {           //  create a loop function
           updateSpeedView();
             speedLoop();
       }//  ..  again which will trigger another
-     }, (frame -2)*1000)
+     }, (5 -2)*1000)
   }
 
 
@@ -159,11 +164,12 @@ doAnalysis = function(){
                batchTimeout = setTimeout(function () {
                   if(elements != null && elements[i] != null && elements[i]['data'].length != 0){//  call a 3s setTimeout when the loop is called
                         heatmapMap.setData(elements[i]);
+                        fillInReport(elements[i]['data'], elements[i]['startTimestamp'], true);
                         //setReportTime(elements[i]);
-                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (elements[i]['startTimestamp'] + ' - ' + elements[i]['endTimestamp']);
+                        //document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + (elements[i]['startTimestamp'] + ' - ' + elements[i]['endTimestamp']);
                   } else {
                         //setReportTime(null);
-                        document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + 'no data';
+                        //document.getElementById("ts").innerHTML=iGlobal.toString() + ': ' + 'no data';
                   }
                   console.log(i);
                   i++;
@@ -193,7 +199,7 @@ doAnalysis = function(){
                   }else {
                     if(currentPage >= pages && !isRealTime){
                         console.log('Done!');
-                        document.getElementById("ts").innerHTML='DONE!';
+                        //document.getElementById("ts").innerHTML='DONE!';
                     } else if(!isRealTime) {
                         //set elements to new array
                         elements = elementsNext;
@@ -213,13 +219,19 @@ doAnalysis = function(){
             }
           }
         };
+        if(startTime == 0){
+            startTime = $('#reservationtime').data('daterangepicker').startDate.format('x');
+        }
+        if(endTime == 0){
+            endTime = $('#reservationtime').data('daterangepicker').endDate.format('x');
+        }
         HMApi.getHeatmapsByParameters(projectId, frame, startTime, endTime, callback);
     }
 
 }
 
 
-//doAnalysis();
+doAnalysis();
 
 
 setIsRealTime = function(state){
@@ -255,7 +267,8 @@ clearTimeouts = function(){
     heatmapMap.setData({data:[]});
     clearTimeout(speedTimeout);
     clearTimeout(batchTimeout);
-    document.getElementById("ts").innerHTML = "";
+    resetReport();
+    //document.getElementById("ts").innerHTML = "";
 }
 
 /*

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class HeatmapsApiServiceImpl extends HeatmapsApiService {
 
-    public static final String TABLE_NAME = "heatmap";
+    public static final String TABLE_NAME = "heatmapupc";
 
     @Override
     public Response getHeatmapsByParameters(Integer projectId, Long startTime, Long endTime, Integer interval,

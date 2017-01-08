@@ -29,7 +29,7 @@ public class HBaseUtils {
             connection = ConnectionFactory.createConnection(conf);
         }catch (Exception e)
         {
-            System.out.println("fuck");
+            System.out.println("oops");
         }
     }
 

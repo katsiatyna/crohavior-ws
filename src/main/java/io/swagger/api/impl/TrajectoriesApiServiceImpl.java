@@ -26,7 +26,7 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.JavaResteasyServerCodegen", date = "2016-12-06T21:50:39.597Z")
 public class TrajectoriesApiServiceImpl extends TrajectoriesApiService {
-    public static final String TABLE_NAME = "datamining";
+    public static final String TABLE_NAME = "dataminingupc";
 
     @Override
     public Response getTrajectoriesByParameters(Integer projectId, String batchId, String apiKey, UriInfo uri)

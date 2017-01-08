@@ -130,10 +130,10 @@ $(function () {
          "timePicker": true,
             "timePicker24Hour": true,
             "timePickerSeconds": true,
-            "startDate": "10/23/2008",
-            "endDate": "10/23/2008 23:55:59",
-            "minDate": "10/23/2008",
-            "maxDate": "10/23/2008 23:55:59",
+            "startDate": "01/01/2017 06:00:00",
+            "endDate": "01/01/2017 23:55:59",
+            "minDate": "01/01/2017 06:00:00",
+            "maxDate": "01/01/2017 23:55:59",
             "locale": {
                         "format": "MM/DD/YYYY HH:mm:ss"
             }
@@ -145,10 +145,10 @@ $(function () {
          "timePicker": true,
             "timePicker24Hour": true,
             "timePickerSeconds": true,
-            "startDate": "10/23/2008",
-            "endDate": "10/23/2008 23:55:59",
-            "minDate": "10/23/2008",
-            "maxDate": "10/23/2008 23:55:59",
+            "startDate": "01/01/2017 06:00:00",
+            "endDate": "01/01/2017 23:55:59",
+            "minDate": "01/01/2017 06:00:00",
+            "maxDate": "01/01/2017 23:55:59",
             "locale": {
                         "format": "MM/DD/YYYY HH:mm:ss"
             }
