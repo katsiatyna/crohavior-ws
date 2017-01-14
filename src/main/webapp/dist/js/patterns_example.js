@@ -574,3 +574,79 @@ SPloadCSV = function(){
 }
 
 
+checkNewBatchesCallback = function(error, data, response){
+     if(error){
+           console.log(error);
+     } else{
+         var newBatches = [];
+         var rawBatches = data['batches'];
+         //var rawBatches = ["r2008-10-23T02:53:15e2008-10-23T04:34:50", "r2008-10-23T02:57:45e2008-10-23T02:59:20", "r2008-10-23T02:59:15e2008-10-23T03:05:10", "s2008-10-23T02:53:15e2008-10-23T04:34:50", "s2008-10-23T02:57:45e2008-10-23T02:59:20", "s2008-10-23T02:59:15e2008-10-23T03:05:10"];
+         var batchesIndex = 0;
+         for(var i = 0; i< rawBatches.length; i++){
+             if(rawBatches[i].startsWith('r')){
+                 continue;
+             }
+             newBatches[batchesIndex] = {value:'', text:''};
+             var value = rawBatches[i].substring(1, rawBatches[i].length);
+             newBatches[batchesIndex].value = value;
+             var parts = value.split('e');
+             var startDate = moment(parts[0], "YYYY-MM-DD'T'HH:mm:ss");
+             var endDate = moment(parts[1], "YYYY-MM-DD'T'HH:mm:ss");
+             newBatches[batchesIndex].text =startDate.format('MM/DD/YYYY HH:mm:ss') + ' - ' + endDate.format('MM/DD/YYYY HH:mm:ss');
+             batchesIndex++;
+         }
+         if(newBatches.length > batches.length){
+            $.each(newBatches, function (i, item) {
+                 if(!$.inArray(item, batches)){
+                    $('#batchSelector').append($('<option>', {
+                         value: item.value,
+                         text : item.text
+                     }));
+                 }
+
+             });
+             var alert = 'New batch(es) arrived!';
+             var alertType = 'success';
+
+             var notifyBatch = $.notify({
+                 icon: 'glyphicon glyphicon-warning-sign',
+                 title: 'Notification',
+                 message: alert,
+                 url: null,
+                 target: '_blank'
+             },{
+                 type: alertType,
+                 allow_dismiss: true,
+                 newest_on_top: true,
+                 placement: {
+                     from: 'bottom',
+                     align: 'right'
+                 },
+                 offset: {
+                     x: '20',
+                     y: '20'
+                 },
+                 spacing: '10',
+                 z_index: '1031',
+                 delay: '5000',
+                 mouse_over: null
+             });
+
+         }
+
+         /*$('#batchSelector').val(batches[1].value);
+         //currentBatch = batches[0].value;
+         showPatterns(batches[1].value, signSeq, lengthSeq);*/
+     }
+}
+
+checkNewBatches = function(){
+    ARApi.getTrajectoriesBatches(projectId, checkNewBatchesCallback);
+}
+
+batchesTimeout = function(){
+ setTimeout(function () {    //  call a 3s setTimeout when the loop is called
+    checkNewBatches();
+ }, (5*1000))};
+
+ batchesTimeout();
